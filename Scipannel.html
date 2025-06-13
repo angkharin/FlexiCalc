@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FlexiCalc</title>
+  <link rel="icon" href="image/logo.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="hintBox" style="
+  position: absolute;
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  display: none;
+  z-index: 9999;
+  white-space: nowrap;
+  pointer-events: none;
+"></div>
+
+  <div class="calculator2">
+    <div class="display-container">
+      <div class="display" id="display">
+  <button class="sci-toggle" onclick="window.location.href='index.html'" onmousedown="showTooltip(this)"
+  data-tooltip-th="โหมดปกติ" data-tooltip-en="normal mode">↩️</button>
+  <span id="angleLabel"></span>
+  <pre id="display-text" class="display-text"></pre>
+</div>
+
+      <button class="btn side-toggle" onclick="toggleMenu()">☰</button>
+    </div>
+    <div id="extraMenu" class="extra-menu hidden">
+    </div>
+    <div class="buttons2">
+      <button class="btn sci" onclick="togglePanel()" onmousedown="showTooltip(this)"
+      data-tooltip-th="ฟังก์ชั่นทางเลือก" data-tooltip-en="Alternative functions">⮂</button>
+      <button id="modeToggle"
+  onmousedown="showHint(this, 'modeToggle')"
+  onmouseup="hideHint()"
+  onmouseleave="hideHint()"
+  onclick="toggleAngleMode()">Rad</button>
+
+      <button class="btn sci" onclick="insertFunction('√')" onmousedown="showTooltip(this)"
+      data-tooltip-th="สแควร์รูท" data-tooltip-en="Square root">√</button>
+      <button class="btn1 function" onclick="clearAll()" onmousedown="showTooltip(this)"
+      data-tooltip-th="ล้าง" data-tooltip-en="Clear">AC</button>
+      <button class="btn1 operator" onclick="insertBracket()" onmousedown="showTooltip(this)"
+      data-tooltip-th="วงเล็บ" data-tooltip-en="Brackets">()</button>
+      <button class="btn1 operator" onclick="calculatePercent()" onmousedown="showTooltip(this)"
+      data-tooltip-th="เปอร์เซ็นต์" data-tooltip-en="Percentage">%</button>
+      <button class="btn1 operator" onclick="appendOperator('÷')" onmousedown="showTooltip(this)"
+      data-tooltip-th="หาร" data-tooltip-en="Division">÷</button>
+      
+      <button class="btn sci" onclick="insertFunction('sin')" onmousedown="showTooltip(this)"
+      data-tooltip-th="ไซน์" data-tooltip-en="Sine">sin</button>
+      <button class="btn sci" onclick="insertFunction('cos')"onmousedown="showTooltip(this)"
+      data-tooltip-th="โคไซน์" data-tooltip-en="Cosine">cos</button>
+      <button class="btn sci" onclick="insertFunction('tan')" onmousedown="showTooltip(this)"
+      data-tooltip-th="แทนเจนต์" data-tooltip-en="Tangent">tan</button>
+      <button class="btn1" onclick="appendNumber('7')">7</button>
+      <button class="btn1" onclick="appendNumber('8')">8</button>
+      <button class="btn1" onclick="appendNumber('9')">9</button>
+      <button class="btn1 operator" onclick="appendOperator('×')" onmousedown="showTooltip(this)"
+      data-tooltip-th="คูณ" data-tooltip-en="Multiplication">×</button>
+
+      <button class="btn sci" onclick="insertFunction('ln')" onmousedown="showTooltip(this)"
+      data-tooltip-th="ลอการิทึมธรรมชาติ" data-tooltip-en="Natural log">ln</button>
+      <button class="btn sci" onclick="insertFunction('log')" onmousedown="showTooltip(this)"
+      data-tooltip-th="ลอการิทึม" data-tooltip-en="Logarithm">log</button>
+      <button class="btn sci" onclick="insertFunction('1/x')" onmousedown="showTooltip(this)"
+      data-tooltip-th="เศษหนึ่งส่วน x" data-tooltip-en="Inverse number">1/x</button>
+      <button class="btn1" onclick="appendNumber('4')">4</button>
+      <button class="btn1" onclick="appendNumber('5')">5</button>
+      <button class="btn1" onclick="appendNumber('6')">6</button>
+      <button class="btn1 operator" onclick="appendOperator('−')" onmousedown="showTooltip(this)"
+      data-tooltip-th="ลบ" data-tooltip-en="Minus">−</button>
+      
+      <button class="btn sci" onclick="insertFunction('eˣ')" onmousedown="showTooltip(this)"
+      data-tooltip-th="จำนวนของออยเลอร์ยกกำลัง x" data-tooltip-en="e to the power of x">eˣ</button>
+      <button class="btn sci" onclick="insertFunction('square')" onmousedown="showTooltip(this)"
+      data-tooltip-th="x ยกกำลังสอง" data-tooltip-en="x squared">x²</button>
+      <button class="btn sci" onclick="insertFunction('^')" onmousedown="showTooltip(this)"
+      data-tooltip-th="x ยกกำลัง y" data-tooltip-en="x to the power of y">xʸ</button>
+      <button class="btn1" onclick="appendNumber('1')">1</button>
+      <button class="btn1" onclick="appendNumber('2')">2</button>
+      <button class="btn1" onclick="appendNumber('3')">3</button>
+      <button class="btn1 operator" onclick="appendOperator('+')" onmousedown="showTooltip(this)"
+      data-tooltip-th="บวก" data-tooltip-en="Plus">+</button>
+      
+      <button class="btn sci" onclick="insertFunction('abs')" onmousedown="showTooltip(this)"
+      data-tooltip-th="ค่าสัมบูรณ์" data-tooltip-en="Absolute value">|x|</button>
+      <button class="btn sci" onclick="insertFunction('π')" onmousedown="showTooltip(this)"
+      data-tooltip-th="พาย" data-tooltip-en="Pi">π</button>
+      <button class="btn sci" onclick="insertFunction('e')" onmousedown="showTooltip(this)"
+      data-tooltip-th="หมายเลขของออยเลอร์" data-tooltip-en="Euler's number">e</button>
+      <button class="btn1" onclick="appendDot()">.</button>
+      <button class="btn1" onclick="appendNumber('0')">0</button>
+      <button class="btn2" onclick="clearEntry()">⌫</button>
+      <button class="btn1 equal" onclick="calculate()" onmousedown="showTooltip(this)"
+      data-tooltip-th="การคำนวณ" data-tooltip-en="Equal">=</button>
+            
+
+
+    </div>
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>

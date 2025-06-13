@@ -1,0 +1,355 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  min-height: 100vh;
+  background: #e0f7fa;
+  font-family: 'Arial', sans-serif;
+  overflow-y: auto; 
+  overflow-x: auto; 
+  margin: 0;
+}
+
+
+.calculator {
+  background: #b2ebf2;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  width: auto;
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.calculator2 {
+  background: #b2ebf2;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  width: auto;
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
+
+.display {
+  position: relative;
+  flex: 1;
+  background: #ffffff;
+  font-size: 2em;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: right;
+  height: 60px;
+  width: 100%;
+  scroll-behavior: auto;
+  overflow-x: auto;
+  overflow-y: auto;
+  resize: horizontal;
+  white-space: normal;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  word-break: break-word;
+}
+
+#display-text {
+  display: inline-block;
+  white-space:  nowrap;
+  min-width: 100%;
+  text-align: right;
+}
+
+.comma {
+  font-size: 0.6em !important;
+  margin: 0 -2px;
+  letter-spacing: -1px;
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  opacity: 0.5;
+}
+
+@media screen and (max-width: 480px) {
+  .calculator {
+    padding: 10px;
+    max-width: 95vw;
+  }
+}
+
+#angleLabel {
+  position: absolute;
+  left: 50px;  /* อยู่หลังปุ่ม ↩️ */
+  top: 12px;
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+}
+
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+.btn,
+.btn1,
+.btn.sci {
+  width: 100%;
+  aspect-ratio: 1 / 1;       
+  font-size: 1.5em;
+  border-radius: 12px;
+  border: none;
+  background: #f8bbd0;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.buttons2 {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+
+.buttons3 {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+
+.btn1 {
+  width: 75px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.2em;
+  background: #f8bbd0;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn1:hover {
+  background: #f48fb1;
+  transform: scale(1.05);
+}
+
+.btn2 {
+  width: 75px;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.2em;
+  background:#FF6666;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn2:hover {
+  background: #FF3366;
+  transform: scale(1.05);
+}
+
+.operator {
+  background: #ffecb3;
+}
+
+.operator:hover {
+  background: #ffd54f;
+}
+
+.function {
+  background: #FF9900	;
+}
+
+.function:hover {
+  background: #ff7043;
+}
+
+.equal {
+  background:#CC99FF;
+}
+
+.equal:hover {
+  background: #9966FF;
+}
+
+#modeToggle {
+  width: 75px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.2em;
+  background: #6495ED;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+#modeToggle:hover {
+  background: #4169E1;
+  transform: scale(1.05);
+}
+
+#modeToggle2 {
+  width: 75px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.2em;
+  background: #00CC00;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+#modeToggle2:hover {
+  background: #00AA00;
+  transform: scale(1.05);
+}
+
+.btn.sci {
+  background-color: #6495ED;
+  color: #333;
+  width: 75px;
+  aspect-ratio: 1/1;;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn.sci:hover {
+  background-color: #4169E1;
+  transform: scale(1.05);
+}
+
+.btn2.sci {
+  background-color: #00CC00;
+  color: #333;
+  width: 75px;
+  aspect-ratio: 1/1;;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn2.sci:hover {
+  background-color: #00AA00;
+  transform: scale(1.05);
+}
+
+
+.menu {
+  width: 5px;
+  height: 5px;
+  font-size: 10px;
+  margin: 5px;
+  border: none;
+}
+.display-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.display {
+  flex: 1;
+  font-size: 2em;
+  padding: 10px;
+  background: white;
+  border-radius: 5px;
+  text-align: right;
+}
+
+.side-toggle {
+  margin-left: 10px;
+  font-size: 1.2em;
+  background: #ce93d8; 
+  border-radius: 5px;
+  padding: 5px;
+  height: 40px;
+  width: 40px;
+}
+
+.side-toggle:hover {
+  background: 	#9999CC;
+}
+#scientificPanel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+#scientificPanel button {
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#scientificPanel button:hover {
+  background-color: #d0d0d0;
+}
+
+#toggleSciBtn {
+  position: sticky;
+  top: 4px;
+  left: 4px;
+  background: #e0e0e0;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.sci-toggle {
+  position: sticky;
+  top: 4px;
+  left: 4px; 
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+#sciPanel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#sciPanel.sci-hidden {
+  display: none;
+}
+
+.tooltip {
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.85em;
+  white-space: nowrap;
+  z-index: 9999;
+  opacity: 0.95;
+  pointer-events: none;
+  transform: translate(-50%, -150%);
+  transition: background 0.3s ease, transform 0.2s ease;
+}

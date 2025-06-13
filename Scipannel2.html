@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FlexiCalc</title>
+  <link rel="icon" href="image/logo.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="hintBox" style="
+  position: absolute;
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  display: none;
+  z-index: 9999;
+  white-space: nowrap;
+  pointer-events: none;
+"></div>
+  <div class="calculator2">
+    <div class="display-container">
+      <div class="display" id="display">
+  <button class="sci-toggle" onclick="window.location.href='index.html'" onmousedown="showTooltip(this)"
+  data-tooltip-th="โหมดปกติ" data-tooltip-en="normal mode">↩️</button>
+  <span id="angleLabel"></span>
+  <pre id="display-text" class="display-text"></pre>
+</div>
+
+      <button class="btn side-toggle" onclick="toggleMenu()">☰</button>
+    </div>
+    <div id="extraMenu" class="extra-menu hidden">
+    </div>
+    <div class="buttons3">
+      <button class="btn2 sci" onclick="togglePanel()" onmousedown="showTooltip(this)"
+      data-tooltip-th="ฟังก์ชั่นทางเลือก" data-tooltip-en="Alternative functions">⮂</button>
+      <button id="modeToggle2"
+  onmousedown="showHint(this, 'modeToggle2')"
+  onmouseup="hideHint()"
+  onmouseleave="hideHint()"
+  onclick="toggleAngleMode()">Rad</button>
+
+      <button class="btn2 sci" onclick="insertFunction('cbrt')" onmousedown="showTooltip(this)"
+      data-tooltip-th="รากที่สาม" data-tooltip-en="Cube root">∛</button>
+      <button class="btn1 function" onclick="clearAll()" onmousedown="showTooltip(this)"
+      data-tooltip-th="ล้าง" data-tooltip-en="Clear">AC</button>
+      <button class="btn1 operator" onclick="insertBracket()" onmousedown="showTooltip(this)"
+      data-tooltip-th="วงเล็บ" data-tooltip-en="Brackets">()</button>
+      <button class="btn1 operator" onclick="calculatePercent()" onmousedown="showTooltip(this)"
+      data-tooltip-th="เปอร์เซ็นต์" data-tooltip-en="Percentage">%</button>
+      <button class="btn1 operator" onclick="appendOperator('÷')" onmousedown="showTooltip(this)"
+      data-tooltip-th="หาร" data-tooltip-en="Division">÷</button>
+      
+      <button class="btn2 sci" onclick="insertFunction('asin')" onmousedown="showTooltip(this)"
+      data-tooltip-th="ไซน์ผกผัน" data-tooltip-en="Inverse sine">sin⁻¹</button>
+      <button class="btn2 sci" onclick="insertFunction('acos')" onmousedown="showTooltip(this)"
+      data-tooltip-th="โคไซน์ผกผัน" data-tooltip-en="Inverse cosine">cos⁻¹</button>
+      <button class="btn2 sci" onclick="insertFunction('atan')" onmousedown="showTooltip(this)"
+      data-tooltip-th="แทนเจนต์ผกผัน" data-tooltip-en="Inverse tangent">tan⁻¹</button>
+      <button class="btn1" onclick="appendNumber('7')">7</button>
+      <button class="btn1" onclick="appendNumber('8')">8</button>
+      <button class="btn1" onclick="appendNumber('9')">9</button>
+      <button class="btn1 operator" onclick="appendOperator('×')" onmousedown="showTooltip(this)"
+      data-tooltip-th="คูณ" data-tooltip-en="Multiplication">×</button>
+
+      <button class="btn2 sci" onclick="insertFunction('sinh')" onmousedown="showTooltip(this)"
+      data-tooltip-th="ไฮเพอร์โบลิกไซน์" data-tooltip-en="Hyperbolic sine">sinh</button>
+      <button class="btn2 sci" onclick="insertFunction('cosh')" onmousedown="showTooltip(this)"
+      data-tooltip-th="ไฮเพอร์โบลิกโคไซน์" data-tooltip-en="Hyperbolic cosine">cosh</button>
+      <button class="btn2 sci" onclick="insertFunction('tanh')" onmousedown="showTooltip(this)"
+      data-tooltip-th="ไฮเพอร์โบลิกแทนเจนต์" data-tooltip-en="Hyperbolic tangent">tanh</button>
+      <button class="btn1" onclick="appendNumber('4')">4</button>
+      <button class="btn1" onclick="appendNumber('5')">5</button>
+      <button class="btn1" onclick="appendNumber('6')">6</button>
+      <button class="btn1 operator" onclick="appendOperator('−')" onmousedown="showTooltip(this)"
+      data-tooltip-th="ลบ" data-tooltip-en="Minus">−</button>
+      
+      <button class="btn2 sci" onclick="insertFunction('asinh')" onmousedown="showTooltip(this)"
+      data-tooltip-th="ไฮเพอร์โบลิกไซน์แบบผกผัน" data-tooltip-en="Inverse hyperbolic sine">sinh⁻¹</button>
+      <button class="btn2 sci" onclick="insertFunction('acosh')" onmousedown="showTooltip(this)"
+      data-tooltip-th="ไฮเพอร์โบลิกโคไซน์แบบผกผัน" data-tooltip-en="Inverse hyperbolic cosine">cosh⁻¹</button>
+      <button class="btn2 sci" onclick="insertFunction('atanh')" onmousedown="showTooltip(this)"
+      data-tooltip-th="ไฮเพอร์โบลิกแทนเจนต์แบบผกผัน" data-tooltip-en="Inverse hyperbolic tangent">tanh⁻¹</button>
+      <button class="btn1" onclick="appendNumber('1')">1</button>
+      <button class="btn1" onclick="appendNumber('2')">2</button>
+      <button class="btn1" onclick="appendNumber('3')">3</button>
+      <button class="btn1 operator" onclick="appendOperator('+')" onmousedown="showTooltip(this)"
+      data-tooltip-th="บวก" data-tooltip-en="Plus">+</button>
+      
+      <button class="btn2 sci" onclick="insertFunction('2powx')" onmousedown="showTooltip(this)"
+      data-tooltip-th="2 ยกกำลัง x" data-tooltip-en="2 to the power of x">2ˣ</button>
+      <button class="btn2 sci" onclick="insertFunction('cube')" onmousedown="showTooltip(this)"
+      data-tooltip-th="ยกกำลังสาม" data-tooltip-en="Cube">x³</button>
+      <button class="btn2 sci" onclick="insertFunction('factorial')" onmousedown="showTooltip(this)"
+      data-tooltip-th="แฟกทอเรียล" data-tooltip-en="Factorial" >x!</button>
+      <button class="btn1" onclick="appendDot()">.</button>
+      <button class="btn1" onclick="appendNumber('0')">0</button>
+      <button class="btn2" onclick="clearEntry()">⌫</button>
+      <button class="btn1 equal" onclick="calculate()" onmousedown="showTooltip(this)"
+      data-tooltip-th="การคำนวณ" data-tooltip-en="Equal">=</button>
+            
+
+
+    </div>
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
