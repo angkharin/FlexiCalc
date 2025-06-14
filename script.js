@@ -298,7 +298,7 @@ function calculate() {
 
     // ✅ factorial แบบรองรับ 1 และ 2 ตัว !!
     expression = expression.replace(/(\d+)(!+)/g, (_, num, bangs) => {
-      if (bangs.length > 2) {
+      if (bangs.length > 2) { 
         return `INVALID_FACTORIAL(${num})`;
       }
       let result = num;

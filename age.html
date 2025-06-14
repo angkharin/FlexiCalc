@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>คำนวณอายุ | Age Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f8e9;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #4caf50;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px 0 20px;
+    }
+
+    button {
+      background: #4caf50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      border-radius: 6px;
+    }
+
+    button:hover {
+      background: #388e3c;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      text-align: center;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>คำนวณอายุ</h1>
+    <label for="birthdate">เลือกวันเกิดของคุณ:</label>
+    <input type="date" id="birthdate">
+    <button onclick="calculateAge()">คำนวณ</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calculateAge() {
+      const input = document.getElementById("birthdate").value;
+      if (!input) {
+        alert("กรุณาเลือกวันเกิด");
+        return;
+      }
+
+      const birth = new Date(input);
+      const today = new Date();
+
+      let years = today.getFullYear() - birth.getFullYear();
+      let months = today.getMonth() - birth.getMonth();
+      let days = today.getDate() - birth.getDate();
+
+      if (days < 0) {
+        months--;
+        const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+        days += lastMonth.getDate();
+      }
+
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
+      const result = document.getElementById("result");
+      result.innerHTML = `
+        คุณมีอายุ <strong>${years}</strong> ปี <strong>${months}</strong> เดือน <strong>${days}</strong> วัน<br>
+        <small>ค่านี้คำนวณจากวันที่ ${birth.toLocaleDateString('th-TH')} ถึง ${today.toLocaleDateString('th-TH')}</small>
+      `;
+    }
+  </script>
+</body>
+</html>

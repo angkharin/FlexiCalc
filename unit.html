@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FlexiCalc</title>
+  <link rel="icon" href="image/logo.png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #e0f7fa;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .header h2 {
+      font-size: 16px;
+      margin: 0;
+      color: #666;
+    }
+
+    .unit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .unit-item {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      padding: 15px 10px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .unit-item:hover {
+      transform: scale(1.05);
+    }
+
+    .unit-item img {
+      width: 32px;
+      height: 32px;
+      margin-bottom: 8px;
+    }
+
+    .unit-label {
+      font-size: 14px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header sticky-header">
+  <h1 id="title-main">ตัวแปลงหน่วย</h1>
+</div>
+
+  <div class="unit-grid">
+  <div class="unit-item" onclick="window.location.href='age.html'">
+  <img src="image/age.png">
+  <div class="unit-label" data-en="Age" data-th="อายุ"></div>
+</div>
+
+  <div class="unit-item">
+    <img src="image/area.png">
+    <div class="unit-label" data-en="Area" data-th="พื้นที่"></div>
+  </div>
+  <div class="unit-item">
+    <img src="image/bmi.png">
+    <div class="unit-label" data-en="BMI" data-th="ดัชนีมวลกาย"></div>
+  </div>
+  <div class="unit-item">
+    <img src="image/data.png">
+    <div class="unit-label" data-en="Data" data-th="ข้อมูล"></div>
+  </div>
+  <div class="unit-item">
+    <img src="image/date.png">
+    <div class="unit-label" data-en="Date" data-th="วันที่"></div>
+  </div>
+  <div class="unit-item">
+    <img src="image/discount.png">
+    <div class="unit-label" data-en="Discount" data-th="ส่วนลด"></div>
+  </div>
+  <div class="unit-item">
+    <img src="image/length.png">
+    <div class="unit-label" data-en="Length" data-th="ความยาว"></div>
+  </div>
+  <div class="unit-item">
+    <img src="image/mass.png">
+    <div class="unit-label" data-en="Mass" data-th="น้ำหนัก"></div>
+  </div>
+  <div class="unit-item">
+    <img src="image/numeral.png">
+    <div class="unit-label" data-en="Numeral system" data-th="ระบบตัวเลข"></div>
+  </div>
+  <div class="unit-item">
+    <img src="image/speed.png">
+    <div class="unit-label" data-en="Speed" data-th="ความเร็ว"></div>
+  </div>
+  <div class="unit-item">
+    <img src="image/thermometer.png">
+    <div class="unit-label" data-en="Temperature" data-th="อุณหภูมิ"></div>
+  </div>
+  <div class="unit-item">
+    <img src="image/time.png">
+    <div class="unit-label" data-en="Time" data-th="เวลา"></div>
+  </div>
+  <div class="unit-item">
+    <img src="image/volume.png">
+    <div class="unit-label" data-en="Volume" data-th="ปริมาตร"></div>
+  </div>
+  <div class="unit-item">
+    <img src="image/tip.png">
+    <div class="unit-label" data-en="Tip" data-th="เคล็ดลับ"></div>
+  </div>
+</div>
+
+<script>
+  const isThai = (navigator.language || 'en').toLowerCase().startsWith('th');
+
+  document.querySelectorAll('.unit-label').forEach(el => {
+    el.textContent = isThai ? el.dataset.th : el.dataset.en;
+  });
+
+  document.getElementById('title-main').textContent = isThai ? 'ตัวแปลงหน่วย' : 'Unit Converter';
+  document.getElementById('title-sub').textContent = isThai ? 'Unit Converter' : '';
+</script>
+</body>
+</html>

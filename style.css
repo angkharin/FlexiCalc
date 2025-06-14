@@ -359,3 +359,39 @@ body {
   transform: translate(-50%, -150%);
   transition: background 0.3s ease, transform 0.2s ease;
 }
+
+.extra-menu {
+  position: absolute;
+  top: 55px;   /* ปรับตำแหน่งตามปุ่ม ☰ */
+  right: 210px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 999;
+  padding: 8px 0;
+  width: 160px;
+  text-align: left;
+}
+
+.menu-item {
+  padding: 10px 15px;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.menu-item:hover {
+  background-color: #f0f0f0;
+}
+
+.hidden {
+  display: none;
+}
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background: #e0f7fa; /* ให้สีพื้นเท่ากับ body */
+  z-index: 100;
+  padding: 15px 0;
+}
