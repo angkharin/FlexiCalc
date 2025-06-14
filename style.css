@@ -51,6 +51,7 @@ body {
   align-items: center;
   justify-content: flex-end;
   word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 #display-text {
