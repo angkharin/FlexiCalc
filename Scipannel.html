@@ -20,6 +20,26 @@
   white-space: nowrap;
   pointer-events: none;
 "></div>
+<div id="landscapeWarning" style="
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  font-size: 18px;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+">
+  กรุณาหมุนจอเป็นแนวนอนเพื่อใช้งานโหมดวิทยาศาสตร์<br><br>
+  Please rotate your device to landscape mode.
+</div>
 
   <div class="calculator2">
     <div class="display-container">
@@ -108,5 +128,20 @@
   </div>
 
 <script src="script.js"></script>
+<script>
+function checkLandscapeOnly() {
+  const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
+  const warn = document.getElementById("landscapeWarning");
+
+  if (isMobile && window.innerWidth < window.innerHeight) {
+    warn.style.display = "flex";
+    document.body.style.overflow = "hidden";
+  } else {
+    warn.style.display = "none";
+    document.body.style.overflow = "";
+  }
+}
+
+</script>
 </body>
 </html>
