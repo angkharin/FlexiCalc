@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>คำนวณอายุ | Age Calculator</title>
+  <title>Age Calculator | ตัวแปลงอายุ</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #f1f8e9;
-      padding: 20px;
       margin: 0;
+      padding: 20px;
     }
 
     .container {
@@ -61,20 +61,30 @@
   </style>
 </head>
 <body>
+
   <div class="container">
-    <h1>คำนวณอายุ</h1>
-    <label for="birthdate">เลือกวันเกิดของคุณ:</label>
+    <h1 id="title">คำนวณอายุ</h1>
+
+    <label for="birthdate" id="label-birth">เลือกวันเกิดของคุณ:</label>
     <input type="date" id="birthdate">
-    <button onclick="calculateAge()">คำนวณ</button>
+
+    <button id="calcBtn" onclick="calculateAge()">คำนวณ</button>
 
     <div class="result" id="result"></div>
   </div>
 
   <script>
+    const isThai = (navigator.language || '').toLowerCase().startsWith('th');
+
+    // เปลี่ยนข้อความตามภาษา
+    document.getElementById('title').textContent = isThai ? 'คำนวณอายุ' : 'Age Calculator';
+    document.getElementById('label-birth').textContent = isThai ? 'เลือกวันเกิดของคุณ:' : 'Select your birthdate:';
+    document.getElementById('calcBtn').textContent = isThai ? 'คำนวณ' : 'Calculate';
+
     function calculateAge() {
       const input = document.getElementById("birthdate").value;
       if (!input) {
-        alert("กรุณาเลือกวันเกิด");
+        alert(isThai ? "กรุณาเลือกวันเกิด" : "Please select your birthdate");
         return;
       }
 
@@ -97,10 +107,11 @@
       }
 
       const result = document.getElementById("result");
-      result.innerHTML = `
-        คุณมีอายุ <strong>${years}</strong> ปี <strong>${months}</strong> เดือน <strong>${days}</strong> วัน<br>
-        <small>ค่านี้คำนวณจากวันที่ ${birth.toLocaleDateString('th-TH')} ถึง ${today.toLocaleDateString('th-TH')}</small>
-      `;
+      result.innerHTML = isThai
+        ? `คุณมีอายุ <strong>${years}</strong> ปี <strong>${months}</strong> เดือน <strong>${days}</strong> วัน<br>
+        <small>คำนวณจากวันที่ ${birth.toLocaleDateString('th-TH')} ถึง ${today.toLocaleDateString('th-TH')}</small>`
+        : `You are <strong>${years}</strong> years <strong>${months}</strong> months <strong>${days}</strong> days old<br>
+        <small>Calculated from ${birth.toLocaleDateString('en-US')} to ${today.toLocaleDateString('en-US')}</small>`;
     }
   </script>
 </body>
