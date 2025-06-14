@@ -21,9 +21,6 @@ body {
   margin: auto;
   padding: 20px;
   box-sizing: border-box;
-  margin: 20px auto;      /* จัดตรงกลาง */
-  overflow-y: auto; 
-  overflow-x: auto; 
 }
 .calculator2 {
   display: grid;
@@ -34,9 +31,6 @@ body {
   max-width: 600px;
   margin: auto;
   padding: 20px;
-  margin: 20px auto;      /* จัดตรงกลาง */
-  overflow-y: auto; 
-  overflow-x: auto; 
 }
 
 .display {
