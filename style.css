@@ -12,6 +12,7 @@ body {
 
 
 .calculator {
+  display: grid;
   background: #b2ebf2;
   border-radius: 20px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.2);
@@ -20,8 +21,12 @@ body {
   margin: auto;
   padding: 20px;
   box-sizing: border-box;
+  margin: 20px auto;      /* จัดตรงกลาง */
+  overflow-y: auto; 
+  overflow-x: auto; 
 }
 .calculator2 {
+  display: grid;
   background: #b2ebf2;
   border-radius: 20px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.2);
@@ -29,6 +34,9 @@ body {
   max-width: 600px;
   margin: auto;
   padding: 20px;
+  margin: 20px auto;      /* จัดตรงกลาง */
+  overflow-y: auto; 
+  overflow-x: auto; 
 }
 
 .display {
