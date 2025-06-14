@@ -55,7 +55,9 @@ body {
 
 #display-text {
   display: inline-block;
-  white-space:  nowrap;
+  word-break: break-word;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
   min-width: 100%;
   text-align: right;
 }
