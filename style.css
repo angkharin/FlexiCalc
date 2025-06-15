@@ -206,13 +206,13 @@ body {
   border-radius: 50%;
   border: none;
   font-size: 1.2em;
-  background: #00CC00;
+  background: #4caf50;
   color: #333;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
 }
 #modeToggle2:hover {
-  background: #00AA00;
+  background: #00CC00;
   transform: scale(1.05);
 }
 
@@ -234,7 +234,7 @@ body {
 }
 
 .btn2.sci {
-  background-color: #00CC00;
+  background-color: #4caf50;
   color: #333;
   width: 75px;
   aspect-ratio: 1/1;;
@@ -246,7 +246,7 @@ body {
 }
 
 .btn2.sci:hover {
-  background-color: #00AA00;
+  background-color: #00CC00;
   transform: scale(1.05);
 }
 
