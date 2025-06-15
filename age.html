@@ -137,10 +137,10 @@
         [isThai ? 'อายุ' : 'Age:', `${years} ${isThai ? 'ปี' : 'years'}, ${months} ${isThai ? 'เดือน' : 'months'} ${days} ${isThai ? 'วัน' : 'days'}`],
         [isThai ? 'อายุเป็นเดือน' : 'Age in months:', `${totalMonths} ${isThai ? 'เดือน' : 'months'} ${days} ${isThai ? 'วัน' : 'days'}`],
         [isThai ? 'อายุเป็นสัปดาห์' : 'Age in weeks:', `${totalWeeks} ${isThai ? 'สัปดาห์' : 'weeks'} ${remainingDays} ${isThai ? 'วัน' : 'days'}`],
-        [isThai ? 'อายุเป็นวัน' : 'Age in days:', totalDays.toLocaleString()],
-        [isThai ? 'อายุเป็นชั่วโมง' : 'Age in hours:', totalHours.toLocaleString()],
-        [isThai ? 'อายุเป็นนาที' : 'Age in minutes:', totalMinutes.toLocaleString()],
-        [isThai ? 'อายุเป็นวินาที' : 'Age in seconds:', totalSeconds.toLocaleString()]
+        [isThai ? 'อายุเป็นวัน' : 'Age in days:', `${totalDays.toLocaleString()}${isThai ? ' วัน ' : ' days '} `],
+        [isThai ? 'อายุเป็นชั่วโมง' : 'Age in hours:', `${totalHours.toLocaleString()}${isThai ? ' ชั่วโมง ' : ' hours '}`],
+        [isThai ? 'อายุเป็นนาที' : 'Age in minutes:',`${totalHours.toLocaleString()}${isThai ? ' นาที ' : ' minutes '}`],
+        [isThai ? 'อายุเป็นวินาที' : 'Age in seconds:',`${totalHours.toLocaleString()}${isThai ? ' วินาที ' : ' seconds '}`],
       ];
 
       const tableHTML = `
