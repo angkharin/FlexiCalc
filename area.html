@@ -89,6 +89,7 @@
     <button onclick="convertArea()" id="convertBtn">แปลง</button>
 
     <div class="result" id="resultBox"></div>
+    <div class="result" id="explanationBox" style="text-align:left; font-size:14px;"></div>
   </div>
 
   <script>
@@ -116,45 +117,73 @@
       opt.textContent = isThai ? unitMap[opt.value][0] : unitMap[opt.value][1];
     });
 
-    function convertArea() {
-      const value = parseFloat(document.getElementById("areaValue").value);
-      const unit = document.getElementById("unitSelect").value;
+function convertArea() {
+  const value = parseFloat(document.getElementById("areaValue").value);
+  const unit = document.getElementById("unitSelect").value;
 
-      if (isNaN(value) || value < 0) {
-        alert(isThai ? "กรุณากรอกตัวเลขที่ถูกต้อง" : "Please enter a valid number.");
-        return;
-      }
+  if (isNaN(value) || value < 0) {
+    alert(isThai ? "กรุณากรอกตัวเลขที่ถูกต้อง" : "Please enter a valid number.");
+    return;
+  }
 
-      // แปลงทุกหน่วยไป m² ก่อน
-      const toM2 = {
-        ac: 4046.856,
-        a: 100,
-        ha: 10000,
-        cm2: 0.0001,
-        ft2: 0.092903,
-        in2: 0.00064516,
-        m2: 1
-      };
+  const toM2 = {
+    ac: 4046.856,
+    a: 100,
+    ha: 10000,
+    cm2: 0.0001,
+    ft2: 0.092903,
+    in2: 0.00064516,
+    m2: 1
+  };
 
-      const base = value * toM2[unit];
+  const unitLabels = unitMap; // สมมุติว่า unitMap ถูกประกาศไว้แล้ว
 
-      // แปลงจาก m² ไปทุกหน่วย
-      const results = {};
-      for (const key in toM2) {
-        results[key] = base / toM2[key];
-      }
+  const base = value * toM2[unit]; // แปลงเป็นตารางเมตรก่อน
 
-      let output = `<h3>${isThai ? "ผลลัพธ์" : "Result"}</h3>`;
-      output += `<ul style="text-align:left;">`;
+  const results = {};
+  for (const key in toM2) {
+    results[key] = base / toM2[key];
+  }
 
-      for (const key in results) {
-        const label = isThai ? unitMap[key][0] : unitMap[key][1];
-        output += `<li>${results[key].toLocaleString(undefined, {maximumFractionDigits: 6})} ${label}</li>`;
-      }
+  // แสดงผลลัพธ์หลัก
+  let output = `<h3>${isThai ? "ผลลัพธ์" : "Result"}</h3>`;
+  output += `<ul style="text-align:left;">`;
 
-      output += `</ul>`;
-      document.getElementById("resultBox").innerHTML = output;
+  for (const key in results) {
+    const label = isThai ? unitLabels[key][0] : unitLabels[key][1];
+    output += `<li>${results[key].toLocaleString(undefined, { maximumFractionDigits: 6 })} ${label}</li>`;
+  }
+
+  output += `</ul>`;
+  document.getElementById("resultBox").innerHTML = output;
+
+  // ✅ แสดงตัวอย่างการคำนวณ
+  const exampleLines = [];
+
+  for (const key in toM2) {
+    const label = isThai ? unitLabels[key][0] : unitLabels[key][1];
+    const fromLabel = isThai ? unitLabels[unit][0] : unitLabels[unit][1];
+
+    if (key === unit) {
+      // แสดงตัวอย่างหน่วยเดิม
+      const line = `${value} ${label} = ${value} ${label} <span style="color:#999;">(${isThai ? "หน่วยเดิม ไม่มีการแปลง" : "same unit, no conversion"})</span>`;
+      exampleLines.push(`<li>${line}</li>`);
+    } else {
+      const formula = `${value} × ${toM2[unit].toLocaleString(undefined, { maximumFractionDigits: 6 })} ÷ ${toM2[key].toLocaleString(undefined, { maximumFractionDigits: 6 })} = ${results[key].toLocaleString(undefined, { maximumFractionDigits: 6 })} ${label}`;
+      exampleLines.push(`<li>${formula}</li>`);
     }
+  }
+
+  const explanation = `
+    <strong style="display:block; margin-top:30px;">${isThai ? 'ตัวอย่างการคำนวณ:' : 'Example Calculations:'}</strong>
+    <ul style="text-align:left; font-size:14px; color:#444;">
+      ${exampleLines.join('')}
+    </ul>
+  `;
+
+  document.getElementById("explanationBox").innerHTML = explanation;
+}
+
   </script>
 </body>
 </html>
