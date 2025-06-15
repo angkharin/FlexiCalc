@@ -73,7 +73,7 @@
     <h1 id="title">ตัวแปลงพื้นที่</h1>
 
     <label id="label-value">กรอกค่าพื้นที่:</label>
-    <input type="number" id="areaValue" placeholder="กรอกตัวเลข">
+    <input type="text" id="areaValue" placeholder="กรอกตัวเลข">
 
     <label id="label-unit">เลือกหน่วย:</label>
     <select id="unitSelect">
@@ -118,7 +118,9 @@
     });
 
 function convertArea() {
-  const value = parseFloat(document.getElementById("areaValue").value);
+  const input = document.getElementById("areaValue");
+  const rawValue = input.value.replace(/,/g, '').trim();
+  const value = parseFloat(rawValue);
   const unit = document.getElementById("unitSelect").value;
 
   if (isNaN(value) || value < 0) {
@@ -126,6 +128,14 @@ function convertArea() {
     return;
   }
 
+  // ตรวจสอบจำนวนหลัก (ไม่รวมจุดทศนิยม)
+  const digitCount = rawValue.replace('.', '').length;
+  if (digitCount > 15) {
+    alert(isThai ? "ไม่สามารถใส่ตัวเลขเกิน 15 หลักได้" : "Can't enter more than 15 digits.");
+    return;
+  }
+
+  // หน่วยแปลงเป็นตารางเมตร
   const toM2 = {
     ac: 4046.856,
     a: 100,
@@ -136,10 +146,9 @@ function convertArea() {
     m2: 1
   };
 
-  const unitLabels = unitMap; // สมมุติว่า unitMap ถูกประกาศไว้แล้ว
+  const base = value * toM2[unit];
 
-  const base = value * toM2[unit]; // แปลงเป็นตารางเมตรก่อน
-
+  // คำนวณผลลัพธ์
   const results = {};
   for (const key in toM2) {
     results[key] = base / toM2[key];
@@ -148,34 +157,32 @@ function convertArea() {
   // แสดงผลลัพธ์หลัก
   let output = `<h3>${isThai ? "ผลลัพธ์" : "Result"}</h3>`;
   output += `<ul style="text-align:left;">`;
-
   for (const key in results) {
-    const label = isThai ? unitLabels[key][0] : unitLabels[key][1];
+    const label = isThai ? unitMap[key][0] : unitMap[key][1];
     output += `<li>${results[key].toLocaleString(undefined, { maximumFractionDigits: 6 })} ${label}</li>`;
   }
-
   output += `</ul>`;
   document.getElementById("resultBox").innerHTML = output;
 
-  // ✅ แสดงตัวอย่างการคำนวณ
+  // ตัวอย่างการคำนวณ
   const exampleLines = [];
-
   for (const key in toM2) {
-    const label = isThai ? unitLabels[key][0] : unitLabels[key][1];
-    const fromLabel = isThai ? unitLabels[unit][0] : unitLabels[unit][1];
+    const label = isThai ? unitMap[key][0] : unitMap[key][1];
+    const fromLabel = isThai ? unitMap[unit][0] : unitMap[unit][1];
 
     if (key === unit) {
-      // แสดงตัวอย่างหน่วยเดิม
-      const line = `${value} ${label} = ${value} ${label} <span style="color:#999;">(${isThai ? "หน่วยเดิม ไม่มีการแปลง" : "same unit, no conversion"})</span>`;
+      // หน่วยเดิม ไม่มีการแปลง
+      const line = `${value.toLocaleString()} ${label} = ${value.toLocaleString()} ${label} <span style="color:#999;">(${isThai ? "หน่วยเดิม ไม่มีการแปลง" : "same unit, no conversion"})</span>`;
       exampleLines.push(`<li>${line}</li>`);
     } else {
-      const formula = `${value} × ${toM2[unit].toLocaleString(undefined, { maximumFractionDigits: 6 })} ÷ ${toM2[key].toLocaleString(undefined, { maximumFractionDigits: 6 })} = ${results[key].toLocaleString(undefined, { maximumFractionDigits: 6 })} ${label}`;
+      const formula = `${value.toLocaleString()} × ${toM2[unit].toLocaleString(undefined, { maximumFractionDigits: 6 })} ÷ ${toM2[key].toLocaleString(undefined, { maximumFractionDigits: 6 })} = ${results[key].toLocaleString(undefined, { maximumFractionDigits: 6 })} ${label}`;
       exampleLines.push(`<li>${formula}</li>`);
     }
   }
 
+  // รวมผลลัพธ์ตัวอย่างการคำนวณ
   const explanation = `
-    <strong style="display:block; margin-top:30px;">${isThai ? 'ตัวอย่างการคำนวณ:' : 'Example Calculations:'}</strong>
+    <strong style="display:block; margin-top:20px;">${isThai ? 'ตัวอย่างการคำนวณ:' : 'Example Calculations:'}</strong>
     <ul style="text-align:left; font-size:14px; color:#444;">
       ${exampleLines.join('')}
     </ul>
