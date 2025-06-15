@@ -157,7 +157,21 @@
         </table>
       `;
 
-      document.getElementById("resultTable").innerHTML = tableHTML;
+      // คำนวณวันเกิดครั้งถัดไป
+    const nextBirthday = new Date(today.getFullYear(), birth.getMonth(), birth.getDate());
+    if (nextBirthday < today) {
+      nextBirthday.setFullYear(today.getFullYear() + 1);
+    }
+    const diffToNextBirthday = Math.ceil((nextBirthday - today) / (1000 * 60 * 60 * 24));
+
+    // รวม HTML ตาราง + ข้อความแสดงวันเกิดถัดไป
+    document.getElementById("resultTable").innerHTML = tableHTML + `
+      <p style="margin-top:20px; font-size:16px;">
+    ${isThai
+      ? `อีก <strong>${diffToNextBirthday}</strong> วัน จนถึงวันเกิดครั้งต่อไปของคุณ`
+      : `<strong>${diffToNextBirthday}</strong> days until your next birthday`}
+      </p>`;
+
     }
   </script>
 </body>
