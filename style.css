@@ -206,7 +206,7 @@ body {
   border-radius: 50%;
   border: none;
   font-size: 1.2em;
-  background: #4caf50;
+  background: #2baf2b;
   color: #333;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
@@ -234,7 +234,7 @@ body {
 }
 
 .btn2.sci {
-  background-color: #4caf50;
+  background-color: #2baf2b;
   color: #333;
   width: 75px;
   aspect-ratio: 1/1;;
