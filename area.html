@@ -6,13 +6,14 @@
 
   <title>Area Converter | ตัวแปลงพื้นที่</title>
   <style>
+    /* สไตล์รวมของ body */
     body {
       font-family: 'Segoe UI', sans-serif;
       background: 	#FFF5EE;
       margin: 0;
       padding: 20px;
     }
-
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
     .container {
       max-width: 600px;
       margin: auto;
@@ -21,18 +22,18 @@
       border-radius: 12px;
       box-shadow: 0 5px 10px rgba(0,0,0,0.1);
     }
-
+    /* หัวข้อ */
     h1 {
       text-align: center;
       color: #1976d2;
     }
-
+    /* ป้าย label */
     label {
       font-weight: bold;
       display: block;
       margin-top: 15px;
     }
-
+    /* ช่องกรอกเลข*/
     input, select {
       width: 100%;
       padding: 10px;
@@ -41,7 +42,7 @@
       border: 1px solid #ccc;
       box-sizing: border-box;
     }
-
+    /* ปุ่มคำนวณ */
     button {
       background: #1976d2;
       color: white;
@@ -85,23 +86,25 @@
       <option value="in2">ตารางนิ้ว</option>
       <option value="m2">ตารางเมตร</option>
     </select>
-
+ 
     <button onclick="convertArea()" id="convertBtn">แปลง</button>
-
+    <!-- แสดงผลลัพธ์ -->
     <div class="result" id="resultBox"></div>
+    <!-- แสดงตัวอย่างการคำนวณ -->
     <div class="result" id="explanationBox" style="text-align:left; font-size:14px;"></div>
   </div>
 
   <script>
     const isThai = (navigator.language || '').toLowerCase().startsWith('th');
 
-    // แปลข้อความ
+    // ตั้งค่าข้อความตามภาษา
     document.getElementById("title").textContent = isThai ? "ตัวแปลงพื้นที่" : "Area Converter";
     document.getElementById("label-value").textContent = isThai ? "กรอกค่าพื้นที่:" : "Enter area value:";
+    document.getElementById("areaValue").placeholder = isThai ? "กรอกตัวเลข" : "Enter number";
     document.getElementById("label-unit").textContent = isThai ? "เลือกหน่วย:" : "Select unit:";
     document.getElementById("convertBtn").textContent = isThai ? "แปลง" : "Convert";
 
-    // เปลี่ยน text ของ option ตามภาษา
+    // แปลงชื่อหน่วยตามภาษา
     const options = document.querySelectorAll("#unitSelect option");
     const unitMap = {
       ac: ["เอเคอร์", "Acres (ac)"],
@@ -116,26 +119,26 @@
     options.forEach(opt => {
       opt.textContent = isThai ? unitMap[opt.value][0] : unitMap[opt.value][1];
     });
-
+// ฟังก์ชันแปลงพื้นที่
 function convertArea() {
   const input = document.getElementById("areaValue");
   const rawValue = input.value.replace(/,/g, '').trim();
   const value = parseFloat(rawValue);
   const unit = document.getElementById("unitSelect").value;
-
+  // ตรวจสอบว่ากรอกค่าถูกต้องหรือไม่
   if (isNaN(value) || value < 0) {
-    alert(isThai ? "กรุณากรอกตัวเลขที่ถูกต้อง" : "Please enter a valid number.");
+    alert(isThai ? "กรุณากรอกตัวเลข" : "Please enter a valid number.");
     return;
   }
 
-  // ตรวจสอบจำนวนหลัก (ไม่รวมจุดทศนิยม)
+  // จำกัดไม่ให้เกิน 15 หลัก
   const digitCount = rawValue.replace('.', '').length;
   if (digitCount > 15) {
     alert(isThai ? "ไม่สามารถใส่ตัวเลขเกิน 15 หลักได้" : "Can't enter more than 15 digits.");
     return;
   }
 
-  // หน่วยแปลงเป็นตารางเมตร
+  // ค่าการแปลงจากหน่วยเป็นตารางเมตร
   const toM2 = {
     ac: 4046.856,
     a: 100,
@@ -146,15 +149,15 @@ function convertArea() {
     m2: 1
   };
 
-  const base = value * toM2[unit];
+  const base = value * toM2[unit]; // แปลงจากหน่วยที่กรอกเป็น m²
 
   // คำนวณผลลัพธ์
   const results = {};
   for (const key in toM2) {
-    results[key] = base / toM2[key];
+    results[key] = base / toM2[key]; // แปลงเป็นหน่วยอื่น
   }
 
-  // แสดงผลลัพธ์หลัก
+  // สร้าง HTML แสดงผลลัพธ์
   let output = `<h3>${isThai ? "ผลลัพธ์" : "Result"}</h3>`;
   output += `<ul style="text-align:left;">`;
   for (const key in results) {
@@ -164,7 +167,7 @@ function convertArea() {
   output += `</ul>`;
   document.getElementById("resultBox").innerHTML = output;
 
-  // ตัวอย่างการคำนวณ
+  // สร้างตัวอย่างการคำนวณ
   const exampleLines = [];
   for (const key in toM2) {
     const label = isThai ? unitMap[key][0] : unitMap[key][1];
@@ -180,7 +183,7 @@ function convertArea() {
     }
   }
 
-  // รวมผลลัพธ์ตัวอย่างการคำนวณ
+  // ใส่ตัวอย่างการคำนวณ
   const explanation = `
     <strong style="display:block; margin-top:20px;">${isThai ? 'ตัวอย่างการคำนวณ:' : 'Example Calculations:'}</strong>
     <ul style="text-align:left; font-size:14px; color:#444;">
@@ -190,7 +193,13 @@ function convertArea() {
 
   document.getElementById("explanationBox").innerHTML = explanation;
 }
-
+// ✅ พิมพ์วันเกิดแล้วกด Enter เพื่อคำนวณ
+    document.getElementById("areaValue").addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    convertArea();
+  }
+});
   </script>
 </body>
 </html>

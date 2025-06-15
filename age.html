@@ -5,13 +5,14 @@
   <link rel="icon" href="image/logo.png">
   <title>Age Calculator | ตัวแปลงอายุ</title>
   <style>
+    /* สไตล์รวมของ body */
     body {
       font-family: Arial, sans-serif;
       background: #f1f8e9;
       margin: 0;
       padding: 20px;
     }
-
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
     .container {
       max-width: 600px;
       margin: auto;
@@ -20,23 +21,23 @@
       border-radius: 12px;
       box-shadow: 0 5px 10px rgba(0,0,0,0.1);
     }
-
+    /* หัวข้อ */
     h1 {
       text-align: center;
       color: #4caf50;
     }
-
+    /* ป้าย label */
     label {
       font-weight: bold;
     }
-
+    /* ช่องกรอกวันเกิด */
     input[type="date"] {
       width: 100%;
       padding: 10px;
       font-size: 16px;
       margin: 10px 0 20px;
     }
-
+    /* ปุ่มคำนวณ */
     button {
       background: #4caf50;
       color: white;
@@ -58,7 +59,7 @@
       text-align: center;
       line-height: 1.6;
     }
-
+    /* ตารางผลลัพธ์ */
     table {
       margin-top: 20px;
       width: 100%;
@@ -83,51 +84,52 @@
 
   <div class="container">
     <h1 id="title">คำนวณอายุ</h1>
-
+    <!-- ช่องกรอกวันเกิด -->
     <label for="birthdate" id="label-birth">เลือกวันเกิดของคุณ:</label>
     <input type="date" id="birthdate">
-
+    <!-- ปุ่มคำนวณ -->
     <button id="calcBtn" onclick="calculateAge()">คำนวณ</button>
-
+    <!-- ผลลัพธ์ -->
     <div class="result" id="result"></div>
     <div class="result" id="resultTable"></div>
   </div>
 
   <script>
+    // ตรวจสอบภาษาเครื่อง
     const isThai = (navigator.language || '').toLowerCase().startsWith('th');
-
+    // ตั้งค่าข้อความต่าง ๆ ตามภาษาที่ใช้
     document.getElementById('title').textContent = isThai ? 'คำนวณอายุ' : 'Age Calculator';
     document.getElementById('label-birth').textContent = isThai ? 'เลือกวันเกิดของคุณ:' : 'Select your birthdate:';
     document.getElementById('calcBtn').textContent = isThai ? 'คำนวณ' : 'Calculate';
-    
+    // รับค่าที่ผู้ใช้กรอก
      function calculateAge() {
       const input = document.getElementById("birthdate").value;
       if (!input) {
         alert(isThai ? "กรุณาเลือกวันเกิด" : "Please select your birthdate");
         return;
       }
-
+      // แปลงเป็นวันที่
       const birth = new Date(input);
       const today = new Date();
       birth.setHours(0, 0, 0, 0);
       today.setHours(0, 0, 0, 0);
-
+      // คำนวณปี เดือน วัน
       let years = today.getFullYear() - birth.getFullYear();
       let months = today.getMonth() - birth.getMonth();
       let days = today.getDate() - birth.getDate();
-
+      // ถ้าวันติดลบ ต้องยืมเดือน
       if (days < 0) {
         months--;
         const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
         days += lastMonth.getDate();
       }
-
+      // ถ้าเดือนติดลบ ต้องยืมปี
       if (months < 0) {
         years--;
         months += 12;
       }
 
-      
+      // คำนวณเวลาอื่น ๆ
       const diffMs = today - birth;
       const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
       const totalWeeks = Math.floor(totalDays / 7);
@@ -138,7 +140,7 @@
       const totalMonths = years * 12 + months;
       const diffMsStr = diffMs.toLocaleString();
       
-
+      // ตารางแสดงผล
       const tableRows = [
         [isThai ? 'อายุ' : 'Age', `${years} ${isThai ? 'ปี' : 'years'}, ${months} ${isThai ? 'เดือน' : 'months'} ${days} ${isThai ? 'วัน' : 'days'}`],
         [isThai ? 'อายุเป็นเดือน' : 'Age in months', `${totalMonths} ${isThai ? 'เดือน' : 'months'} ${days} ${isThai ? 'วัน' : 'days'}`],
@@ -148,7 +150,7 @@
         [isThai ? 'อายุเป็นนาที' : 'Age in minutes', `${totalMinutes.toLocaleString()} ${isThai ? 'นาที' : 'minutes'}`],
         [isThai ? 'อายุเป็นวินาที' : 'Age in seconds', `${totalSeconds.toLocaleString()} ${isThai ? 'วินาที' : 'seconds'}`],
       ];
-
+      // สร้าง HTML ตาราง
       const tableHTML = `
         <table>
           <thead>
@@ -162,7 +164,7 @@
           </tbody>
         </table>
       `;
-
+      // หาวันเกิดครั้งต่อไป
       const nextBirthday = new Date(today.getFullYear(), birth.getMonth(), birth.getDate());
       if (nextBirthday < today) {
         nextBirthday.setFullYear(today.getFullYear() + 1);
@@ -170,6 +172,7 @@
       const diffToNextBirthday = Math.ceil((nextBirthday - today) / (1000 * 60 * 60 * 24));
       const birthStr = birth.toLocaleDateString(isThai ? 'th-TH' : 'en-US');
       const nextBDStr = nextBirthday.toLocaleDateString(isThai ? 'th-TH' : 'en-US');
+      // แสดงตัวอย่างการคำนวณ
       const explanation = `
         <div style="margin-top:20px; font-size:14px; text-align:left;">
           <strong>${isThai ? 'ตัวอย่างการคำนวณ:' : 'Calculation Example:'}</strong><br>
@@ -195,7 +198,7 @@
           `}
         </div>
       `;
-
+      // แสดงผลลัพธ์ทั้งหมด
       document.getElementById("resultTable").innerHTML = tableHTML + `
         <p style="margin-top:20px; font-size:16px;">
           ${isThai
@@ -204,7 +207,7 @@
         </p>` + explanation;
     }
 
-    // ✅ พิมพ์วันเกิดแล้วกด Enter เพื่อคำนวณ
+    // หากผู้ใช้กด Enter ตอนอยู่ที่ช่องกรอกวันเกิด
     document.getElementById("birthdate").addEventListener("keydown", function(e) {
       if (e.key === "Enter") {
         e.preventDefault();

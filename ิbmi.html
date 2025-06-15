@@ -1,0 +1,239 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>BMI Calculator | ตัวคำนวณดัชนีมวลกาย</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+     /* ตั้งค่าโครงสร้างพื้นฐาน */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #FFEFD5;
+      padding: 20px;
+    }
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    /* หัวข้อ */
+    h1 {
+      text-align: center;
+      color: #FFA500
+    }
+    /* ป้าย label */
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    /* ช่องกรอกน้ำหนักและส่วนสูง*/
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+    }
+    /* ปุ่มคำนวณ */
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      background-color: #FFA500;
+      color: #fff;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #388e3c;
+    }
+
+    .result {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      background: #e8f5e9;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    /* ตารางผลลัพธ์ */
+    table {
+      margin-top: 30px;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ccc;
+    }
+
+    th {
+      background: #eee;
+    }
+
+    tr.highlight {
+      background-color: #c8e6c9 !important;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1 id="title">คำนวณ ดัชนีมวลกาย</h1>
+  <!-- ช่องกรอกน้ำหนัก -->
+  <label id="label-weight">น้ำหนัก (กก.):</label>
+  <input type="number" id="weight" placeholder="กรอกน้ำหนัก">
+  <!-- ช่องกรอกส่วนสูง -->
+  <label id="label-height">ส่วนสูง (ซม.):</label>
+  <input type="number" id="height" placeholder="กรอกส่วนสูง">
+  <!-- ปุ่มกดคำนวณ -->
+  <button onclick="calculateBMI()" id="calcBtn">คำนวณ</button>
+  <!-- แสดงผล BMI -->
+  <div class="result" id="bmiResult">ดัชนีมวลกาย</div>
+  <!-- ตารางเกณฑ์ BMI -->
+  <table>
+    <thead>
+      <tr>
+        <th id="th-bmi">BMI กก/ม²</th>
+        <th id="th-category">อยู่ในเกณฑ์</th>
+        <th id="th-risk">ความเสี่ยงต่อโรค</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr id="row1"><td><18.5</td><td id="cat1"></td><td id="risk1"></td></tr>
+      <tr id="row2"><td>18.5 – 22.9</td><td id="cat2"></td><td id="risk2"></td></tr>
+      <tr id="row3"><td>23 – 24.9</td><td id="cat3"></td><td id="risk3"></td></tr>
+      <tr id="row4"><td>25 – 29.9</td><td id="cat4"></td><td id="risk4"></td></tr>
+      <tr id="row5"><td>≥ 30</td><td id="cat5"></td><td id="risk5"></td></tr>
+    </tbody>
+  </table>
+  <!-- แสดงตัวอย่างการคำนวณ -->
+  <div class="explanation" id="explanationBox"></div>
+</div>
+
+<script>
+  // ตรวจสอบภาษาเครื่อง
+  const isThai = (navigator.language || "").toLowerCase().startsWith("th");
+
+  // เปลี่ยนข้อความตามภาษา
+  document.getElementById("title").textContent = isThai ? "คำนวณ ดัชนีมวลกาย" : "BMI Calculator";
+  document.getElementById("label-weight").textContent = isThai ? "น้ำหนัก (กก.):" : "Weight (kg):";
+  document.getElementById("weight").placeholder = isThai ? "กรอกน้ำหนัก" : "Enter weight:";
+  document.getElementById("label-height").textContent = isThai ? "ส่วนสูง (ซม.):" : "Height (cm):";
+  document.getElementById("height").placeholder = isThai ? "กรอกส่วนสูง" : "Enter height:";
+  document.getElementById("calcBtn").textContent = isThai ? "คำนวณ" : "Calculate";
+  document.getElementById("th-bmi").textContent = isThai ? "BMI กก/ม²" : "BMI kg/m²";
+  document.getElementById("th-category").textContent = isThai ? "อยู่ในเกณฑ์" : "Category";
+  document.getElementById("th-risk").textContent = isThai ? "ความเสี่ยงต่อโรค" : "Health Risk";
+  document.getElementById("bmiResult").textContent = isThai ? "ดัชนีมวลกาย" : "BMI Result";
+
+
+  // ตั้งค่าข้อมูลในตาราง
+  const tableData = [
+    [isThai ? "น้ำหนักน้อย / ผอม" : "Underweight", isThai ? "มากกว่าคนปกติ" : "Higher than normal"],
+    [isThai ? "ปกติ (สุขภาพดี)" : "Normal", isThai ? "เท่าคนปกติ" : "Normal risk"],
+    [isThai ? "ท้วม / อ้วนระดับ 1" : "Overweight (Level 1)", isThai ? "เริ่มมีความเสี่ยง" : "Increased risk"],
+    [isThai ? "อ้วน / อ้วนระดับ 2" : "Obese (Level 2)", isThai ? "เสี่ยงมากขึ้น" : "High risk"],
+    [isThai ? "อ้วนมาก / อ้วนระดับ 3" : "Severely Obese (Level 3)", isThai ? "เสี่ยงสูงสุด" : "Very high risk"],
+  ];
+  // ใส่ข้อมูลในตาราง
+  for (let i = 1; i <= 5; i++) {
+    document.getElementById(`cat${i}`).textContent = tableData[i - 1][0];
+    document.getElementById(`risk${i}`).textContent = tableData[i - 1][1];
+  }
+
+    // ฟังก์ชันคำนวณ BMI
+    function calculateBMI() {
+      const weightInput = document.getElementById("weight");
+      const heightInput = document.getElementById("height");
+
+      const weight = parseFloat(weightInput.value.replace(/,/g, ''));
+      const height = parseFloat(heightInput.value.replace(/,/g, ''));
+
+      // ตรวจสอบความยาวของตัวเลข
+      if (weightInput.value.replace(/\D/g, "").length > 15 || heightInput.value.replace(/\D/g, "").length > 15) {
+        alert(isThai ? "ไม่สามารถใส่ตัวเลขเกิน 15 หลักได้" : "Can't enter more than 15 digits.");
+        return;
+      }
+      // ตรวจสอบค่าว่างหรือค่าติดลบ
+      if (!weight || !height || weight <= 0 || height <= 0) {
+        alert(isThai ? "กรุณากรอกน้ำหนักและส่วนสูง" : "Please enter valid weight and height.");
+        return;
+      }
+
+      const heightM = height / 100;
+      const bmi = weight / (heightM * heightM);
+      const roundedBMI = bmi.toFixed(2);
+      // แสดงผลลัพธ์ BMI
+      document.getElementById("bmiResult").innerHTML =
+        isThai ? `ดัชนีมวลกาย ${roundedBMI}` : `BMI ${roundedBMI}`;
+      // ลบไฮไลต์จากทุกแถว
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById("row" + i).classList.remove("highlight");
+      }
+      // ใส่ไฮไลต์ตามเกณฑ์
+      if (bmi < 18.5) document.getElementById("row1").classList.add("highlight");
+      else if (bmi < 23) document.getElementById("row2").classList.add("highlight");
+      else if (bmi < 25) document.getElementById("row3").classList.add("highlight");
+      else if (bmi < 30) document.getElementById("row4").classList.add("highlight");
+      else document.getElementById("row5").classList.add("highlight");
+
+      const table = document.querySelector("table");
+      const explanationContainer = document.getElementById("explanationBox");
+      // ลบคำอธิบายเดิมก่อน
+      const oldExplain = document.getElementById("bmiExplain");
+      if (oldExplain) oldExplain.remove();
+
+    // สร้างกล่องคำอธิบายใหม่
+    const explainDiv = document.createElement("div");
+    explainDiv.id = "bmiExplain";
+    explainDiv.style.marginTop = "20px";
+    explainDiv.style.fontSize = "14px";
+    explainDiv.style.textAlign = "left";
+    // แสดงคำอธิบายวิธีคิด
+    explainDiv.innerHTML = `
+    <strong>${isThai ? "ตัวอย่างการคำนวณ:" : "Calculation Example:"}</strong><br>
+    ${isThai 
+    ? `น้ำหนัก = ${weight.toLocaleString()} กิโลกรัม<br>
+       ส่วนสูง = ${height.toLocaleString()} เซนติเมตร = ${heightM.toFixed(2)} เมตร<br>
+       ดัชนีมวลกาย = น้ำหนัก ÷ (ส่วนสูง × ส่วนสูง)<br>
+       = ${weight} ÷ (${heightM.toFixed(2)} × ${heightM.toFixed(2)})<br>
+       = ${roundedBMI}`
+    : `Weight = ${weight.toLocaleString()} kg<br>
+       Height = ${height.toLocaleString()} cm = ${heightM.toFixed(2)} meters<br>
+       BMI = weight ÷ (height × height)<br>
+       = ${weight} ÷ (${heightM.toFixed(2)} × ${heightM.toFixed(2)})<br>
+       = ${roundedBMI}`
+  }
+`;
+
+    // แทรกไว้หลังตาราง
+    document.querySelector("table").insertAdjacentElement("afterend", explainDiv);
+
+    }
+
+    // กด Enter ที่ช่องน้ำหนักจะไปช่องส่วนสูง
+    document.getElementById("weight").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        document.getElementById("height").focus();
+      }
+    });
+    // กด Enter ที่ช่องส่วนสูงจะคำนวณทันที
+    document.getElementById("height").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        calculateBMI();
+      }
+    });
+  </script>
+</body>
+</html>
