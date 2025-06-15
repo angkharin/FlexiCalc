@@ -2,6 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="image/logo.png">
   <title>Age Calculator | ตัวแปลงอายุ</title>
   <style>
     body {
@@ -57,6 +58,7 @@
       text-align: center;
       line-height: 1.6;
     }
+
     table {
       margin-top: 20px;
       width: 100%;
@@ -94,7 +96,6 @@
   <script>
     const isThai = (navigator.language || '').toLowerCase().startsWith('th');
 
-    // เปลี่ยนข้อความตามภาษา
     document.getElementById('title').textContent = isThai ? 'คำนวณอายุ' : 'Age Calculator';
     document.getElementById('label-birth').textContent = isThai ? 'เลือกวันเกิดของคุณ:' : 'Select your birthdate:';
     document.getElementById('calcBtn').textContent = isThai ? 'คำนวณ' : 'Calculate';
@@ -106,8 +107,10 @@
         return;
       }
 
-      const birth = new Date(input);
+      const birth = new Date(document.getElementById("birthdate").value);
       const today = new Date();
+      birth.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
 
       let years = today.getFullYear() - birth.getFullYear();
       let months = today.getMonth() - birth.getMonth();
@@ -123,7 +126,7 @@
         years--;
         months += 12;
       }
-      // เพิ่มการคำนวณเชิงตัวเลข
+
       const diffMs = today - birth;
       const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
       const totalWeeks = Math.floor(totalDays / 7);
@@ -137,10 +140,10 @@
         [isThai ? 'อายุ' : 'Age:', `${years} ${isThai ? 'ปี' : 'years'}, ${months} ${isThai ? 'เดือน' : 'months'} ${days} ${isThai ? 'วัน' : 'days'}`],
         [isThai ? 'อายุเป็นเดือน' : 'Age in months:', `${totalMonths} ${isThai ? 'เดือน' : 'months'} ${days} ${isThai ? 'วัน' : 'days'}`],
         [isThai ? 'อายุเป็นสัปดาห์' : 'Age in weeks:', `${totalWeeks} ${isThai ? 'สัปดาห์' : 'weeks'} ${remainingDays} ${isThai ? 'วัน' : 'days'}`],
-        [isThai ? 'อายุเป็นวัน' : 'Age in days:', `${totalDays.toLocaleString()}${isThai ? ' วัน ' : ' days '} `],
-        [isThai ? 'อายุเป็นชั่วโมง' : 'Age in hours:', `${totalHours.toLocaleString()}${isThai ? ' ชั่วโมง ' : ' hours '}`],
-        [isThai ? 'อายุเป็นนาที' : 'Age in minutes:',`${totalHours.toLocaleString()}${isThai ? ' นาที ' : ' minutes '}`],
-        [isThai ? 'อายุเป็นวินาที' : 'Age in seconds:',`${totalHours.toLocaleString()}${isThai ? ' วินาที ' : ' seconds '}`],
+        [isThai ? 'อายุเป็นวัน' : 'Age in days:', `${totalDays.toLocaleString()} ${isThai ? 'วัน' : 'days'}`],
+        [isThai ? 'อายุเป็นชั่วโมง' : 'Age in hours:', `${totalHours.toLocaleString()} ${isThai ? 'ชั่วโมง' : 'hours'}`],
+        [isThai ? 'อายุเป็นนาที' : 'Age in minutes:', `${totalMinutes.toLocaleString()} ${isThai ? 'นาที' : 'minutes'}`],
+        [isThai ? 'อายุเป็นวินาที' : 'Age in seconds:', `${totalSeconds.toLocaleString()} ${isThai ? 'วินาที' : 'seconds'}`],
       ];
 
       const tableHTML = `
@@ -157,20 +160,49 @@
         </table>
       `;
 
-      // คำนวณวันเกิดครั้งถัดไป
-    const nextBirthday = new Date(today.getFullYear(), birth.getMonth(), birth.getDate());
-    if (nextBirthday < today) {
-      nextBirthday.setFullYear(today.getFullYear() + 1);
-    }
-    const diffToNextBirthday = Math.ceil((nextBirthday - today) / (1000 * 60 * 60 * 24));
+      const nextBirthday = new Date(today.getFullYear(), birth.getMonth(), birth.getDate());
+      if (nextBirthday < today) {
+        nextBirthday.setFullYear(today.getFullYear() + 1);
+      }
+      const diffToNextBirthday = Math.ceil((nextBirthday - today) / (1000 * 60 * 60 * 24));
 
-    // รวม HTML ตาราง + ข้อความแสดงวันเกิดถัดไป
-    document.getElementById("resultTable").innerHTML = tableHTML + `
-      <p style="margin-top:20px; font-size:16px;">
+      document.getElementById("resultTable").innerHTML = tableHTML + `
+        <p style="margin-top:20px; font-size:16px;">
+          ${isThai
+            ? `อีก <strong>${diffToNextBirthday}</strong> วัน จนถึงวันเกิดครั้งต่อไปของคุณ`
+            : `<strong>${diffToNextBirthday}</strong> days until your next birthday`}
+        </p>`;
+
+        const explanation = `
+  <div style="margin-top:20px; font-size:14px; text-align:left;">
+    <strong>${isThai ? 'ตัวอย่างการคำนวณ:' : 'Calculation Example:'}</strong><br><br>
+    ${isThai
+      ? `
+      - อายุ = ${today.getFullYear()} − ${birth.getFullYear()} = ${years} ปี ${months} เดือน ${days} วัน<br>
+      - อายุเป็นเดือน = (${years} × 12) + ${months} = ${totalMonths} เดือน ${days} วัน<br>
+      - อายุเป็นสัปดาห์ = ${totalDays} ÷ 7 = ${totalWeeks} สัปดาห์ ${remainingDays} วัน<br>
+      - อายุเป็นวัน = ${totalDays.toLocaleString()} วัน<br>
+      - ชั่วโมง = ${totalDays.toLocaleString()} × 24 = ${totalHours.toLocaleString()} ชั่วโมง<br>
+      - นาที = ${totalHours.toLocaleString()} × 60 = ${totalMinutes.toLocaleString()} นาที<br>
+      - วินาที = ${totalMinutes.toLocaleString()} × 60 = ${totalSeconds.toLocaleString()} วินาที
+      `
+      : `
+      - Age = ${today.getFullYear()} − ${birth.getFullYear()} = ${years} years ${months} months ${days} days<br>
+      - Age in months = (${years} × 12) + ${months} = ${totalMonths} months ${days} days<br>
+      - Age in weeks = ${totalDays} ÷ 7 = ${totalWeeks} weeks ${remainingDays} days<br>
+      - Age in days = ${totalDays.toLocaleString()} days<br>
+      - Hours = ${totalDays.toLocaleString()} × 24 = ${totalHours.toLocaleString()} hours<br>
+      - Minutes = ${totalHours.toLocaleString()} × 60 = ${totalMinutes.toLocaleString()} minutes<br>
+      - Seconds = ${totalMinutes.toLocaleString()} × 60 = ${totalSeconds.toLocaleString()} seconds
+      `}
+  </div>
+`;
+document.getElementById("resultTable").innerHTML = tableHTML + `
+  <p style="margin-top:20px; font-size:16px;">
     ${isThai
       ? `อีก <strong>${diffToNextBirthday}</strong> วัน จนถึงวันเกิดครั้งต่อไปของคุณ`
       : `<strong>${diffToNextBirthday}</strong> days until your next birthday`}
-      </p>`;
+  </p>` + explanation;
 
     }
   </script>
