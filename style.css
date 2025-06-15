@@ -391,7 +391,6 @@ body {
 .sticky-header {
   position: sticky;
   top: 0;
-  background: #e0f7fa; /* ให้สีพื้นเท่ากับ body */
   z-index: 100;
   padding: 15px 0;
 }
