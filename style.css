@@ -70,7 +70,7 @@ body {
   width: 100%;
   scroll-behavior: auto;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: auto;
   resize: horizontal;
   white-space: normal;
   box-sizing: border-box;
