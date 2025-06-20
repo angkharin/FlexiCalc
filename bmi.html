@@ -1,9 +1,10 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>BMI Calculator | ตัวคำนวณดัชนีมวลกาย</title>
+  <title>ตัวคำนวณดัชนีมวลกาย</title>
   <link rel="icon" href="image/logo.png">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <style>
      /* ตั้งค่าโครงสร้างพื้นฐาน */
     body {
@@ -123,8 +124,10 @@
 <script>
   // ตรวจสอบภาษาเครื่อง
   const isThai = (navigator.language || "").toLowerCase().startsWith("th");
+  document.title = isThai ? "ตัวคำนวณดัชนีมวลกาย" : "BMI Calculator";
 
   // เปลี่ยนข้อความตามภาษา
+  document.getElementById("title").textContent = isThai ? "ตัวคำนวณดัชนีมวลกาย" : "BMI Calculator";
   document.getElementById("title").textContent = isThai ? "คำนวณ ดัชนีมวลกาย" : "BMI Calculator";
   document.getElementById("label-weight").textContent = isThai ? "น้ำหนัก (กก.):" : "Weight (kg):";
   document.getElementById("weight").placeholder = isThai ? "กรอกน้ำหนัก" : "Enter weight:";

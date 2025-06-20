@@ -3,7 +3,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="image/logo.png">
-  <title>Age Calculator | ตัวแปลงอายุ</title>
+  <title>ตัวแปลงอายุ</title>
   <style>
     /* สไตล์รวมของ body */
     body {
@@ -97,6 +97,8 @@
   <script>
     // ตรวจสอบภาษาเครื่อง
     const isThai = (navigator.language || '').toLowerCase().startsWith('th');
+    document.title = isThai ? "ตัวแปลงอายุ" : "Age Calculator";
+
     // ตั้งค่าข้อความต่าง ๆ ตามภาษาที่ใช้
     document.getElementById('title').textContent = isThai ? 'คำนวณอายุ' : 'Age Calculator';
     document.getElementById('label-birth').textContent = isThai ? 'เลือกวันเกิดของคุณ:' : 'Select your birthdate:';

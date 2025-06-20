@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="image/logo.png">
 
-  <title>Area Converter | ตัวแปลงพื้นที่</title>
+  <title>ตัวแปลงพื้นที่</title>
   <style>
     /* สไตล์รวมของ body */
     body {
@@ -96,6 +96,8 @@
 
   <script>
     const isThai = (navigator.language || '').toLowerCase().startsWith('th');
+    document.title = isThai ? "ตัวแปลงพื้นที่" : "Area Converter";
+
 
     // ตั้งค่าข้อความตามภาษา
     document.getElementById("title").textContent = isThai ? "ตัวแปลงพื้นที่" : "Area Converter";
@@ -162,26 +164,36 @@ function convertArea() {
   output += `<ul style="text-align:left;">`;
   for (const key in results) {
     const label = isThai ? unitMap[key][0] : unitMap[key][1];
-    output += `<li>${results[key].toLocaleString(undefined, { maximumFractionDigits: 6 })} ${label}</li>`;
+    const value = results[key];
+    const formattedValue = (Math.abs(value) >= 1e12 || Math.abs(value) < 1e-6)
+      ? value.toExponential(8).replace('e+', 'E+').replace('e', 'E')
+      : value.toLocaleString(undefined, { maximumFractionDigits: 6 });
+
+output += `<li>${formattedValue} ${label}</li>`;
   }
   output += `</ul>`;
   document.getElementById("resultBox").innerHTML = output;
 
-  // สร้างตัวอย่างการคำนวณ
+  // ตัวอย่างการคำนวณ
   const exampleLines = [];
   for (const key in toM2) {
-    const label = isThai ? unitMap[key][0] : unitMap[key][1];
-    const fromLabel = isThai ? unitMap[unit][0] : unitMap[unit][1];
+  const label = isThai ? unitMap[key][0] : unitMap[key][1];
+  const fromLabel = isThai ? unitMap[unit][0] : unitMap[unit][1];
 
-    if (key === unit) {
-      // หน่วยเดิม ไม่มีการแปลง
-      const line = `${value.toLocaleString()} ${label} = ${value.toLocaleString()} ${label} <span style="color:#999;">(${isThai ? "หน่วยเดิม ไม่มีการแปลง" : "same unit, no conversion"})</span>`;
-      exampleLines.push(`<li>${line}</li>`);
-    } else {
-      const formula = `${value.toLocaleString()} × ${toM2[unit].toLocaleString(undefined, { maximumFractionDigits: 6 })} ÷ ${toM2[key].toLocaleString(undefined, { maximumFractionDigits: 6 })} = ${results[key].toLocaleString(undefined, { maximumFractionDigits: 6 })} ${label}`;
-      exampleLines.push(`<li>${formula}</li>`);
-    }
+  const resultValue = results[key];
+  const formattedResult = (Math.abs(resultValue) >= 1e12 || Math.abs(resultValue) < 1e-6)
+    ? resultValue.toExponential(8).replace('e+', 'E+').replace('e', 'E')
+    : resultValue.toLocaleString(undefined, { maximumFractionDigits: 6 });
+
+  if (key === unit) {
+    const line = `${value.toLocaleString()} ${label} = ${formattedResult} ${label} <span style="color:#999;">(${isThai ? "หน่วยเดิม ไม่มีการแปลง" : "same unit, no conversion"})</span>`;
+    exampleLines.push(`<li>${line}</li>`);
+  } else {
+    const formula = `${value.toLocaleString()} × ${toM2[unit].toLocaleString(undefined, { maximumFractionDigits: 6 })} ÷ ${toM2[key].toLocaleString(undefined, { maximumFractionDigits: 6 })} = ${formattedResult}`;
+    exampleLines.push(`<li>${formula} ${label}</li>`);
   }
+}
+
 
   // ใส่ตัวอย่างการคำนวณ
   const explanation = `
