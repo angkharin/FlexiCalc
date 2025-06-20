@@ -12,7 +12,7 @@ function updateDisplay() {
   // ✅ เก็บลง localStorage ทุกครั้งที่ display อัปเดต
   localStorage.setItem('calc_history', JSON.stringify(historyLines));
 
-  const displayBox = document.getElementById("display");
+  const displayBox = document.getElementById("display2");
   setTimeout(() => {
     displayBox.scrollTop = 0;
   }, 0);
@@ -431,12 +431,13 @@ function calculate() {
       rounded = roundToFixed(result, 10);
     }
 
-    const formatted = Math.abs(result) >= 1e15
-      ? result.toExponential(8).replace('e+', 'E+').replace('e', 'E')
-      : rounded.toLocaleString(undefined, {
+    const formatted = (Math.abs(result) >= 1e15 || Math.abs(result) < 1e-6)
+        ? result.toExponential(8).replace('e+', 'E+').replace('e', 'E')
+        : rounded.toLocaleString(undefined, {
           maximumFractionDigits: 10,
           useGrouping: true
         });
+
 
     historyLines = [formatted];
     updateDisplay();
@@ -729,7 +730,7 @@ function togglePanel() {
 
 
 function square() {
-  const value = parseFloat(display.innerText);
+  const value = parseFloat(document.getElementById("display2").innerText);
   if (!isNaN(value)) {
     display.innerText = value ** 2;
   } else {
