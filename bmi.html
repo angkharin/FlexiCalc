@@ -97,7 +97,7 @@
   <label id="label-height">ส่วนสูง (ซม.):</label>
   <input type="number" id="height" placeholder="กรอกส่วนสูง">
   <!-- ปุ่มกดคำนวณ -->
-  <button onclick="calculateBMI()" id="calcBtn">คำนวณ</button>
+  <button onclick="calculateBMI()" id="calcBtn">แปลง</button>
   <!-- แสดงผล BMI -->
   <div class="result" id="bmiResult">ดัชนีมวลกาย</div>
   <!-- ตารางเกณฑ์ BMI -->
@@ -133,7 +133,7 @@
   document.getElementById("weight").placeholder = isThai ? "กรอกน้ำหนัก" : "Enter weight:";
   document.getElementById("label-height").textContent = isThai ? "ส่วนสูง (ซม.):" : "Height (cm):";
   document.getElementById("height").placeholder = isThai ? "กรอกส่วนสูง" : "Enter height:";
-  document.getElementById("calcBtn").textContent = isThai ? "คำนวณ" : "Calculate";
+  document.getElementById("calcBtn").textContent = isThai ? "แปลง" : "Convert";
   document.getElementById("th-bmi").textContent = isThai ? "BMI กก/ม²" : "BMI kg/m²";
   document.getElementById("th-category").textContent = isThai ? "อยู่ในเกณฑ์" : "Category";
   document.getElementById("th-risk").textContent = isThai ? "ความเสี่ยงต่อโรค" : "Health Risk";

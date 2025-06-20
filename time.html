@@ -1,0 +1,195 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ตัวแปลงเวลา</title>
+  <style>
+    /* สไตล์รวมของ body */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #e0f2f1;
+      padding: 20px;
+    }
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+    /* หัวข้อ */
+    h1 {
+      text-align: center;
+      color: #00796b;
+    }
+    /* ป้าย label */
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    /* ช่องกรอกเลข*/
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    /* ปุ่มคำนวณ */
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    button:hover {
+      background-color: #004d40;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1 id="title">ตัวแปลงเวลา</h1>
+
+  <label id="label-value">กรอกค่าเวลา:</label>
+  <input type="text" id="timeValue" placeholder="กรอกตัวเลข" />
+
+  <label id="label-unit">เลือกหน่วย:</label>
+  <select id="unitSelect">
+    <option value="ms">มิลลิวินาที</option>
+    <option value="s">วินาที</option>
+    <option value="min">นาที</option>
+    <option value="h">ชั่วโมง</option>
+    <option value="d">วัน</option>
+    <option value="wk">สัปดาห์</option>
+    <option value="mo">เดือน</option>
+    <option value="y">ปี</option>
+  </select>
+
+  <button onclick="convertTime()" id="convertBtn">แปลง</button>
+
+  <div class="result" id="resultBox"></div>
+  <div class="result" id="explanationBox"></div>
+</div>
+
+<script>
+const isThai = (navigator.language || '').toLowerCase().startsWith('th');
+// ตั้งค่าข้อความตามภาษา
+document.title = isThai ? "ตัวแปลงเวลา" : "Time Converter";
+document.getElementById("title").textContent = isThai ? "ตัวแปลงเวลา" : "Time Converter";
+document.getElementById("label-value").textContent = isThai ? "กรอกค่าเวลา:" : "Enter time value:";
+document.getElementById("label-unit").textContent = isThai ? "เลือกหน่วย:" : "Select unit:";
+document.getElementById("convertBtn").textContent = isThai ? "แปลง" : "Convert";
+document.getElementById("timeValue").placeholder = isThai ? "กรอกตัวเลข" : "Enter number";
+
+// หน่วยเวลาเป็นวินาที
+const toSeconds = {
+  ms: 1 / 1000,
+  s: 1,
+  min: 60,
+  h: 3600,
+  d: 86400,
+  wk: 604800,
+  mo: 2629800,  // เฉลี่ยเดือนละ 30.44 วัน
+  y: 31557600   // เฉลี่ยปีละ 365.25 วัน
+};
+
+// แปลงชื่อหน่วย
+const unitMap = {
+  ms: ["มิลลิวินาที", "Milliseconds (ms)"],
+  s: ["วินาที", "Seconds (s)"],
+  min: ["นาที", "Minutes (min)"],
+  h: ["ชั่วโมง", "Hours (h)"],
+  d: ["วัน", "Days (d)"],
+  wk: ["สัปดาห์", "Weeks (wk)"],
+  mo: ["เดือน", "Months (m)"],
+  y: ["ปี", "Years (y)"]
+};
+
+document.querySelectorAll("#unitSelect option").forEach(opt => {
+  opt.textContent = isThai ? unitMap[opt.value][0] : unitMap[opt.value][1];
+});
+// ฟังก์ชันแปลงเวลา
+function convertTime() {
+  const input = document.getElementById("timeValue");
+  const raw = input.value.replace(/,/g, '');
+  const value = parseFloat(raw);
+  const unit = document.getElementById("unitSelect").value;
+  // ตรวจสอบว่ากรอกค่าถูกต้องหรือไม่
+  if (isNaN(value) || value < 0) {
+    alert(isThai ? "กรุณากรอกตัวเลข" : "Please enter a valid number.");
+    return;
+  }
+  // จำกัดไม่ให้เกิน 15 หลัก
+  if (raw.replace('.', '').length > 15) {
+    alert(isThai ? "ไม่สามารถใส่ตัวเลขเกิน 15 หลักได้" : "Can't enter more than 15 digits.");
+    return;
+  }
+
+  const baseSec = value * toSeconds[unit];
+
+  const results = {};
+  for (const key in toSeconds) {
+    results[key] = baseSec / toSeconds[key];
+  }
+
+  // แสดงผลลัพธ์
+  let output = `<h3>${isThai ? "ผลลัพธ์" : "Results"}</h3><ul style="text-align:left;">`;
+  for (const key in results) {
+    const label = isThai ? unitMap[key][0] : unitMap[key][1];
+    const resultVal = results[key];
+    const formatted = (Math.abs(resultVal) >= 1e12 || Math.abs(resultVal) < 1e-6)
+      ? resultVal.toExponential(8).replace('e+', 'E+').replace('e', 'E')
+      : resultVal.toLocaleString(undefined, { maximumFractionDigits: 6 });
+    output += `<li>${formatted} ${label}</li>`;
+  }
+  output += `</ul>`;
+  document.getElementById("resultBox").innerHTML = output;
+
+  // ตัวอย่างการคำนวณ
+  const examples = [];
+  for (const key in toSeconds) {
+    const label = isThai ? unitMap[key][0] : unitMap[key][1];
+    if (key === unit) {
+      examples.push(`<li>${value.toLocaleString()} ${label} = ${value.toLocaleString()} ${label} <span style="color:gray;">(${isThai ? "หน่วยเดิม" : "same unit"})</span></li>`);
+    } else {
+      const resultVal = results[key];
+      const formattedResult = (Math.abs(resultVal) >= 1e12 || Math.abs(resultVal) < 1e-6)
+        ? resultVal.toExponential(8).replace('e+', 'E+').replace('e', 'E')
+        : resultVal.toLocaleString(undefined, { maximumFractionDigits: 6 });
+
+      const formula = `${value.toLocaleString()} × ${toSeconds[unit].toLocaleString()} ÷ ${toSeconds[key].toLocaleString()} = ${formattedResult} ${label}`;
+      examples.push(`<li>${formula}</li>`);
+    }
+  }
+
+  document.getElementById("explanationBox").innerHTML = `
+    <strong style="display:block; margin-top:20px;">${isThai ? 'ตัวอย่างการคำนวณ:' : 'Calculation Examples:'}</strong>
+    <ul style="font-size:14px;">${examples.join('')}</ul>
+  `;
+}
+
+document.getElementById("timeValue").addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    convertTime();
+  }
+});
+</script>
+</body>
+</html>

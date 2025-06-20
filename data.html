@@ -5,12 +5,13 @@
   <title>ตัวแปลงข้อมูล</title>
   <link rel="icon" href="image/logo.png" />
   <style>
+    /* สไตล์รวมของ body */
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #fde0dc;
       padding: 20px;
     }
-
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
     .container {
       max-width: 600px;
       margin: auto;
@@ -19,18 +20,18 @@
       border-radius: 12px;
       box-shadow: 0 5px 10px rgba(0,0,0,0.1);
     }
-
+    /* หัวข้อ */
     h1 {
       text-align: center;
       color: #FF0000;
     }
-
+    /* ป้าย label */
     label {
       display: block;
       margin-top: 15px;
       font-weight: bold;
     }
-
+    /* ช่องกรอกเลข*/
     input, select {
       width: 100%;
       padding: 10px;
@@ -38,7 +39,7 @@
       margin-top: 5px;
       box-sizing: border-box;
     }
-
+    /* ปุ่มคำนวณ */
     button {
       margin-top: 20px;
       width: 100%;
@@ -92,13 +93,13 @@
   <script>
     const isThai = (navigator.language || '').toLowerCase().startsWith('th');
     document.title = isThai ? "ตัวแปลงข้อมูล" : "Data Converter";
-
+    // ตั้งค่าข้อความตามภาษา
     document.getElementById("title").textContent = isThai ? "ตัวแปลงข้อมูล" : "Data Converter";
     document.getElementById("label-value").textContent = isThai ? "กรอกค่าข้อมูล:" : "Enter data value:";
     document.getElementById("label-unit").textContent = isThai ? "เลือกหน่วย:" : "Select unit:";
     document.getElementById("convertBtn").textContent = isThai ? "แปลง" : "Convert";
     document.getElementById("dataValue").placeholder = isThai ? "กรอกตัวเลข" : "Enter number";
-
+    // แปลงชื่อหน่วยตามภาษา
     const unitMap = {
       bit: ["บิต", "Bits (bit)"],
       B: ["ไบต์", "Bytes (B)"],
@@ -115,18 +116,18 @@
     document.querySelectorAll("#unitSelect option").forEach(opt => {
       opt.textContent = isThai ? unitMap[opt.value][0] : unitMap[opt.value][1];
     });
-
+    // ฟังก์ชันแปลงข้อมูล
     function convertData() {
       const input = document.getElementById("dataValue");
       const rawValue = input.value.replace(/,/g, '');
       const value = parseFloat(rawValue);
       const unit = document.getElementById("unitSelect").value;
-
+      // ตรวจสอบว่ากรอกค่าถูกต้องหรือไม่
       if (isNaN(value) || value < 0) {
         alert(isThai ? "กรุณากรอกตัวเลข" : "Please enter a valid number.");
         return;
       }
-
+      // จำกัดไม่ให้เกิน 15 หลัก
       if (rawValue.replace('.', '').length > 15) {
         alert(isThai ? "ไม่สามารถใส่ตัวเลขเกิน 15 หลักได้" : "Can't enter more than 15 digits.");
         return;

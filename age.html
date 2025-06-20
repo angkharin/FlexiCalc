@@ -88,7 +88,7 @@
     <label for="birthdate" id="label-birth">เลือกวันเกิดของคุณ:</label>
     <input type="date" id="birthdate">
     <!-- ปุ่มคำนวณ -->
-    <button id="calcBtn" onclick="calculateAge()">คำนวณ</button>
+    <button id="calcBtn" onclick="calculateAge()">แปลง</button>
     <!-- ผลลัพธ์ -->
     <div class="result" id="result"></div>
     <div class="result" id="resultTable"></div>
@@ -102,7 +102,7 @@
     // ตั้งค่าข้อความต่าง ๆ ตามภาษาที่ใช้
     document.getElementById('title').textContent = isThai ? 'คำนวณอายุ' : 'Age Calculator';
     document.getElementById('label-birth').textContent = isThai ? 'เลือกวันเกิดของคุณ:' : 'Select your birthdate:';
-    document.getElementById('calcBtn').textContent = isThai ? 'คำนวณ' : 'Calculate';
+    document.getElementById('calcBtn').textContent = isThai ? 'แปลง' : 'Convert';
     // รับค่าที่ผู้ใช้กรอก
      function calculateAge() {
       const input = document.getElementById("birthdate").value;
