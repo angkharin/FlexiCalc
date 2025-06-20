@@ -203,7 +203,17 @@ output += `<li>${formattedValue} ${label}</li>`;
     </ul>
   `;
 
-  document.getElementById("explanationBox").innerHTML = explanation;
+  const note = `
+  <div style="margin-top: 20px; font-size: 13px; color: gray;">
+    ${isThai 
+      ? "ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษหรือตัดเศษ" 
+      : "This calculation is based on a general standard formula, and there may be slight deviations due to rounding or truncation."
+    }
+  </div>
+`;
+
+document.getElementById("explanationBox").innerHTML = explanation + note;
+
 }
 // ✅ พิมพ์วันเกิดแล้วกด Enter เพื่อคำนวณ
     document.getElementById("areaValue").addEventListener("keydown", function (e) {

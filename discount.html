@@ -1,0 +1,156 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ส่วนลดสินค้า</title>
+  <link rel="icon" href="image/logo.png" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #d1c4e9;
+      padding: 20px;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #512da8;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background-color: #512da8;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    button:hover {
+      background-color: #9575cd;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      background: #9575cd;
+      padding: 15px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1 id="title">คำนวณส่วนลด</h1>
+
+  <label id="label-price">ราคาสินค้า:</label>
+  <input type="text" id="price" placeholder="กรอกราคา">
+
+  <label id="label-discount">ส่วนลด (%):</label>
+  <input type="text" id="discount" placeholder="กรอกส่วนลด">
+
+  <button onclick="calculateDiscount()" id="calcBtn">คำนวณ</button>
+
+  <div class="result" id="resultBox"></div>
+</div>
+
+<script>
+  const isThai = (navigator.language || '').toLowerCase().startsWith('th');
+  document.title = isThai ? "ส่วนลดสินค้า" : "Discount Calculator";
+  document.getElementById("title").textContent = isThai ? "คำนวณส่วนลด" : "Discount Calculator";
+  document.getElementById("label-price").textContent = isThai ? "ราคาสินค้า:" : "Original Price:";
+  document.getElementById("price").placeholder = isThai ? "กรอกราคา" : "Enter price";
+  document.getElementById("label-discount").textContent = isThai ? "ส่วนลด (%):" : "Discount (%):";
+  document.getElementById("discount").placeholder = isThai ? "กรอกส่วนลด" : "Enter discount";
+  document.getElementById("calcBtn").textContent = isThai ? "คำนวณ" : "Calculate";
+
+  // ใส่ comma ระหว่างพิมพ์
+  ["price", "discount"].forEach(id => {
+    document.getElementById(id).addEventListener("input", function () {
+      const val = this.value.replace(/,/g, '');
+      if (!isNaN(val) && val !== '') {
+        this.value = Number(val).toLocaleString();
+      }
+    });
+  });
+
+  // คำนวณส่วนลด
+  function calculateDiscount() {
+    const rawPrice = document.getElementById("price").value.replace(/,/g, '');
+    const rawDiscount = document.getElementById("discount").value.replace(/,/g, '');
+
+    if (rawPrice.length > 15 || rawDiscount.length > 15) {
+      alert(isThai ? "ไม่สามารถใส่ตัวเลขเกิน 15 หลักได้" : "Can't enter more than 15 digits.");
+      return;
+    }
+
+    const price = parseFloat(rawPrice);
+    const discount = parseFloat(rawDiscount);
+
+    if (isNaN(price) || isNaN(discount) || price <= 0 || discount < 0) {
+      alert(isThai ? "กรุณากรอกตัวเลข" : "Please enter numbers.");
+      return;
+    }
+
+    const discountAmount = price * discount / 100;
+    const finalPrice = price - discountAmount;
+
+    const resultText = `
+      <strong>${isThai ? "ผลลัพธ์" : "Result"}</strong><br>
+      ${isThai ? "ราคาสินค้า" : "Original price"}: ${price.toLocaleString()}<br>
+      ${isThai ? "ส่วนลด" : "Discount"} ${discount.toLocaleString()}% = ${discountAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })}<br>
+      ${isThai ? "ราคาสุทธิ" : "Final price"}: <strong>${finalPrice.toLocaleString(undefined, { maximumFractionDigits: 2 })}</strong>
+      <br><br>
+      <strong>${isThai ? "ตัวอย่างการคำนวณ:" : "Calculation Example:"}</strong><br>
+      ${price.toLocaleString()} × ${discount}% ÷ 100 = ${discountAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })}<br>
+      ${price.toLocaleString()} − ${discountAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })} = ${finalPrice.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+    `;
+
+    const disclaimer = `
+    <div style="margin-top: 20px; font-size: 13px; color: black;">
+    ${isThai 
+      ? "โปรแกรมคำนวณนี้ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาเป็นหลักฐานอ้างอิงได้"
+      : "This calculator is for informational purposes only and cannot be used as legal or official proof."
+    }
+  </div>
+`;
+// สมมุติว่าแสดงไว้ใต้ explanationBox:
+document.getElementById("resultBox").innerHTML = resultText + disclaimer; 
+  }
+
+  // Enter → ไปช่องถัดไปหรือคำนวณ
+  document.getElementById("price").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      document.getElementById("discount").focus();
+    }
+  });
+  document.getElementById("discount").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      calculateDiscount();
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -180,9 +180,15 @@ function convertTime() {
   }
 
   document.getElementById("explanationBox").innerHTML = `
-    <strong style="display:block; margin-top:20px;">${isThai ? 'ตัวอย่างการคำนวณ:' : 'Calculation Examples:'}</strong>
-    <ul style="font-size:14px;">${examples.join('')}</ul>
-  `;
+  <strong style="display:block; margin-top:20px;">${isThai ? 'ตัวอย่างการคำนวณ:' : 'Calculation Examples:'}</strong>
+  <ul style="font-size:14px;">${examples.join('')}</ul>
+  <div style="margin-top: 20px; font-size: 13px; color: gray;">
+    ${isThai 
+      ? "ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษหรือตัดเศษ" 
+      : "This calculation is based on a general standard formula, and there may be slight deviations due to rounding or truncation."
+    }
+  </div>
+`;
 }
 
 document.getElementById("timeValue").addEventListener("keydown", function (e) {
