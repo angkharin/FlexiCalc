@@ -212,6 +212,20 @@ output += `<li>${formattedValue} ${label}</li>`;
     convertArea();
   }
 });
+// ฟังก์ชันใส่ comma ขณะพิมพ์
+document.getElementById("areaValue").addEventListener("input", function () {
+      let raw = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+      if (!raw) {
+        this.value = '';
+        return;
+      }
+      const parts = raw.split(".");
+      let intPart = parts[0];
+      const decPart = parts[1] || '';
+      intPart = intPart.replace(/^0+(?!$)/, '');
+      const formatted = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      this.value = decPart ? `${formatted}.${decPart}` : formatted;
+    });
   </script>
 </body>
 </html>
