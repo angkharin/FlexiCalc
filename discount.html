@@ -74,7 +74,7 @@
   <label id="label-discount">ส่วนลด (%):</label>
   <input type="text" id="discount" placeholder="กรอกส่วนลด">
 
-  <button onclick="calculateDiscount()" id="calcBtn">คำนวณ</button>
+  <button onclick="calculateDiscount()" id="calcBtn">แปลง</button>
 
   <div class="result" id="resultBox"></div>
 </div>
@@ -87,7 +87,7 @@
   document.getElementById("price").placeholder = isThai ? "กรอกราคา" : "Enter price";
   document.getElementById("label-discount").textContent = isThai ? "ส่วนลด (%):" : "Discount (%):";
   document.getElementById("discount").placeholder = isThai ? "กรอกส่วนลด" : "Enter discount";
-  document.getElementById("calcBtn").textContent = isThai ? "คำนวณ" : "Calculate";
+  document.getElementById("calcBtn").textContent = isThai ? "แปลง" : "Convert";
 
   // ใส่ comma ระหว่างพิมพ์
   ["price", "discount"].forEach(id => {
