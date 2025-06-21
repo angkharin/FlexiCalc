@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ตัวแปลงเลขฐาน</title>
+  <link rel="icon" href="image/logo.png" />
+  <style>
+    /* สไตล์รวมของ body */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4c3;
+      padding: 20px;
+    }
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    /* หัวข้อ */
+    h1 {
+      text-align: center;
+      color: #9e9d24;
+    }
+    /* ป้าย label */
+    label {
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+    }
+    /* ช่องกรอกเลข*/
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    /* ปุ่มคำนวณ */
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      background-color: #9e9d24;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #d4e157;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 16px;
+      text-align: left;
+      color: #333;
+    }
+    .note {
+      margin-top: 25px;
+      font-size: 13px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="title">ตัวแปลงเลขฐาน</h1>
+
+    <label id="label-value">กรอกตัวเลข:</label>
+    <input type="text" id="numValue" placeholder="กรอกตัวเลข">
+
+    <label id="label-base">เลือกฐาน:</label>
+    <select id="baseSelect">
+      <option value="2">ฐานสอง</option>
+      <option value="8">ฐานแปด</option>
+      <option value="10">ฐานสิบ</option>
+      <option value="16">ฐานสิบหก</option>
+    </select>
+
+    <button onclick="convertBase()" id="convertBtn">แปลง</button>
+    <!-- แสดงผลลัพธ์ -->
+    <div class="result" id="resultBox"></div>
+    <div class="result" id="explanationBox"></div>
+    <div class="note" id="noteBox"></div>
+  </div>
+
+  <script>
+    const isThai = (navigator.language || '').startsWith("th");
+    // ตั้งค่าข้อความตามภาษา
+    document.title = isThai ? "ตัวแปลงเลขฐาน" : "Numeral Base Converter";
+    document.getElementById("title").textContent = isThai ? "ตัวแปลงเลขฐาน" : "Numeral Base Converter";
+    document.getElementById("numValue").placeholder = isThai ? "กรอกตัวเลข:" : "Enter a number:";
+    document.getElementById("label-base").textContent = isThai ? "เลือกฐาน:" : "Select base:";
+    document.getElementById("convertBtn").textContent = isThai ? "แปลง" : "Convert";
+    // แปลงชื่อหน่วยตามภาษา
+    const baseLabel = {
+  2: isThai ? "ฐานสอง" : "Binary",
+  8: isThai ? "ฐานแปด" : "Octal",
+  10: isThai ? "ฐานสิบ" : "Decimal",
+  16: isThai ? "ฐานสิบหก" : "Hexadecimal"
+};
+
+const options = document.querySelectorAll("#baseSelect option");
+options.forEach(opt => {
+  const base = opt.value;
+  opt.textContent = baseLabel[base];
+});
+// ฟังก์ชันแปลงเลขฐาน
+    function convertBase() {
+      const input = document.getElementById("numValue").value.trim();
+      const fromBase = parseInt(document.getElementById("baseSelect").value);
+
+      if (input.length > 15) {
+        alert(isThai ? "ไม่สามารถแปลงตัวเลขเกิน 15 หลักได้" : "Cannot convert numbers exceeding 15 digits.");
+        return;
+      }
+
+      // ตรวจสอบเลขตามฐานที่เลือก
+      const validPattern = {
+        2: /^[01]+$/,
+        8: /^[0-7]+$/,
+        10: /^\d+$/,
+        16: /^[0-9a-fA-F]+$/
+      };
+
+      if (!validPattern[fromBase].test(input)) {
+        alert(isThai ? "รูปแบบตัวเลขไม่ถูกต้องสำหรับฐานที่เลือก" : "Invalid number for selected base.");
+        return;
+      }
+
+      // แปลงเป็นเลขฐาน 10 ก่อน
+      const decimalValue = parseInt(input, fromBase);
+
+      const conversions = {
+        2: decimalValue.toString(2),
+        8: decimalValue.toString(8),
+        10: decimalValue.toString(10),
+        16: decimalValue.toString(16).toUpperCase()
+      };
+
+      let result = `<h3>${isThai ? "ผลลัพธ์" : "Results"}</h3><ul>`;
+      for (const base in conversions) {
+        result += `<li>${baseLabel[base]}: <strong>${conversions[base]}</strong></li>`;
+      }
+      result += '</ul>';
+      document.getElementById("resultBox").innerHTML = result;
+      
+      // ตัวอย่างการคำนวณ
+      let explanation = `<strong>${isThai ? 'ตัวอย่างการคำนวณ:' : 'Example:'}</strong><ul>`;
+      explanation += `<li>${isThai ? 'นำเลข' : 'Convert'} <strong>${input}</strong> ${isThai ? 'จาก' : 'from'} ${baseLabel[fromBase]} ${isThai ? 'ไปยังเลขฐานอื่นโดยใช้ parseInt และ toString' : 'to other bases using parseInt and toString'}.</li>`;
+      explanation += `<li>${isThai ? 'เลขฐานสิบ:' : 'Decimal value:'} ${decimalValue.toLocaleString()}</li>`;
+      explanation += `</ul>`;
+      ///แสดงตัวอย่างการคำนวณ
+      document.getElementById("explanationBox").innerHTML = explanation;
+      // ตารางเลขฐาน 0-15
+      let table = `
+      <strong style="display:block; margin-top:20px;">${isThai ? "ตารางเลขฐาน 0 ถึง 15" : "Base Conversion Table (0 to 15)"}</strong>
+      <table border="1" cellpadding="6" cellspacing="0" style="margin-top:10px; border-collapse: collapse; width: 100%; text-align: center; font-size:14px;">
+      <thead style="background: #f0f0f0;">
+      <tr>
+        <th>${isThai ? "เลขฐานสิบ" : "Decimal"}</th>
+        <th>${isThai ? "ฐานสอง" : "Binary"}</th>
+        <th>${isThai ? "ฐานแปด" : "Octal"}</th>
+        <th>${isThai ? "ฐานสิบหก" : "Hex"}</th>
+      </tr>
+      </thead>
+      <tbody>
+    `;
+
+    for (let i = 0; i <= 15; i++) {
+    table += `
+    <tr>
+      <td>${i}</td>
+      <td>${i.toString(2)}</td>
+      <td>${i.toString(8)}</td>
+      <td>${i.toString(16).toUpperCase()}</td>
+    </tr>
+  `;
+}
+    table += `</tbody></table>`;
+
+    // ใส่ต่อท้ายคำอธิบาย
+    document.getElementById("explanationBox").innerHTML = table + explanation;
+      document.getElementById("noteBox").innerHTML =
+        isThai
+          ? "ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษหรือตัดเศษ ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานอ้างอิงทางกฎหมายหรือทางการเงินได้"
+          : "This result is based on standard general formulas and may contain slight rounding or truncation errors. It is intended for preliminary informational purposes only and should not be used as legal or financial evidence.";
+    }
+
+    // ✅ Enter เพื่อคำนวณ
+    document.getElementById("numValue").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        convertBase();
+      }
+    });
+  </script>
+</body>
+</html>
