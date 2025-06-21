@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ตัวแปลงความเร็ว</title>
+  <link rel="icon" href="image/logo.png" />
+  <style>
+    /* สไตล์รวมของ body */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #ffccbc;
+      padding: 20px;
+    }
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    /* หัวข้อ */
+    h1 {
+      text-align: center;
+      color: #e64a19;
+    }
+    /* ป้าย label */
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+    /* ช่องกรอกเลข*/
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    /* ปุ่มคำนวณ */
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      background-color: #e64a19;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #ff7043;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 16px;
+      text-align: left;
+    }
+    .note {
+      margin-top: 30px;
+      font-size: 13px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="title">ตัวแปลงความเร็ว</h1>
+
+    <label id="label-value">กรอกค่าความเร็ว:</label>
+    <input type="text" id="speedValue" placeholder="กรอกตัวเลข">
+
+    <label id="label-unit">เลือกหน่วย:</label>
+    <select id="unitSelect">
+      <option value="mps">เมตรต่อวินาที</option>
+      <option value="mph">เมตรต่อชั่วโมง</option>
+      <option value="kmps">กิโลเมตรต่อวินาที</option>
+      <option value="kmph">กิโลเมตรต่อชั่วโมง</option>
+      <option value="inps">นิ้วต่อวินาที</option>
+      <option value="inph">นิ้วต่อชั่วโมง</option>
+      <option value="ftps">ฟุตต่อวินาที</option>
+      <option value="ftph">ฟุตต่อชั่วโมง</option>
+      <option value="mips">ไมล์ต่อวินาที</option>
+      <option value="miph">ไมล์ต่อชั่วโมง</option>
+      <option value="kn">น็อต</option>
+    </select>
+
+    <button onclick="convertSpeed()" id="convertBtn">แปลง</button>
+    <!-- แสดงผลลัพธ์ -->
+    <div class="result" id="resultBox"></div>
+    <div class="result" id="explanationBox"></div>
+    <div class="note" id="noteBox"></div>
+  </div>
+
+  <script>
+    const isThai = (navigator.language || "").startsWith("th");
+    // ตั้งค่าข้อความตามภาษา
+    document.title = isThai ? "ตัวแปลงความเร็ว" : "Speed Converter";
+    document.getElementById("title").textContent = document.title;
+    document.getElementById("label-value").textContent = isThai ? "กรอกค่าความเร็ว:" : "Enter speed value:";
+    document.getElementById("label-unit").textContent = isThai ? "เลือกหน่วย:" : "Select unit:";
+    document.getElementById("convertBtn").textContent = isThai ? "แปลง" : "Convert";
+    document.getElementById("speedValue").placeholder = isThai ? "กรอกตัวเลข" : "Enter number";
+    // แปลงชื่อหน่วยตามภาษา
+    const unitMap = {
+      mps: ["เมตรต่อวินาที", "Metres per second (m/s)"],
+      mph: ["เมตรต่อชั่วโมง", "Metres per hour (m/h)"],
+      kmps: ["กิโลเมตรต่อวินาที", "Kilometres per second (km/s)"],
+      kmph: ["กิโลเมตรต่อชั่วโมง", "Kilometres per hour (km/h)"],
+      inps: ["นิ้วต่อวินาที", "Inches per second (in/s)"],
+      inph: ["นิ้วต่อชั่วโมง", "Inches per hour (in/h)"],
+      ftps: ["ฟุตต่อวินาที", "Feet per second (ft/s)"],
+      ftph: ["ฟุตต่อชั่วโมง", "Feet per hour (ft/h)"],
+      mips: ["ไมล์ต่อวินาที", "Miles per second (mi/s)"],
+      miph: ["ไมล์ต่อชั่วโมง", "Miles per hour (mi/h)"],
+      kn: ["น็อต", "Knots (kn)"]
+    };
+
+    document.querySelectorAll("#unitSelect option").forEach(opt => {
+      opt.textContent = isThai ? unitMap[opt.value][0] : unitMap[opt.value][1];
+    });
+    // ค่าการแปลงตามหน่วย
+    const toMps = {
+      mps: 1,
+      mph: 1 / 3600,
+      kmps: 1000,
+      kmph: 1000 / 3600,
+      inps: 0.0254,
+      inph: 0.0254 / 3600,
+      ftps: 0.3048,
+      ftph: 0.3048 / 3600,
+      mips: 1609.344,
+      miph: 1609.344 / 3600,
+      kn: 1852 / 3600
+    };
+// ฟังก์ชันแปลงความเร็ว
+    function convertSpeed() {
+      const inputEl = document.getElementById("speedValue");
+      const raw = inputEl.value.replace(/,/g, '').trim();
+      const value = parseFloat(raw);
+      const unit = document.getElementById("unitSelect").value;
+      // ตรวจสอบว่ากรอกค่าถูกต้องหรือไม่
+      if (isNaN(value) || value < 0) {
+        alert(isThai ? "กรุณากรอกตัวเลข" : "Please enter a valid number.");
+        return;
+      }
+      // จำกัดไม่ให้เกิน 15 หลัก
+      if (raw.replace('.', '').length > 15) {
+        alert(isThai ? "ไม่สามารถแปลงตัวเลขเกิน 15 หลักได้" : "Cannot convert numbers exceeding 15 digits.");
+        return;
+      }
+
+      const base = value * toMps[unit];
+      const results = {};
+      for (const key in toMps) {
+        results[key] = base / toMps[key];
+      }
+
+      let output = `<h3>${isThai ? "ผลลัพธ์" : "Results"}</h3><ul style="text-align:left;">`;
+      for (const key in results) {
+        const label = isThai ? unitMap[key][0] : unitMap[key][1];
+        const val = results[key];
+        const formatted = (Math.abs(val) >= 1e12 || Math.abs(val) < 1e-6)
+          ? val.toExponential(8).replace('e+', 'E+').replace('e', 'E')
+          : val.toLocaleString(undefined, { maximumFractionDigits: 6 });
+        output += `<li>${formatted} ${label}</li>`;
+      }
+      output += `</ul>`;
+      document.getElementById("resultBox").innerHTML = output;
+
+      const examples = [];
+      for (const key in toMps) {
+        const label = isThai ? unitMap[key][0] : unitMap[key][1];
+        const resultValue = results[key];
+        const formatted = (Math.abs(resultValue) >= 1e12 || Math.abs(resultValue) < 1e-6)
+          ? resultValue.toExponential(8).replace('e+', 'E+').replace('e', 'E')
+          : resultValue.toLocaleString(undefined, { maximumFractionDigits: 6 });
+
+        if (key === unit) {
+          examples.push(`<li>${value.toLocaleString()} ${label} = ${formatted} ${label} <span style="color:#999;">(${isThai ? "หน่วยเดิม" : "same unit"})</span></li>`);
+        } else {
+          examples.push(`<li>${value.toLocaleString()} × ${toMps[unit].toLocaleString()} ÷ ${toMps[key].toLocaleString()} = ${formatted} ${label}</li>`);
+        }
+      }
+      //แสดงตัวอย่างการคำนวณ
+      document.getElementById("explanationBox").innerHTML = `
+        <strong style="display:block; margin-top:20px;">${isThai ? "ตัวอย่างการคำนวณ:" : "Example Calculations:"}</strong>
+        <ul style="font-size:14px;">${examples.join("")}</ul>
+      `;
+      // หมายเหตุ
+      document.getElementById("noteBox").innerHTML = isThai
+        ? "ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษหรือตัดเศษ ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานอ้างอิงทางกฎหมายหรือทางการเงินได้"
+        : "This result is based on standard general formulas and may contain slight rounding or truncation errors. It is intended for preliminary informational purposes only and should not be used as legal or financial evidence.";
+    }
+    // ✅ พิมพ์วันเกิดแล้วกด Enter เพื่อคำนวณ
+    document.getElementById("speedValue").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        convertSpeed();
+      }
+    });
+    // ฟังก์ชันใส่ comma ขณะพิมพ์
+    document.getElementById("speedValue").addEventListener("input", function () {
+      let raw = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+      if (!raw) {
+        this.value = '';
+        return;
+      }
+      const parts = raw.split(".");
+      let intPart = parts[0].replace(/^0+(?!$)/, '');
+      const decPart = parts[1] || '';
+      const formatted = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      this.value = decPart ? `${formatted}.${decPart}` : formatted;
+    });
+  </script>
+</body>
+</html>
