@@ -105,7 +105,7 @@
     const rawDiscount = document.getElementById("discount").value.replace(/,/g, '');
 
     if (rawPrice.length > 15 || rawDiscount.length > 15) {
-      alert(isThai ? "ไม่สามารถใส่ตัวเลขเกิน 15 หลักได้" : "Can't enter more than 15 digits.");
+      alert(isThai ? "ไม่สามารถแปลงตัวเลขเกิน 15 หลักได้" : "Cannot convert numbers exceeding 15 digits.");
       return;
     }
 

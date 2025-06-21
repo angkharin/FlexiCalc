@@ -176,7 +176,7 @@
 
       // จำกัดไม่เกิน 15 หลัก
       if (weightInput.value.replace(/\D/g, "").length > 15 || heightInput.value.replace(/\D/g, "").length > 15) {
-        alert(isThai ? "ไม่สามารถใส่ตัวเลขเกิน 15 หลักได้" : "Can't enter more than 15 digits.");
+        alert(isThai ? "ไม่สามารถแปลงตัวเลขเกิน 15 หลักได้" : "Cannot convert numbers exceeding 15 digits.");
         return;
       }
 
