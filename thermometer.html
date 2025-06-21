@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ตัวแปลงอุณหภูมิ</title>
+  <link rel="icon" href="image/logo.png" />
+  <style>
+    /* สไตล์รวมของ body */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fce4ec;
+      padding: 20px;
+    }
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    /* หัวข้อ */
+    h1 {
+      text-align: center;
+      color: #e91e63;
+    }
+    /* ป้าย label */
+    label {
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+    }
+    /* ช่องกรอกเลข*/
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    /* ปุ่มคำนวณ */
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      background-color: #e91e63;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #c2185b;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 16px;
+      text-align: left;
+    }
+    .note {
+      margin-top: 30px;
+      font-size: 13px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="title">ตัวแปลงอุณหภูมิ</h1>
+
+    <label id="label-value">กรอกอุณหภูมิ:</label>
+    <input type="text" id="tempValue" placeholder="กรอกตัวเลข">
+
+    <label id="label-unit">เลือกหน่วย:</label>
+    <select id="unitSelect">
+      <option value="C">เซลเซียส</option>
+      <option value="F">ฟาเรนไฮต์</option>
+      <option value="K">เคลวิน</option>
+    </select>
+
+    <button onclick="convertTemp()" id="convertBtn">แปลง</button>
+    <!-- แสดงผลลัพธ์ -->
+    <div class="result" id="resultBox"></div>
+    <div class="result" id="explanationBox"></div>
+    <div class="note" id="noteBox"></div>
+  </div>
+
+  <script>
+    const isThai = (navigator.language || '').toLowerCase().startsWith("th");
+    // ตั้งค่าข้อความตามภาษา
+    document.title = isThai ? "ตัวแปลงอุณหภูมิ" : "Temperature Converter";
+    document.getElementById("title").textContent = document.title;
+    document.getElementById("label-value").textContent = isThai ? "กรอกอุณหภูมิ:" : "Enter temperature:";
+    document.getElementById("label-unit").textContent = isThai ? "เลือกหน่วย:" : "Select unit:";
+    document.getElementById("convertBtn").textContent = isThai ? "แปลง" : "Convert";
+    document.getElementById("tempValue").placeholder = isThai ? "กรอกตัวเลข" : "Enter number";
+    // แปลงชื่อหน่วยตามภาษา
+    const unitMap = {
+      C: [ "เซลเซียส", "Celsius (°C)" ],
+      F: [ "ฟาเรนไฮต์", "Fahrenheit (°F)" ],
+      K: [ "เคลวิน", "Kelvin (K)" ]
+    };
+
+    document.querySelectorAll("#unitSelect option").forEach(opt => {
+      opt.textContent = isThai ? unitMap[opt.value][0] : unitMap[opt.value][1];
+    });
+    // ฟังก์ชันแปลงอุณหภูมิ
+    function convertTemp() {
+      const input = document.getElementById("tempValue");
+      const raw = input.value.replace(/,/g, '').trim();
+      const value = parseFloat(raw);
+      const unit = document.getElementById("unitSelect").value;
+      // ตรวจสอบว่ากรอกค่าถูกต้องหรือไม่
+      if (isNaN(value)) {
+        alert(isThai ? "กรุณากรอกตัวเลข" : "Please enter a valid number.");
+        return;
+      }
+      // จำกัดไม่ให้เกิน 15 หลัก
+      if (raw.replace('.', '').length > 15) {
+        alert(isThai ? "ไม่สามารถแปลงตัวเลขเกิน 15 หลักได้" : "Cannot convert numbers exceeding 15 digits.");
+        return;
+      }
+      // ค่าการแปลงตามหน่วย
+      let C, F, K;
+      if (unit === "C") {
+        C = value;
+        F = C * 9/5 + 32;
+        K = C + 273.15;
+      } else if (unit === "F") {
+        F = value;
+        C = (F - 32) * 5/9;
+        K = C + 273.15;
+      } else {
+        K = value;
+        C = K - 273.15;
+        F = C * 9/5 + 32;
+      }
+
+      const results = { C, F, K };
+
+      // ✅ แสดงผลลัพธ์
+      let output = `<h3>${isThai ? "ผลลัพธ์" : "Results"}</h3><ul>`;
+      for (const key in results) {
+        const label = isThai ? unitMap[key][0] : unitMap[key][1];
+        const val = results[key];
+        const formatted = val.toLocaleString(undefined, { maximumFractionDigits: 6 });
+        output += `<li>${formatted} ${label}</li>`;
+      }
+      output += "</ul>";
+      document.getElementById("resultBox").innerHTML = output;
+
+      // ✅ ตัวอย่างการคำนวณ
+      const examples = [];
+      const inputLabel = isThai ? unitMap[unit][0] : unitMap[unit][1];
+      const inputVal = value.toLocaleString(undefined, { maximumFractionDigits: 6 });
+
+      examples.push(`<li>${inputVal} ${inputLabel} = ${inputVal} ${inputLabel} <span style="color:gray;">(${isThai ? "หน่วยเดิม" : "same unit"})</span></li>`);
+
+      if (unit === "C") {
+        examples.push(`<li>${value} × 9 ÷ 5 + 32 = ${F.toFixed(2)} ${isThai ? unitMap.F[0] : unitMap.F[1]}</li>`);
+        examples.push(`<li>${value} + 273.15 = ${K.toFixed(2)} ${isThai ? unitMap.K[0] : unitMap.K[1]}</li>`);
+      } else if (unit === "F") {
+        examples.push(`<li>(${value} − 32) × 5 ÷ 9 = ${C.toFixed(2)} ${isThai ? unitMap.C[0] : unitMap.C[1]}</li>`);
+        examples.push(`<li>${C.toFixed(2)} + 273.15 = ${K.toFixed(2)} ${isThai ? unitMap.K[0] : unitMap.K[1]}</li>`);
+      } else if (unit === "K") {
+        examples.push(`<li>${value} − 273.15 = ${C.toFixed(2)} ${isThai ? unitMap.C[0] : unitMap.C[1]}</li>`);
+        examples.push(`<li>${C.toFixed(2)} × 9 ÷ 5 + 32 = ${F.toFixed(2)} ${isThai ? unitMap.F[0] : unitMap.F[1]}</li>`);
+      }
+      //แสดงตัวอย่างการคำนวณ
+      document.getElementById("explanationBox").innerHTML = `
+        <strong>${isThai ? "ตัวอย่างการคำนวณ:" : "Example Calculations:"}</strong>
+        <ul>${examples.join("")}</ul>
+      `;
+
+      // ✅ หมายเหตุ
+      document.getElementById("noteBox").innerHTML = isThai
+        ? "ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษหรือตัดเศษ ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานอ้างอิงทางกฎหมายหรือทางการเงินได้"
+        : "This result is based on standard general formulas and may contain slight rounding or truncation errors. It is intended for preliminary informational purposes only and should not be used as legal or financial evidence.";
+    }
+
+    // Enter เพื่อคำนวณ
+    document.getElementById("tempValue").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        convertTemp();
+      }
+    });
+
+    // คอมมา
+    document.getElementById("tempValue").addEventListener("input", function () {
+      let raw = this.value.replace(/,/g, '').replace(/[^\d.-]/g, '');
+      if (!raw) {
+        this.value = '';
+        return;
+      }
+      const parts = raw.split(".");
+      let intPart = parts[0].replace(/^(-?)0+(?!$)/, '$1');
+      const decPart = parts[1] || '';
+      const formatted = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      this.value = decPart ? `${formatted}.${decPart}` : formatted;
+    });
+  </script>
+</body>
+</html>
