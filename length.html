@@ -5,11 +5,13 @@
   <title>ตัวแปลงความยาว</title>
   <link rel="icon" href="image/logo.png">
   <style>
+    /* สไตล์รวมของ body */
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #FFCCFF;
       padding: 20px;
     }
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
     .container {
       max-width: 600px;
       margin: auto;
@@ -18,15 +20,18 @@
       border-radius: 12px;
       box-shadow: 0 5px 10px rgba(0,0,0,0.1);
     }
+    /* หัวข้อ */
     h1 {
       text-align: center;
       color: #FF00CC;
     }
+    /* ป้าย label */
     label {
       display: block;
       margin-top: 15px;
       font-weight: bold;
     }
+    /* ช่องกรอกเลข*/
     input, select {
       width: 100%;
       padding: 10px;
@@ -34,6 +39,7 @@
       margin-top: 5px;
       box-sizing: border-box;
     }
+    /* ปุ่มคำนวณ */
     button {
       margin-top: 20px;
       width: 100%;
@@ -82,7 +88,7 @@
     </select>
 
     <button onclick="convertLength()" id="convertBtn">แปลง</button>
-
+    <!-- แสดงผลลัพธ์ -->
     <div class="result" id="resultBox"></div>
     <div class="result" id="exampleBox"></div>
     <div class="note" id="disclaimer"></div>
@@ -96,7 +102,7 @@
     document.getElementById("label-unit").textContent = isThai ? "เลือกหน่วย:" : "Select unit:";
     document.getElementById("convertBtn").textContent = isThai ? "แปลง" : "Convert";
     document.getElementById("lengthValue").placeholder = isThai ? "กรอกตัวเลข" : "Enter number";
-
+    // แปลงชื่อหน่วยตามภาษา
     const unitMap = {
       mm: ["มิลลิเมตร", "Millimetres (mm)"],
       cm: ["เซนติเมตร", "Centimetres (cm)"],
@@ -113,7 +119,7 @@
     document.querySelectorAll("#unitSelect option").forEach(opt => {
       opt.textContent = isThai ? unitMap[opt.value][0] : unitMap[opt.value][1];
     });
-
+    // ค่าการแปลงตามหน่วย
     const toMeter = {
       mm: 0.001,
       cm: 0.01,
@@ -132,12 +138,12 @@
       const raw = input.value.replace(/,/g, '');
       const value = parseFloat(raw);
       const unit = document.getElementById("unitSelect").value;
-
+      // ตรวจสอบว่ากรอกค่าถูกต้องหรือไม่
       if (isNaN(value) || value < 0) {
         alert(isThai ? "กรุณากรอกตัวเลข" : "Please enter a valid number.");
         return;
       }
-
+      // จำกัดไม่ให้เกิน 15 หลัก
       if (raw.replace('.', '').length > 15) {
         alert(isThai ? "ไม่สามารถแปลงตัวเลขเกิน 15 หลักได้" : "Cannot convert numbers exceeding 15 digits.");
         return;
@@ -177,7 +183,7 @@
           examples.push(`<li>${formula} ${label}</li>`);
         }
       }
-
+      //แสดงตัวอย่างการคำนวณ
       document.getElementById("exampleBox").innerHTML = `
         <strong style="display:block; margin-top:20px;">${isThai ? "ตัวอย่างการคำนวณ:" : "Calculation Examples:"}</strong>
         <ul style="font-size:14px;">${examples.join("")}</ul>
