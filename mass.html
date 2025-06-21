@@ -1,0 +1,212 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ตัวแปลงมวล</title>
+  <link rel="icon" href="image/logo.png" />
+  <style>
+    /* สไตล์รวมของ body */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #b2ebf2;
+      padding: 20px;
+    }
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+    /* หัวข้อ */
+    h1 {
+      text-align: center;
+      color: #00CED1;
+    }
+    /* ป้าย label */
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    /* ช่องกรอกเลข*/
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    /* ปุ่มคำนวณ */
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      font-size: 16px;
+      background-color: #00CED1;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    button:hover {
+      background-color: #40E0D0;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    .note {
+      margin-top: 30px;
+      font-size: 13px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="title">ตัวแปลงมวล</h1>
+
+    <label id="label-value">กรอกค่าน้ำหนัก:</label>
+    <input type="text" id="massValue" placeholder="กรอกตัวเลข" />
+
+    <label id="label-unit">เลือกหน่วย:</label>
+    <select id="unitSelect">
+      <option value="t">ตัน</option>
+      <option value="ukt">ตันอังกฤษ</option>
+      <option value="ust">ตันสหรัฐอเมริกา</option>
+      <option value="lb">ปอนด์</option>
+      <option value="oz">ออนซ์</option>
+      <option value="kg">กิโลกรัม</option>
+      <option value="g">กรัม</option>
+    </select>
+
+    <button onclick="convertMass()" id="convertBtn">แปลง</button>
+    <!-- แสดงผลลัพธ์ -->
+    <div class="result" id="resultBox"></div>
+    <div class="result" id="explanationBox"></div>
+    <div class="note" id="noteBox"></div>
+  </div>
+
+  <script>
+    const isThai = (navigator.language || '').toLowerCase().startsWith('th');
+    // ตั้งค่าข้อความตามภาษา
+    document.title = isThai ? "ตัวแปลงมวล" : "Mass Converter";
+    document.getElementById("title").textContent = isThai ? "ตัวแปลงมวล" : "Mass Converter";
+    document.getElementById("label-value").textContent = isThai ? "กรอกค่าน้ำหนัก:" : "Enter mass value:";
+    document.getElementById("massValue").placeholder = isThai ? "กรอกตัวเลข" : "Enter number";
+    document.getElementById("label-unit").textContent = isThai ? "เลือกหน่วย:" : "Select unit:";
+    document.getElementById("convertBtn").textContent = isThai ? "แปลง" : "Convert";
+    // แปลงชื่อหน่วยตามภาษา
+    const unitMap = {
+      t: ["ตัน", "Tons (t)"],
+      ukt: ["ตันอังกฤษ", "UK tons (t)"],
+      ust: ["ตันสหรัฐอเมริกา", "US tons (t)"],
+      lb: ["ปอนด์", "Pound (lb)"],
+      oz: ["ออนซ์", "Ounces (oz)"],
+      kg: ["กิโลกรัม", "Kilogrammes (kg)"],
+      g: ["กรัม", "Grams (g)"]
+    };
+    // ค่าการแปลงตามหน่วย
+    const toKg = {
+      t: 1000,
+      ukt: 1016.0469088,
+      ust: 907.18474,
+      lb: 0.45359237,
+      oz: 0.028349523125,
+      kg: 1,
+      g: 0.001
+    };
+
+    document.querySelectorAll("#unitSelect option").forEach(opt => {
+      opt.textContent = isThai ? unitMap[opt.value][0] : unitMap[opt.value][1];
+    });
+// ฟังก์ชันแปลงน้ำหนัก
+    function convertMass() {
+      const input = document.getElementById("massValue");
+      const raw = input.value.replace(/,/g, '').trim();
+      const value = parseFloat(raw);
+      const unit = document.getElementById("unitSelect").value;
+      // ตรวจสอบว่ากรอกค่าถูกต้องหรือไม่
+      if (isNaN(value) || value < 0) {
+        alert(isThai ? "กรุณากรอกตัวเลข" : "Please enter a valid number.");
+        return;
+      }
+      // จำกัดไม่ให้เกิน 15 หลัก
+      if (raw.replace('.', '').length > 15) {
+        alert(isThai ? "ไม่สามารถแปลงตัวเลขเกิน 15 หลักได้" : "Cannot convert numbers exceeding 15 digits.");
+        return;
+      }
+
+      const baseKg = value * toKg[unit];
+      const results = {};
+      for (const key in toKg) {
+        results[key] = baseKg / toKg[key];
+      }
+
+      let resultHTML = `<h3>${isThai ? "ผลลัพธ์" : "Results"}</h3><ul>`;
+      for (const key in results) {
+        const label = isThai ? unitMap[key][0] : unitMap[key][1];
+        const val = results[key];
+        const formatted = (Math.abs(val) >= 1e12 || Math.abs(val) < 1e-6)
+          ? val.toExponential(8).replace('e+', 'E+').replace('e', 'E')
+          : val.toLocaleString(undefined, { maximumFractionDigits: 6 });
+        resultHTML += `<li>${formatted} ${label}</li>`;
+      }
+      resultHTML += `</ul>`;
+      document.getElementById("resultBox").innerHTML = resultHTML;
+
+      // ตัวอย่างการคำนวณ
+      const example = [];
+      for (const key in results) {
+        const label = isThai ? unitMap[key][0] : unitMap[key][1];
+        const fromLabel = isThai ? unitMap[unit][0] : unitMap[unit][1];
+        const val = results[key];
+        const formattedVal = (Math.abs(val) >= 1e12 || Math.abs(val) < 1e-6)
+          ? val.toExponential(8).replace('e+', 'E+').replace('e', 'E')
+          : val.toLocaleString(undefined, { maximumFractionDigits: 6 });
+
+        if (key === unit) {
+          example.push(`<li>${value.toLocaleString()} ${label} = ${formattedVal} ${label} <span style="color:gray;">(${isThai ? "หน่วยเดิม" : "same unit"})</span></li>`);
+        } else {
+          const formula = `${value.toLocaleString()} × ${toKg[unit].toLocaleString()} ÷ ${toKg[key].toLocaleString()} = ${formattedVal} ${label}`;
+          example.push(`<li>${formula}</li>`);
+        }
+      }
+      //แสดงตัวอย่างการคำนวณ
+      document.getElementById("explanationBox").innerHTML = `
+        <strong>${isThai ? 'ตัวอย่างการคำนวณ:' : 'Calculation Examples:'}</strong>
+        <ul style="font-size:14px;">${example.join('')}</ul>
+      `;
+
+      // หมายเหตุ
+      document.getElementById("noteBox").innerHTML = `
+        ${isThai
+          ? "ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษหรือตัดเศษ ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานอ้างอิงทางกฎหมายหรือทางการเงินได้"
+          : "This result is based on standard general formulas and may contain slight rounding or truncation errors. It is intended for preliminary informational purposes only and should not be used as legal or financial evidence."
+        }
+      `;
+    }
+
+    // ใส่ comma ขณะพิมพ์
+    document.getElementById("massValue").addEventListener("input", function () {
+      let raw = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+      if (!raw) return this.value = '';
+      const parts = raw.split(".");
+      let intPart = parts[0].replace(/^0+(?!$)/, '');
+      const decPart = parts[1] || '';
+      this.value = decPart ? `${intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}.${decPart}` : intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    });
+
+    // Enter เพื่อคำนวณ
+    document.getElementById("massValue").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        convertMass();
+      }
+    });
+  </script>
+</body>
+</html>
