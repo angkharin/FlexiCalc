@@ -1,0 +1,213 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ตัวแปลงปริมาตร</title>
+  <link rel="icon" href="image/logo.png" />
+  <style>
+    /* สไตล์รวมของ body */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #c5e1a5;
+      padding: 20px;
+    }
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    /* หัวข้อ */
+    h1 {
+      text-align: center;
+      color: #558b2f;
+    }
+    /* ป้าย label */
+    label {
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+    }
+    /* ช่องกรอกเลข*/
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    /* ปุ่มคำนวณ */
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      background-color: #558b2f;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #33691e;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 16px;
+      text-align: left;
+    }
+    .note {
+      margin-top: 30px;
+      font-size: 13px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1 id="title">ตัวแปลงปริมาตร</h1>
+
+  <label id="label-value">กรอกค่าปริมาตร:</label>
+  <input type="text" id="volValue" placeholder="กรอกตัวเลข">
+
+  <label id="label-unit">เลือกหน่วย:</label>
+  <select id="unitSelect">
+    <option value="ukgal">แกนลอนอังกฤษ</option>
+    <option value="usgal">แกนลอนสหรัฐ</option>
+    <option value="l">ลิตร</option>
+    <option value="ml">มิลลิลิตร</option>
+    <option value="cc">ลูกบาศก์เซนติเมตร</option>
+    <option value="m3">ลูกบาศก์เมตร</option>
+    <option value="in3">ลูกบาศก์นิ้ว</option>
+    <option value="ft3">ลูกบาศก์ฟุต</option>
+  </select>
+
+  <button onclick="convertVolume()" id="convertBtn">แปลง</button>
+  <!-- แสดงผลลัพธ์ -->
+  <div class="result" id="resultBox"></div>
+  <div class="result" id="explanationBox"></div>
+  <div class="note" id="noteBox"></div>
+</div>
+
+<script>
+  const isThai = (navigator.language || '').startsWith("th");
+  // ตั้งค่าข้อความตามภาษา
+  document.title = isThai ? "ตัวแปลงปริมาตร" : "Volume Converter";
+  document.getElementById("title").textContent = document.title;
+  document.getElementById("label-value").textContent = isThai ? "กรอกค่าปริมาตร:" : "Enter volume:";
+  document.getElementById("label-unit").textContent = isThai ? "เลือกหน่วย:" : "Select unit:";
+  document.getElementById("convertBtn").textContent = isThai ? "แปลง" : "Convert";
+  document.getElementById("volValue").placeholder = isThai ? "กรอกตัวเลข" : "Enter number";
+  // แปลงชื่อหน่วยตามภาษา
+  const unitMap = {
+    ukgal: ["แกนลอนอังกฤษ (gal)", "UK gallons (gal)"],
+    usgal: ["แกนลอนสหรัฐอเมริกา (gal)", "US gallons (gal)"],
+    l: ["ลิตร (ล.)", "Litres (l)"],
+    ml: ["มิลลิลิตร (มล.)", "Millilitres (ml)"],
+    cc: ["ลูกบาศก์เซนติเมตร (ลบ.ซม.)", "Cubic centimetres (cm³)"],
+    m3: ["ลูกบาศก์เมตร (ลบ.ม.)", "Cubic metres (m³)"],
+    in3: ["ลูกบาศก์นิ้ว (ลบ.น.)", "Cubic inches (in³)"],
+    ft3: ["ลูกบาศก์ฟุต (ลบ.ฟุต)", "Cubic feet (ft³)"]
+  };
+
+  document.querySelectorAll("#unitSelect option").forEach(opt => {
+    opt.textContent = isThai ? unitMap[opt.value][0] : unitMap[opt.value][1];
+  });
+  // ค่าการแปลงตามหน่วย
+  const toM3 = {
+    ukgal: 0.00454609,
+    usgal: 0.00378541,
+    l:     0.001,
+    ml:    0.000001,
+    cc:    0.000001,
+    m3:    1,
+    in3:   0.0000163871,
+    ft3:   0.0283168
+  };
+// ฟังก์ชันแปลงปริมาตร
+  function convertVolume() {
+    const input = document.getElementById("volValue");
+    const raw = input.value.replace(/,/g, '').trim();
+    const value = parseFloat(raw);
+    const unit = document.getElementById("unitSelect").value;
+    // ตรวจสอบว่ากรอกค่าถูกต้องหรือไม่
+    if (isNaN(value)) {
+      alert(isThai ? "กรุณากรอกตัวเลข" : "Please enter a valid number.");
+      return;
+    }
+    // จำกัดไม่ให้เกิน 15 หลัก
+    if (raw.replace('.', '').length > 15) {
+      alert(isThai ? "ไม่สามารถแปลงตัวเลขเกิน 15 หลักได้" : "Cannot convert numbers exceeding 15 digits.");
+      return;
+    }
+
+    const baseM3 = value * toM3[unit];
+    const results = {};
+    for (const key in toM3) {
+      results[key] = baseM3 / toM3[key];
+    }
+
+    // ผลลัพธ์
+    let resultHtml = `<h3>${isThai ? "ผลลัพธ์" : "Results"}</h3><ul>`;
+    for (const key in results) {
+      const label = isThai ? unitMap[key][0] : unitMap[key][1];
+      const num = results[key];
+      const formatted = (Math.abs(num) >= 1e12 || Math.abs(num) < 1e-6)
+        ? num.toExponential(8).replace('e+', 'E+').replace('e', 'E')
+        : num.toLocaleString(undefined, { maximumFractionDigits: 6 });
+      resultHtml += `<li>${formatted} ${label}</li>`;
+    }
+    resultHtml += "</ul>";
+    document.getElementById("resultBox").innerHTML = resultHtml;
+
+    // ตัวอย่างการคำนวณ
+    const exampleLines = [];
+    for (const key in toM3) {
+      const label = isThai ? unitMap[key][0] : unitMap[key][1];
+      const result = results[key];
+      const formatted = (Math.abs(result) >= 1e12 || Math.abs(result) < 1e-6)
+        ? result.toExponential(8).replace('e+', 'E+').replace('e', 'E')
+        : result.toLocaleString(undefined, { maximumFractionDigits: 6 });
+
+      if (key === unit) {
+        exampleLines.push(`<li>${value.toLocaleString()} ${label} = ${formatted} ${label} <span style="color:gray;">(${isThai ? "หน่วยเดิม" : "same unit"})</span></li>`);
+      } else {
+        const formula = `${value.toLocaleString()} × ${toM3[unit].toLocaleString()} ÷ ${toM3[key].toLocaleString()} = ${formatted}`;
+        exampleLines.push(`<li>${formula} ${label}</li>`);
+      }
+    }
+    //แสดงตัวอย่างการคำนวณ
+    document.getElementById("explanationBox").innerHTML = `
+      <strong>${isThai ? "ตัวอย่างการคำนวณ:" : "Example Calculations:"}</strong>
+      <ul>${exampleLines.join('')}</ul>
+    `;
+
+    document.getElementById("noteBox").innerHTML = isThai
+      ? "ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษหรือตัดเศษ ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานอ้างอิงทางกฎหมายหรือทางการเงินได้"
+      : "This result is based on standard general formulas and may contain slight rounding or truncation errors. <br>It is intended for preliminary informational purposes only and should not be used as legal or financial evidence.";
+  }
+
+  // Enter → แปลง
+  document.getElementById("volValue").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      convertVolume();
+    }
+  });
+
+  // ใส่ comma อัตโนมัติ
+  document.getElementById("volValue").addEventListener("input", function () {
+    let raw = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+    if (!raw) return this.value = '';
+    const parts = raw.split(".");
+    let intPart = parts[0].replace(/^0+(?!$)/, '');
+    const decPart = parts[1] || '';
+    const formatted = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    this.value = decPart ? `${formatted}.${decPart}` : formatted;
+  });
+</script>
+</body>
+</html>
