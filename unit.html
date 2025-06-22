@@ -66,6 +66,12 @@
       font-size: 14px;
       font-weight: bold;
     }
+    .next-items{
+      margin-bottom: 20px;
+    }
+    .next-items a{
+    text-decoration: none;
+    }
   </style>
 </head>
 <body>
@@ -77,10 +83,9 @@
 
   <div class="unit-grid">
   <div class="unit-item" onclick="window.location.href='age.html'">
-  <img src="image/age.png">
-  <div class="unit-label" data-en="Age" data-th="อายุ"></div>
-</div>
-
+    <img src="image/age.png">
+    <div class="unit-label" data-en="Age" data-th="อายุ"></div>
+  </div>
   <div class="unit-item" onclick="window.location.href='area.html'">
     <img src="image/area.png">
     <div class="unit-label" data-en="Area" data-th="พื้นที่"></div>
@@ -134,6 +139,11 @@
     <div class="unit-label" data-en="Vat" data-th="ภาษีมูลค่าเพิ่ม"></div>
   </div>
 </div>
+<section class="next">
+    <div class="next-items">
+        <h2><a href="unit.html"><font color="white">1</a></font></h2>
+    </div>
+  </section>
 
 <script>
   const isThai = (navigator.language || 'en').toLowerCase().startsWith('th');
