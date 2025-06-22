@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tax Calculator</title>
+  <style>
+    /* สไตล์รวมของ body */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f8f8;
+      padding: 20px;
+    }
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
+    .container {
+      max-width: 600px;
+      background: #fff;
+      padding: 20px;
+      margin: auto;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    /* หัวข้อ */
+    h1 {
+      text-align: center;
+      color: #d32f2f;
+    }
+    /* ป้าย label */
+    label {
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+    }
+    /* ช่องกรอกเลข*/
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    /* ปุ่มคำนวณ */
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 20px;
+      background: #d32f2f;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #b71c1c;
+    }
+    .result, .example, .note {
+      margin-top: 20px;
+      font-size: 15px;
+      color: #333;
+    }
+    .note {
+      font-size: 13px;
+      color: #666;
+      background: #f9f9f9;
+      padding: 10px;
+      border-left: 4px solid #ccc;
+    }
+    /* คำเตือน */
+    .warning {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 10px;
+      font-size: 14px;
+      margin-top: 10px;
+      color: #856404;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1 id="title">Tax Calculator</h1>
+
+  <div class="warning" id="warningText"></div>
+
+  <label id="label-amount">Amount:</label>
+  <input type="text" id="amount" placeholder="Enter amount" />
+
+  <label id="label-rate">VAT Rate (%):</label>
+  <input type="number" id="vatRate" value="7" />
+
+  <label id="label-method">Select method:</label>
+  <select id="method">
+    <option value="before">Before VAT</option>
+    <option value="after">Including VAT</option>
+  </select>
+
+  <button onclick="calculateVAT()" id="calcBtn">Calculate</button>
+
+  <div class="result" id="resultBox"></div>
+  <div class="example" id="exampleBox"></div>
+  <div class="note" id="noteBox"></div>
+</div>
+
+<script>
+  const isThai = (navigator.language || '').toLowerCase().startsWith("th");
+  // ตั้งค่าข้อความตามภาษา
+  const text = {
+    title: isThai ? "เครื่องคำนวณภาษี (VAT)" : "Tax Calculator (VAT)",
+    amountLabel: isThai ? "กรอกจำนวนเงิน (บาท):" : "Enter amount (THB):",
+    rateLabel: isThai ? "อัตราภาษีมูลค่าเพิ่ม (%):" : "VAT Rate (%):",
+    methodLabel: isThai ? "เลือกรูปแบบการคำนวณ:" : "Select calculation method:",
+    placeholder: isThai ? "กรอกจำนวนเงิน" : "Enter amount",
+    methodBefore: isThai ? "คิดจากราคาก่อน VAT" : "Before VAT",
+    methodAfter: isThai ? "คิดจากราคารวม VAT แล้ว" : "From total with VAT",
+    calcBtn: isThai ? "คำนวณภาษี" : "Calculate",
+    warning: isThai
+      ? '⚠️ กรุณาตรวจสอบข้อมูลก่อนคำนวณ — โปรแกรมนี้อ้างอิง <a href="https://www.rd.go.th" target="_blank">กรมสรรพากร</a> และอัตราภาษีปีปัจจุบัน'
+      : '⚠️ Please verify your input — this calculator references <a href="https://www.rd.go.th" target="_blank">Thai Revenue Department</a> and current VAT rates.',
+   note: isThai
+      ? "📝 ผลลัพธ์จากโปรแกรมคำนวณภาษีนี้ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถใช้เป็นหลักฐานทางกฎหมายหรือภาษีได้ ผู้ใช้งานควรปรึกษาผู้เชี่ยวชาญหรือหน่วยงานที่เกี่ยวข้องก่อนดำเนินการทางการเงินหรือภาษี"
+      : "📝 This tax calculator is intended for preliminary informational purposes only and should not be used as legal, tax, or financial advice. Users are encouraged to consult professionals or relevant authorities before making any financial or tax-related decisions."
+  };
+
+  // ตั้งข้อความ UI
+  document.title = text.title;
+  document.getElementById("title").textContent = text.title;
+  document.getElementById("label-amount").textContent = text.amountLabel;
+  document.getElementById("label-rate").textContent = text.rateLabel;
+  document.getElementById("label-method").textContent = text.methodLabel;
+  document.getElementById("calcBtn").textContent = text.calcBtn;
+  document.getElementById("amount").placeholder = text.placeholder;
+  document.getElementById("method").options[0].textContent = text.methodBefore;
+  document.getElementById("method").options[1].textContent = text.methodAfter;
+  document.getElementById("warningText").innerHTML = text.warning;
+  document.getElementById("noteBox").innerHTML = text.note;
+  // ฟังก์ชันแปลงภาษีมูลค่าเพิ่ม
+  function calculateVAT() {
+    const raw = document.getElementById("amount").value.replace(/,/g, '');
+    const amount = parseFloat(raw);
+    const rate = parseFloat(document.getElementById("vatRate").value);
+    const method = document.getElementById("method").value;
+
+    if (isNaN(amount) || isNaN(rate) || amount <= 0) {
+      alert(isThai ? "กรุณากรอกจำนวนเงินและอัตราภาษีให้ถูกต้อง" : "Please enter valid amount and VAT rate.");
+      return;
+    }
+
+    if (raw.replace('.', '').length > 15) {
+      alert(isThai ? "ไม่สามารถคำนวณตัวเลขเกิน 15 หลักได้" : "Cannot calculate numbers exceeding 15 digits.");
+      return;
+    }
+
+    let base, vat, total;
+    if (method === "before") {
+      base = amount;
+      vat = +(base * (rate / 100)).toFixed(2);
+      total = +(base + vat).toFixed(2);
+    } else {
+      total = amount;
+      base = +(total / (1 + rate / 100)).toFixed(2);
+      vat = +(total - base).toFixed(2);
+    }
+    //ผลลัพธ์
+    document.getElementById("resultBox").innerHTML = `
+      💵 ${isThai ? "ราคาก่อนภาษี" : "Price before VAT"}: ${base.toLocaleString()}<br>
+      🧾 ${isThai ? "VAT" : "VAT"} ${rate}%: ${vat.toLocaleString()}<br>
+      📦 ${isThai ? "ราคารวมภาษี" : "Total with VAT"}: ${total.toLocaleString()}
+    `;
+    //ตัวอย่างการคำนวณ
+    const example = method === "before"
+      ? `
+        ${isThai 
+          ? `VAT ${rate}% = ${rate} ÷ 100 × ${base.toLocaleString()} = ${vat.toLocaleString()}<br>
+             ราคาก่อนภาษี + VAT = ${base.toLocaleString()} + ${vat.toLocaleString()} = ${total.toLocaleString()}`
+          : `VAT ${rate}% = ${rate} ÷ 100 × ${base.toLocaleString()} = ${vat.toLocaleString()}<br>
+             Price before VAT + VAT = ${base.toLocaleString()} + ${vat.toLocaleString()} = ${total.toLocaleString()}`
+        }
+      `
+      : `
+        ${isThai 
+          ? `ราคาก่อน VAT = ${total.toLocaleString()} - ${vat.toLocaleString()} = ${base.toLocaleString()}<br>
+             VAT ${rate}% = ${rate} ÷ ${100 + rate} × ${total.toLocaleString()} = ${vat.toLocaleString()}`
+          : `Price before VAT = ${total.toLocaleString()} - ${vat.toLocaleString()} = ${base.toLocaleString()}<br>
+             VAT ${rate}% = ${rate} ÷ ${100 + rate} × ${total.toLocaleString()} = ${vat.toLocaleString()}`
+        }
+      `;
+
+    document.getElementById("exampleBox").innerHTML = `
+      <strong>${isThai ? "🔍 ตัวอย่างการคำนวณ:" : "🔍 Example Calculation:"}</strong><br>${example}
+    `;
+  }
+
+  // Enter เพื่อคำนวณ
+  document.getElementById("amount").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      calculateVAT();
+    }
+  });
+
+  // ใส่ comma ตอนพิมพ์
+  document.getElementById("amount").addEventListener("input", function () {
+    const val = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+    const parts = val.split('.');
+    const intPart = parts[0].replace(/^0+(?!$)/, '');
+    const decPart = parts[1] || '';
+    this.value = decPart
+      ? `${intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}.${decPart}`
+      : intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  });
+</script>
+</body>
+</html>
