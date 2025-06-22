@@ -104,16 +104,16 @@
     document.getElementById("lengthValue").placeholder = isThai ? "กรอกตัวเลข" : "Enter number";
     // แปลงชื่อหน่วยตามภาษา
     const unitMap = {
-      mm: ["มิลลิเมตร", "Millimetres (mm)"],
-      cm: ["เซนติเมตร", "Centimetres (cm)"],
-      m: ["เมตร", "Metres (m)"],
-      km: ["กิโลเมตร", "Kilometres (km)"],
-      in: ["นิ้ว", "Inches (in)"],
-      ft: ["ฟุต", "Feet (ft)"],
-      yd: ["หลา", "Yards (yd)"],
-      mi: ["ไมล์", "Miles (mi)"],
-      nmi: ["ไมล์ทะเล", "Nautical miles (NM)"],
-      mil: ["มิล", "Mils (mil)"]
+      mm: ["มิลลิเมตร (มม.)", "Millimetres (mm)"],
+      cm: ["เซนติเมตร (ซม.)", "Centimetres (cm)"],
+      m: ["เมตร (ม.)", "Metres (m)"],
+      km: ["กิโลเมตร (กม.)", "Kilometres (km)"],
+      in: ["นิ้ว (น.)", "Inches (in)"],
+      ft: ["ฟุต (ฟ.)", "Feet (ft)"],
+      yd: ["หลา (หล.)", "Yards (yd)"],
+      mi: ["ไมล์ (mi)", "Miles (mi)"],
+      nmi: ["ไมล์ทะเล (มท.)", "Nautical miles (NM)"],
+      mil: ["มิล (mil)", "Mils (mil)"]
     };
 
     document.querySelectorAll("#unitSelect option").forEach(opt => {
@@ -194,7 +194,7 @@
       <div style="margin-top: 20px; font-size: 13px; color: gray;">
         ${isThai 
         ? "ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษหรือตัดเศษ ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานอ้างอิงทางกฎหมายหรือทางการเงินได้"
-        : "This result is based on standard general formulas and may contain slight rounding or truncation errors. It is intended for preliminary informational purposes only and should not be used as legal or financial evidence."
+        : "This result is based on standard general formulas and may contain slight rounding or truncation errors. <br>It is intended for preliminary informational purposes only and should not be used as legal or financial evidence."
         }
       </div>
       `;

@@ -101,13 +101,13 @@
     document.getElementById("convertBtn").textContent = isThai ? "แปลง" : "Convert";
     // แปลงชื่อหน่วยตามภาษา
     const unitMap = {
-      t: ["ตัน", "Tons (t)"],
-      ukt: ["ตันอังกฤษ", "UK tons (t)"],
-      ust: ["ตันสหรัฐอเมริกา", "US tons (t)"],
-      lb: ["ปอนด์", "Pound (lb)"],
-      oz: ["ออนซ์", "Ounces (oz)"],
-      kg: ["กิโลกรัม", "Kilogrammes (kg)"],
-      g: ["กรัม", "Grams (g)"]
+      t: ["ตัน (ต.)", "Tons (t)"],
+      ukt: ["ตันอังกฤษ (ต.)", "UK tons (t)"],
+      ust: ["ตันสหรัฐอเมริกา (ต.)", "US tons (t)"],
+      lb: ["ปอนด์ (lb)", "Pound (lb)"],
+      oz: ["ออนซ์ (oz)", "Ounces (oz)"],
+      kg: ["กิโลกรัม (กก.)", "Kilogrammes (kg)"],
+      g: ["กรัม (ก.)", "Grams (g)"]
     };
     // ค่าการแปลงตามหน่วย
     const toKg = {
@@ -185,7 +185,7 @@
       document.getElementById("noteBox").innerHTML = `
         ${isThai
           ? "ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษหรือตัดเศษ ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานอ้างอิงทางกฎหมายหรือทางการเงินได้"
-          : "This result is based on standard general formulas and may contain slight rounding or truncation errors. It is intended for preliminary informational purposes only and should not be used as legal or financial evidence."
+          : "This result is based on standard general formulas and may contain slight rounding or truncation errors. <br>It is intended for preliminary informational purposes only and should not be used as legal or financial evidence."
         }
       `;
     }

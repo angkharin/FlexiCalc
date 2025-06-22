@@ -109,13 +109,13 @@
     // แปลงชื่อหน่วยตามภาษา
     const options = document.querySelectorAll("#unitSelect option");
     const unitMap = {
-      ac: ["เอเคอร์", "Acres (ac)"],
-      a: ["อาร์", "Ares (a)"],
-      ha: ["เฮกตาร์", "Hectares (ha)"],
-      cm2: ["ตารางเซนติเมตร", "Square centimetres (cm²)"],
-      ft2: ["ตารางฟุต", "Square feet (ft²)"],
-      in2: ["ตารางนิ้ว", "Square inches (in²)"],
-      m2: ["ตารางเมตร", "Square metres (m²)"]
+      ac: ["เอเคอร์ (ac)", "Acres (ac)"],
+      a: ["อาร์ (a)", "Ares (a)"],
+      ha: ["เฮกตาร์ (ha)", "Hectares (ha)"],
+      cm2: ["ตารางเซนติเมตร (ตร.ซม.)", "Square centimetres (cm²)"],
+      ft2: ["ตารางฟุต (ตร.ฟ.)", "Square feet (ft²)"],
+      in2: ["ตารางนิ้ว (ตร.น.)", "Square inches (in²)"],
+      m2: ["ตารางเมตร (ตร.ม.)", "Square metres (m²)"]
     };
 
     options.forEach(opt => {
@@ -136,7 +136,7 @@ function convertArea() {
   // จำกัดไม่ให้เกิน 15 หลัก
   const digitCount = rawValue.replace('.', '').length;
   if (digitCount > 15) {
-    alert(isThai ? "ไม่สามารถใส่ตัวเลขเกิน 15 หลักได้" : "Can't enter more than 15 digits.");
+    alert(isThai ? "ไม่สามารถแปลงตัวเลขเกิน 15 หลักได้" : "Cannot convert numbers exceeding 15 digits.");
     return;
   }
 
@@ -207,7 +207,7 @@ output += `<li>${formattedValue} ${label}</li>`;
   <div style="margin-top: 20px; font-size: 13px; color: gray;">
     ${isThai 
       ? "ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษหรือตัดเศษ ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานอ้างอิงทางกฎหมายหรือทางการเงินได้"
-      : "This result is based on standard general formulas and may contain slight rounding or truncation errors. It is intended for preliminary informational purposes only and should not be used as legal or financial evidence."
+      : "This result is based on standard general formulas and may contain slight rounding or truncation errors. <br>It is intended for preliminary informational purposes only and should not be used as legal or financial evidence."
     }
   </div>
 `;

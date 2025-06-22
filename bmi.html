@@ -219,8 +219,8 @@
       explainDiv.innerHTML = `
         <strong>${isThai ? "ตัวอย่างการคำนวณ:" : "Calculation Example:"}</strong><br>
         ${isThai 
-          ? `น้ำหนัก = ${weight.toLocaleString()} กิโลกรัม<br>
-             ส่วนสูง = ${height.toLocaleString()} เซนติเมตร = ${heightM.toFixed(2)} เมตร<br>
+          ? `น้ำหนัก = ${weight.toLocaleString()} กิโลกรัม (กก.)<br>
+             ส่วนสูง = ${height.toLocaleString()} เซนติเมตร (ซม.) = ${heightM.toFixed(2)} เมตร<br>
              ดัชนีมวลกาย = น้ำหนัก ÷ (ส่วนสูง × ส่วนสูง)<br>
              = ${weight} ÷ (${heightM.toFixed(2)} × ${heightM.toFixed(2)})<br>
              = ${roundedBMI}`

@@ -102,16 +102,16 @@
     document.getElementById("dataValue").placeholder = isThai ? "กรอกตัวเลข" : "Enter number";
     // แปลงชื่อหน่วยตามภาษา
     const unitMap = {
-      bit: ["บิต", "Bits (bit)"],
-      B: ["ไบต์", "Bytes (B)"],
-      KB: ["กิโลไบต์", "Kilobytes (KB)"],
-      KiB: ["กิบิไบต์", "Kibibytes (KiB)"],
-      MB: ["เมกะไบต์", "Megabytes (MB)"],
-      MiB: ["เมบิไบต์", "Mebibytes (MiB)"],
-      GB: ["กิกะไบต์", "Gigabytes (GB)"],
-      GiB: ["จิบิไบต์", "Gibibytes (GiB)"],
-      TB: ["เทระไบต์", "Terabytes (TB)"],
-      TiB: ["เทบิไบต์", "Tebibytes (TiB)"]
+      bit: ["บิต (bit)", "Bits (bit)"],
+      B: ["ไบต์ (B)", "Bytes (B)"],
+      KB: ["กิโลไบต์ (KB)", "Kilobytes (KB)"],
+      KiB: ["กิบิไบต์ (KiB)", "Kibibytes (KiB)"],
+      MB: ["เมกะไบต์ (MB)", "Megabytes (MB)"],
+      MiB: ["เมบิไบต์ (MiB)", "Mebibytes (MiB)"],
+      GB: ["กิกะไบต์ (GB)", "Gigabytes (GB)"],
+      GiB: ["จิบิไบต์ (GiB)", "Gibibytes (GiB)"],
+      TB: ["เทระไบต์ (TB)", "Terabytes (TB)"],
+      TiB: ["เทบิไบต์ (TiB)", "Tebibytes (TiB)"]
     };
 
     document.querySelectorAll("#unitSelect option").forEach(opt => {
@@ -190,7 +190,7 @@
       <div style="margin-top: 20px; font-size: 13px; color: gray;">
         ${isThai 
         ? "ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษหรือตัดเศษ ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานอ้างอิงทางกฎหมายหรือทางการเงินได้"
-        : "This result is based on standard general formulas and may contain slight rounding or truncation errors. It is intended for preliminary informational purposes only and should not be used as legal or financial evidence."
+        : "This result is based on standard general formulas and may contain slight rounding or truncation errors. <br>It is intended for preliminary informational purposes only and should not be used as legal or financial evidence."
         }
       </div>
       `;

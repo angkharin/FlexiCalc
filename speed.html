@@ -106,17 +106,17 @@
     document.getElementById("speedValue").placeholder = isThai ? "กรอกตัวเลข" : "Enter number";
     // แปลงชื่อหน่วยตามภาษา
     const unitMap = {
-      mps: ["เมตรต่อวินาที", "Metres per second (m/s)"],
-      mph: ["เมตรต่อชั่วโมง", "Metres per hour (m/h)"],
-      kmps: ["กิโลเมตรต่อวินาที", "Kilometres per second (km/s)"],
-      kmph: ["กิโลเมตรต่อชั่วโมง", "Kilometres per hour (km/h)"],
-      inps: ["นิ้วต่อวินาที", "Inches per second (in/s)"],
-      inph: ["นิ้วต่อชั่วโมง", "Inches per hour (in/h)"],
-      ftps: ["ฟุตต่อวินาที", "Feet per second (ft/s)"],
-      ftph: ["ฟุตต่อชั่วโมง", "Feet per hour (ft/h)"],
-      mips: ["ไมล์ต่อวินาที", "Miles per second (mi/s)"],
-      miph: ["ไมล์ต่อชั่วโมง", "Miles per hour (mi/h)"],
-      kn: ["น็อต", "Knots (kn)"]
+      mps: ["เมตรต่อวินาที (ม./วิ.)", "Metres per second (m/s)"],
+      mph: ["เมตรต่อชั่วโมง (ม./ชม.)", "Metres per hour (m/h)"],
+      kmps: ["กิโลเมตรต่อวินาที (กม./วิ)", "Kilometres per second (km/s)"],
+      kmph: ["กิโลเมตรต่อชั่วโมง (กม./ชม.)", "Kilometres per hour (km/h)"],
+      inps: ["นิ้วต่อวินาที (น./วิ)", "Inches per second (in/s)"],
+      inph: ["นิ้วต่อชั่วโมง (น./ชม.)", "Inches per hour (in/h)"],
+      ftps: ["ฟุตต่อวินาที (ฟ./วิ)", "Feet per second (ft/s)"],
+      ftph: ["ฟุตต่อชั่วโมง (ฟ./ชม.)", "Feet per hour (ft/h)"],
+      mips: ["ไมล์ต่อวินาที (mi/s)", "Miles per second (mi/s)"],
+      miph: ["ไมล์ต่อชั่วโมง (mi/h)", "Miles per hour (mi/h)"],
+      kn: ["น็อต (kn)", "Knots (kn)"]
     };
 
     document.querySelectorAll("#unitSelect option").forEach(opt => {
@@ -193,7 +193,7 @@
       // หมายเหตุ
       document.getElementById("noteBox").innerHTML = isThai
         ? "ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษหรือตัดเศษ ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานอ้างอิงทางกฎหมายหรือทางการเงินได้"
-        : "This result is based on standard general formulas and may contain slight rounding or truncation errors. It is intended for preliminary informational purposes only and should not be used as legal or financial evidence.";
+        : "This result is based on standard general formulas and may contain slight rounding or truncation errors. <br>It is intended for preliminary informational purposes only and should not be used as legal or financial evidence.";
     }
     // ✅ พิมพ์วันเกิดแล้วกด Enter เพื่อคำนวณ
     document.getElementById("speedValue").addEventListener("keydown", function(e) {

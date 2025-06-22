@@ -112,14 +112,14 @@ const toSeconds = {
 
 // แปลงชื่อหน่วย
 const unitMap = {
-  ms: ["มิลลิวินาที", "Milliseconds (ms)"],
-  s: ["วินาที", "Seconds (s)"],
-  min: ["นาที", "Minutes (min)"],
-  h: ["ชั่วโมง", "Hours (h)"],
-  d: ["วัน", "Days (d)"],
-  wk: ["สัปดาห์", "Weeks (wk)"],
-  mo: ["เดือน", "Months (m)"],
-  y: ["ปี", "Years (y)"]
+  ms: ["มิลลิวินาที (ms)", "Milliseconds (ms)"],
+  s: ["วินาที (วิ.)", "Seconds (s)"],
+  min: ["นาที (น.)", "Minutes (min)"],
+  h: ["ชั่วโมง (ชม.)", "Hours (h)"],
+  d: ["วัน (ว.)", "Days (d)"],
+  wk: ["สัปดาห์ (สป.)", "Weeks (wk)"],
+  mo: ["เดือน (ด.)", "Months (m)"],
+  y: ["ปี (ป.)", "Years (y)"]
 };
 
 document.querySelectorAll("#unitSelect option").forEach(opt => {
@@ -185,7 +185,7 @@ function convertTime() {
   <div style="margin-top: 20px; font-size: 13px; color: gray;">
     ${isThai 
       ? "ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษหรือตัดเศษ ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานอ้างอิงทางกฎหมายหรือทางการเงินได้"
-      : "This result is based on standard general formulas and may contain slight rounding or truncation errors. It is intended for preliminary informational purposes only and should not be used as legal or financial evidence."
+      : "This result is based on standard general formulas and may contain slight rounding or truncation errors. <br>It is intended for preliminary informational purposes only and should not be used as legal or financial evidence."
     }
   </div>
 `;
