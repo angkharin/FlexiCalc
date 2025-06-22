@@ -1,0 +1,180 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FlexiCalc</title>
+  <link rel="icon" href="image/logo.png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background-image: url('image/bg.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: Arial, sans-serif;
+      overflow-y: hidden;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .header h2 {
+      font-size: 16px;
+      margin: 0;
+      color: #666;
+    }
+
+    .unit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .unit-item {
+      background: #FFFACD;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      padding: 15px 10px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .unit-item:hover {
+      transform: scale(1.05);
+    }
+
+    .unit-item img {
+      width: 32px;
+      height: 32px;
+      margin-bottom: 8px;
+    }
+
+    .unit-label {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .next-items {
+      display:flex ;
+      grid-column: 1 / -1; /* ✅ ขยายเต็มแถวใน grid */
+      justify-content: center;
+      gap: 10px;
+      margin-top: -10px;
+    }
+
+    .next-items a {
+      text-decoration: none;
+      color: white;
+      background: #ffc107;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+    .next-items a:hover {
+      background: #ffa000;
+    }
+    .next-items u {
+      color: white;
+    }
+
+  </style>
+</head>
+<body>
+  
+
+  <div class="header sticky-header">
+  <h1 id="title-main">ตัวแปลงหน่วย</h1>
+</div>
+
+  <div class="unit-grid">
+  <div class="unit-item" onclick="window.location.href=''">
+    <img src="image/">
+    <div class="unit-label" data-en="" data-th=""></div>
+  </div>
+  <div class="unit-item" onclick="window.location.href='area.html'">
+    <img src="image/">
+    <div class="unit-label" data-en="" data-th=""></div>
+  </div>
+  <div class="unit-item" onclick="window.location.href=''">
+    <img src="image/">
+    <div class="unit-label" data-en="" data-th=""></div>
+  </div>
+  <div class="unit-item" onclick="window.location.href=''">
+    <img src="image/">
+    <div class="unit-label" data-en="" data-th=""></div>
+  </div>
+  <div class="unit-item" onclick="window.location.href=''">
+    <img src="image/">
+    <div class="unit-label" data-en="" data-th=""></div>
+  </div>
+  <div class="unit-item" onclick="window.location.href=''">
+    <img src="image/">
+    <div class="unit-label" data-en="" data-th=""></div>
+  </div>
+  <div class="unit-item" onclick="window.location.href=''">
+    <img src="image/">
+    <div class="unit-label" data-en="" data-th=""></div>
+  </div>
+  <div class="unit-item" onclick="window.location.href=''">
+    <img src="image/">
+    <div class="unit-label" data-en="" data-th=""></div>
+  </div>
+  <div class="unit-item" onclick="window.location.href=''">
+    <img src="image/">
+    <div class="unit-label" data-en="" data-th=""></div>
+  </div>
+  <div class="unit-item" onclick="window.location.href=''">
+    <img src="image/">
+    <div class="unit-label" data-en="" data-th=""></div>
+  </div>
+  <div class="unit-item" onclick="window.location.href=''">
+    <img src="image/">
+    <div class="unit-label" data-en="" data-th=""></div>
+  </div>
+  <div class="unit-item" onclick="window.location.href=''">
+    <img src="image/">
+    <div class="unit-label" data-en="" data-th=""></div>
+  </div>
+  <div class="unit-item" onclick="window.location.href=''">
+    <img src="image/">
+    <div class="unit-label" data-en="" data-th=""></div>
+  </div>
+  <div class="unit-item" onclick="window.location.href=''">
+    <img src="image/">
+    <div class="unit-label" data-en="" data-th=""></div>
+  </div>
+  <div class="unit-item" onclick="window.location.href=''">
+    <img src="image/">
+    <div class="unit-label" data-en="" data-th=""></div>
+  </div>
+  <div class="next-items">
+    <h2><a href="unit.html">1</a></h2>
+    <h2><u><a href="2.html">2</a></u></h2>
+  </div>
+</div>
+
+<script>
+  const isThai = (navigator.language || 'en').toLowerCase().startsWith('th');
+
+  document.querySelectorAll('.unit-label').forEach(el => {
+    el.textContent = isThai ? el.dataset.th : el.dataset.en;
+  });
+
+  document.getElementById('title-main').textContent = isThai ? 'ตัวแปลงหน่วย' : 'Unit Converter';
+  document.getElementById('title-sub').textContent = isThai ? 'Unit Converter' : '';
+</script>
+</body>
+</html>
