@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tip Calculator</title>
+  <style>
+    /* สไตล์รวมของ body */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #ffecb3;
+      color: #000;
+      padding: 20px;
+    }
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    /* หัวข้อ */
+    h1 {
+      text-align: center;
+      color: #fbc02d;
+    }
+    /* ป้าย label */
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #000;
+    }
+    /* ช่องกรอกเลข*/
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+      border: 1px solid #000;
+      border-radius: 6px;
+      background: #fff;
+      color: #000;
+    }
+    /* ปุ่มคำนวณ */
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      background: #ffa000;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ff8f00;
+    }
+    .result {
+      margin-top: 25px;
+      font-size: 18px;
+      color: #000;
+    }
+    .note {
+      font-size: 13px;
+      color: #555;
+      margin-top: 30px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1 id="title">Tip Calculator</h1>
+
+  <label id="label-amount">Enter amount:</label>
+  <input type="text" id="amount" placeholder="ใส่จำนวนเงิน">
+
+  <label id="label-tip">Tip %:</label>
+  <select id="tipPercent"></select>
+
+  <label id="label-people">Number of people:</label>
+  <select id="peopleCount"></select>
+  <!-- แสดงผลลัพธ์ -->
+  <button onclick="calculateTip()" id="calcBtn">Calculate</button>
+
+  <div class="result" id="resultBox"></div>
+  <div class="result" id="exampleBox"></div>
+  <div class="note" id="noteBox"></div>
+</div>
+
+<script>
+  const isThai = (navigator.language || '').startsWith("th");
+
+  const text = {
+    title: isThai ? "เครื่องคำนวณทิป" : "Tip Calculator",
+    amountLabel: isThai ? "กรอกจำนวนเงิน:" : "Enter amount:",
+    tipLabel: isThai ? "เปอร์เซ็นต์ทิป:" : "Tip %:",
+    placeholder: isThai ? "ใส่จำนวนเงิน" : "Enter amount",
+    peopleLabel: isThai ? "จำนวนคน:" : "Number of people:",
+    calcBtn: isThai ? "คำนวณ" : "Calculate",
+    tipAmount: isThai ? "จำนวนเงินทิป" : "Tip amount",
+    total: isThai ? "รวม" : "Total",
+    perPerson: isThai ? "แต่ละคน" : "Each",
+    exampleTitle: isThai ? "ตัวอย่างการคำนวณ:" : "Example Calculation:",
+    note: isThai
+      ? "📝 ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษ ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานทางกฎหมายหรือทางการเงินได้"
+      : "📝 This result is based on standard general formulas and may contain slight rounding errors. It is intended for informational purposes only and should not be used as legal or financial evidence."
+  };
+  // ตั้งค่าข้อความตามภาษา
+  document.title = text.title;
+  document.getElementById("amount").placeholder = text.placeholder;
+  document.getElementById("title").textContent = text.title;
+  document.getElementById("label-amount").textContent = text.amountLabel;
+  document.getElementById("label-tip").textContent = text.tipLabel;
+  document.getElementById("label-people").textContent = text.peopleLabel;
+  document.getElementById("calcBtn").textContent = text.calcBtn;
+  document.getElementById("noteBox").textContent = text.note;
+
+  // ทิป % 0-99
+  const tipSelect = document.getElementById("tipPercent");
+  for (let i = 0; i <= 99; i++) {
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.text = `${i} %`;
+    tipSelect.appendChild(opt);
+  }
+  tipSelect.value = 15;
+
+  // คน 1-99
+  const peopleSelect = document.getElementById("peopleCount");
+  for (let i = 1; i <= 99; i++) {
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.text = `${i}`;
+    peopleSelect.appendChild(opt);
+  }
+  peopleSelect.value = 1;
+// ฟังก์ชันแปลงทิป
+  function calculateTip() {
+    const raw = document.getElementById("amount").value.replace(/,/g, '');
+    const amount = parseFloat(raw);
+    const tip = parseFloat(document.getElementById("tipPercent").value);
+    const people = parseInt(document.getElementById("peopleCount").value);
+    // ตรวจสอบว่ากรอกค่าถูกต้องหรือไม่
+    if (isNaN(amount) || amount <= 0 || people <= 0) {
+      alert(isThai ? "กรุณากรอกข้อมูลให้ถูกต้อง" : "Please enter valid information.");
+      return;
+    }
+    // จำกัดไม่ให้เกิน 15 หลัก
+    if (raw.replace('.', '').length > 15) {
+      alert(isThai ? "ไม่สามารถใส่ตัวเลขเกิน 15 หลักได้" : "Cannot enter more than 15 digits.");
+      return;
+    }
+
+    const tipAmount = +(amount * tip / 100).toFixed(2);
+    const total = +(amount + tipAmount).toFixed(2);
+    const perPerson = +(total / people).toFixed(2);
+
+    document.getElementById("resultBox").innerHTML = `
+      ${text.tipAmount}: ${tipAmount.toLocaleString()}<br>
+      ${text.total}: ${total.toLocaleString()}<br>
+      ${text.perPerson}: ${perPerson.toLocaleString()}
+    `;
+    //แสดงตัวอย่างการคำนวณ
+    document.getElementById("exampleBox").innerHTML = `
+      <strong>${text.exampleTitle}</strong><br>
+      ${amount.toLocaleString()} × ${tip}% = ${tipAmount.toLocaleString()}<br>
+      ${amount.toLocaleString()} + ${tipAmount.toLocaleString()} = ${total.toLocaleString()}<br>
+      ${total.toLocaleString()} ÷ ${people} = ${perPerson.toLocaleString()}
+    `;
+  }
+  // ✅ พิมพ์วันเกิดแล้วกด Enter เพื่อคำนวณ
+  document.getElementById("amount").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      calculateTip();
+    }
+  });
+
+  document.getElementById("amount").addEventListener("input", function () {
+    const val = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+    const parts = val.split('.');
+    const intPart = parts[0].replace(/^0+(?!$)/, '');
+    const decPart = parts[1] || '';
+    this.value = decPart
+      ? `${intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}.${decPart}`
+      : intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  });
+</script>
+</body>
+</html>
