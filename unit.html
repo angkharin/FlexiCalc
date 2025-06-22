@@ -66,12 +66,27 @@
       font-size: 14px;
       font-weight: bold;
     }
-    .next-items{
-      margin-bottom: 20px;
+    .next-items {
+      grid-column: 1 / -1; /* ✅ ให้ขยายเต็มแถว */
+      text-align: center;
+      margin-top: -15px;
     }
-    .next-items a{
-    text-decoration: none;
+
+    .next-items a {
+      text-decoration: none;
+      color: white;
+      background: #333;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      display: inline-block;
+      font-size: 18px;
+      transition: background 0.3s ease;
     }
+    .next-items a:hover {
+      background: #555;
+    }
+
   </style>
 </head>
 <body>
@@ -138,12 +153,10 @@
     <img src="image/vat.png">
     <div class="unit-label" data-en="Vat" data-th="ภาษีมูลค่าเพิ่ม"></div>
   </div>
+  <div class="next-items">
+  <h2><a href="unit.html">1</a></h2>
 </div>
-<section class="next">
-    <div class="next-items">
-        <h2><a href="unit.html"><font color="white">1</a></font></h2>
-    </div>
-  </section>
+</div>
 
 <script>
   const isThai = (navigator.language || 'en').toLowerCase().startsWith('th');
