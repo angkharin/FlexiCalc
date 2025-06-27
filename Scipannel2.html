@@ -7,6 +7,14 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <button id="sidebarToggle" onclick="toggleSidebar()">❮</button>
+  <div class="sidebar">
+    <div class="theme-option" id="theme-original" onclick="setTheme('original')">🎨 Original</div>
+    <div class="theme-option" id="theme-warm" onclick="setTheme('warm')">🔥 Warm</div>
+    <div class="theme-option" id="theme-cool" onclick="setTheme('cool')">❄️ Cool</div>
+    <div class="theme-option" id="theme-custom1">✨ Custom 1</div>
+    <div class="theme-option" id="theme-custom2">🌈 Custom 2</div>
+  </div>
   <div id="hintBox" style="
   position: absolute;
   background: rgba(0,0,0,0.85);
@@ -28,7 +36,7 @@
   <pre id="display-text" class="display-text"></pre>
 </div>
 
-      <button class="btn side-toggle" onclick="toggleMenu()">☰</button>
+      <button class="side-toggle" onclick="toggleMenu()">☰</button>
     </div>
     <div id="extraMenu" class="extra-menu hidden">
   <div class="menu-item" onclick="window.location.href='unit.html'">ตัวแปลงหน่วย</div>
@@ -39,14 +47,14 @@
       <button class="btn2 sci" onclick="togglePanel()" onmousedown="showTooltip(this)"
       data-tooltip-th="ฟังก์ชั่นทางเลือก" data-tooltip-en="Alternative functions">⮂</button>
       <button id="modeToggle2"
-  onmousedown="showHint(this, 'modeToggle2')"
-  onmouseup="hideHint()"
-  onmouseleave="hideHint()"
-  onclick="toggleAngleMode()">Rad</button>
+      onmousedown="showHint(this, 'modeToggle2')"
+      onmouseup="hideHint()"
+      onmouseleave="hideHint()"
+      onclick="toggleAngleMode()">Rad</button>
 
       <button class="btn2 sci" onclick="insertFunction('cbrt')" onmousedown="showTooltip(this)"
       data-tooltip-th="รากที่สาม" data-tooltip-en="Cube root">∛</button>
-      <button class="btn1 function" onclick="clearAll()" onmousedown="showTooltip(this)"
+      <button class="function" onclick="clearAll()" onmousedown="showTooltip(this)"
       data-tooltip-th="ล้าง" data-tooltip-en="Clear">AC</button>
       <button class="btn1 operator" onclick="insertBracket()" onmousedown="showTooltip(this)"
       data-tooltip-th="วงเล็บ" data-tooltip-en="Brackets">()</button>
@@ -61,9 +69,9 @@
       data-tooltip-th="โคไซน์ผกผัน" data-tooltip-en="Inverse cosine">cos⁻¹</button>
       <button class="btn2 sci" onclick="insertFunction('atan')" onmousedown="showTooltip(this)"
       data-tooltip-th="แทนเจนต์ผกผัน" data-tooltip-en="Inverse tangent">tan⁻¹</button>
-      <button class="btn1" onclick="appendNumber('7')">7</button>
-      <button class="btn1" onclick="appendNumber('8')">8</button>
-      <button class="btn1" onclick="appendNumber('9')">9</button>
+      <button class="number" onclick="appendNumber('7')">7</button>
+      <button class="number" onclick="appendNumber('8')">8</button>
+      <button class="number" onclick="appendNumber('9')">9</button>
       <button class="btn1 operator" onclick="appendOperator('×')" onmousedown="showTooltip(this)"
       data-tooltip-th="คูณ" data-tooltip-en="Multiplication">×</button>
 
@@ -73,9 +81,9 @@
       data-tooltip-th="ไฮเพอร์โบลิกโคไซน์" data-tooltip-en="Hyperbolic cosine">cosh</button>
       <button class="btn2 sci" onclick="insertFunction('tanh')" onmousedown="showTooltip(this)"
       data-tooltip-th="ไฮเพอร์โบลิกแทนเจนต์" data-tooltip-en="Hyperbolic tangent">tanh</button>
-      <button class="btn1" onclick="appendNumber('4')">4</button>
-      <button class="btn1" onclick="appendNumber('5')">5</button>
-      <button class="btn1" onclick="appendNumber('6')">6</button>
+      <button class="number" onclick="appendNumber('4')">4</button>
+      <button class="number" onclick="appendNumber('5')">5</button>
+      <button class="number" onclick="appendNumber('6')">6</button>
       <button class="btn1 operator" onclick="appendOperator('−')" onmousedown="showTooltip(this)"
       data-tooltip-th="ลบ" data-tooltip-en="Minus">−</button>
       
@@ -85,9 +93,9 @@
       data-tooltip-th="ไฮเพอร์โบลิกโคไซน์แบบผกผัน" data-tooltip-en="Inverse hyperbolic cosine">cosh⁻¹</button>
       <button class="btn2 sci" onclick="insertFunction('atanh')" onmousedown="showTooltip(this)"
       data-tooltip-th="ไฮเพอร์โบลิกแทนเจนต์แบบผกผัน" data-tooltip-en="Inverse hyperbolic tangent">tanh⁻¹</button>
-      <button class="btn1" onclick="appendNumber('1')">1</button>
-      <button class="btn1" onclick="appendNumber('2')">2</button>
-      <button class="btn1" onclick="appendNumber('3')">3</button>
+      <button class="number" onclick="appendNumber('1')">1</button>
+      <button class="number" onclick="appendNumber('2')">2</button>
+      <button class="number" onclick="appendNumber('3')">3</button>
       <button class="btn1 operator" onclick="appendOperator('+')" onmousedown="showTooltip(this)"
       data-tooltip-th="บวก" data-tooltip-en="Plus">+</button>
       
@@ -97,17 +105,18 @@
       data-tooltip-th="ยกกำลังสาม" data-tooltip-en="Cube">x³</button>
       <button class="btn2 sci" onclick="insertFunction('factorial')" onmousedown="showTooltip(this)"
       data-tooltip-th="แฟกทอเรียล" data-tooltip-en="Factorial" >x!</button>
-      <button class="btn1" onclick="appendDot()">.</button>
-      <button class="btn1" onclick="appendNumber('0')">0</button>
+      <button class="number" onclick="appendDot()">.</button>
+      <button class="number" onclick="appendNumber('0')">0</button>
       <button class="btn2" onclick="clearEntry()">⌫</button>
-      <button class="btn1 equal" onclick="calculate()" onmousedown="showTooltip(this)"
+      <button class="equal" onclick="calculate()" onmousedown="showTooltip(this)"
       data-tooltip-th="การคำนวณ" data-tooltip-en="Equal">=</button>
-            
+      
 
 
     </div>
   </div>
 
 <script src="script.js"></script>
+
 </body>
 </html>

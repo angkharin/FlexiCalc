@@ -180,32 +180,59 @@ body {
 }
 
 .btn2:hover {
-  background: #FF3366;
+  background: var(--btn2-hover, #FF3333);
   transform: scale(1.05);
 }
 
 .operator {
   background: #ffecb3;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  width: 75px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.2em;
 }
 
 .operator:hover {
-  background: #ffd54f;
+  background: var(--btn-hover, #ffd54f);
+  transform: scale(1.05);
 }
 
 .function {
-  background: #FF9900	;
+  background: #FF9900;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  width: 75px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.2em;
 }
 
 .function:hover {
-  background: #ff7043;
+  background: var(--function-hover, #ff7043);
+  transform: scale(1.05);
 }
 
 .equal {
   background:#CC99FF;
+  color: #333;
+  width: 75px;
+  aspect-ratio: 1/1;;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .equal:hover {
-  background: #9966FF;
+  background: var(--equal-hover, #9966FF);
+  transform: scale(1.05);
 }
 
 #modeToggle {
@@ -220,7 +247,7 @@ body {
   transition: background 0.3s ease, transform 0.2s ease;
 }
 #modeToggle:hover {
-  background: #4169E1;
+  background: var(--sci-hover, #4169E1);
   transform: scale(1.05);
 }
 
@@ -230,13 +257,13 @@ body {
   border-radius: 50%;
   border: none;
   font-size: 1.2em;
-  background: #2baf2b;
-  color: #333;
+  background: var(--sci2-color, #2baf2b); 
+  color: var(--text-color, #333);
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
 }
 #modeToggle2:hover {
-  background: #00CC00;
+  background: var(--sci2-hover, #00CC00);
   transform: scale(1.05);
 }
 
@@ -253,13 +280,13 @@ body {
 }
 
 .btn.sci:hover {
-  background-color: #4169E1;
+  background: var(--sci-hover, #4169E1);
   transform: scale(1.05);
 }
 
 .btn2.sci {
-  background-color: #2baf2b;
-  color: #333;
+  background: var(--sci2-color, #2baf2b); 
+  color: var(--text-color, #333);
   width: 75px;
   aspect-ratio: 1/1;;
   border-radius: 50%;
@@ -270,7 +297,7 @@ body {
 }
 
 .btn2.sci:hover {
-  background-color: #00CC00;
+  background: var(--sci2-hover, #00CC00);
   transform: scale(1.05);
 }
 
@@ -308,6 +335,12 @@ body {
   text-align: right;
 }
 .side-toggle {
+  color: #333;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
   margin-left: 10px;
   font-size: 1.2em;
   background: #ce93d8; 
@@ -318,7 +351,8 @@ body {
 }
 
 .side-toggle:hover {
-  background: 	#9999CC;
+  background: var(--menu-hover, #9999CC);
+  transform: scale(1.05);
 }
 #scientificPanel {
   display: flex;
@@ -425,4 +459,156 @@ body {
   top: 0;
   z-index: 100;
   padding: 15px 0;
+}
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 140px;
+  height: 100%;
+  background: #e0f7fa;
+  padding-top: 60px;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+  z-index: 9999;
+}
+.theme-option {
+  padding: 14px 20px;
+  cursor: pointer;
+  font-size: 1em;
+  border-bottom: 1px solid #ddd;
+}
+.theme-option:hover {
+  background: #cfd8dc;
+}
+body {
+  margin-left: 140px; /* เนื้อหาเลื่อนไปจาก sidebar */
+}
+
+/* Theme Color Variables */
+.theme-original {
+  --bg-color: #e0f7fa;
+  --btn-color: #ffecb3;
+  --number-color: #f8bbd0;
+  --function-color: #FF9900;
+  --equal-color: #CC99FF;
+  --menu-color: #ce93d8;
+  --btn2-color: #FF6666;
+  --sci-color: #6495ED;
+  --text-color: #333;
+}
+.theme-warm {
+  --bg-color: #fff3e0;
+  --btn-color: #ffcc80;
+  --number-color: #FF6666;
+  --number-hover: #FF3333;
+  --function-color: #FF9900;
+  --equal-color: #f48fb1;
+  --equal-hover: #f06292;
+  --menu-color: #f8bbd0;
+  --menu-hover: #f48fb1;
+  --btn2-color: #ff8a65;
+  --btn2-hover: #ff7043;
+  --sci-color: #ffab91;
+  --sci-hover: #ff8a65;
+  --sci2-color: #fff59d;
+  --sci2-hover: #ffee58;
+  --text-color: #333;
+}
+.theme-cool {
+  --bg-color: #e1f5fe;
+  --btn-color: #80deea;
+  --btn-hover: #4dd0e1;
+  --number-color: #ce93d8;
+  --number-hover: #ba68c8;
+  --function-color: #FF99CC;
+  --function-hover: #FF66CC	;
+  --equal-color: #b39ddb;
+  --equal-hover: #9575cd;
+  --menu-color: #90caf9;
+  --menu-hover: #64b5f6;
+  --btn2-color: #4fc3f7;
+  --btn2-hover: #29b6f6;
+  --sci-color: #81d4fa;
+  --sci-hover:#29b6f6;
+  --sci2-color: #72d572;
+  --sci2-hover: #42bd41;
+  --text-color: #333;
+}
+
+
+
+/* ใช้ theme variable */
+body {
+  background: var(--bg-color, #e0f7fa);
+}
+.btn1 {
+  background: var(--btn-color, #ffecb3);
+  color: var(--text-color, #333);
+}
+.btn2 {
+  background: var(--btn2-color, #FF6666);
+  color: var(--text-color, #333);
+  background: var(--menu-hover, #F4A460);
+}
+.btn.sci,
+#modeToggle {
+  background: var(--sci-color, #6495ED);
+}
+
+.function {
+  background: var(--function-color, #FF9900);
+  color: var(--text-color, #333);
+}
+.equal {
+  background: var(--equal-color, #CC99FF);
+  color: var(--text-color, #333);
+}
+.side-toggle {
+  background: var(--menu-color, #ce93d8);
+  color: var(--text-color, #333);
+}
+
+
+.number {
+  background: var(--number-color, #f8bbd0);
+  color: var(--text-color, #333);
+  width: 75px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.2em;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.number:hover {
+  background: var(--number-hover, #f48fb1);
+  transform: scale(1.05);
+}
+/* ปุ่ม toggle ด้านซ้ายของจอ */
+.sidebar.hidden {
+  transform: translateX(-140px);
+  transition: transform 0.3s ease;
+}
+
+body.sidebar-hidden {
+  margin-left: 0 !important;
+}
+
+/* ปุ่ม toggle */
+#sidebarToggle {
+  position: fixed;
+  left: 0px; /* เริ่มที่ซ้าย */
+  top: 20px;
+  z-index: 10000;
+  background: #90caf9;
+  color: #333;
+  border: none;
+  padding: 6px 10px;
+  font-size: 18px;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  transition: left 0.3s ease;
 }

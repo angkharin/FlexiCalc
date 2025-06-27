@@ -816,3 +816,54 @@ function hideHint() {
   clearTimeout(hintTimeout);
   document.getElementById("hintBox").style.display = "none";
 }
+function setTheme(themeName) {
+  document.body.classList.remove('theme-original', 'theme-warm', 'theme-cool');
+  document.body.classList.add(`theme-${themeName}`);
+}
+window.onload = function () {
+  const theme = localStorage.getItem('theme') || 'original';
+  setTheme(theme);
+  // (โค้ดโหลดหน้าจอของคุณเดิมก็ตามมาครับ)
+};
+// ฟังก์ชันสำหรับเปลี่ยนธีม
+window.addEventListener('DOMContentLoaded', () => {
+  setTheme('original');
+
+  // แปลภาษา
+  const lang = navigator.language || 'en';
+  const isThai = lang.startsWith('th');
+
+  document.getElementById('theme-original').innerText = isThai ? '🎨 ดั้งเดิม' : '🎨 Original';
+  document.getElementById('theme-warm').innerText     = isThai ? '🔥 โทนร้อน' : '🔥 Warm';
+  document.getElementById('theme-cool').innerText     = isThai ? '❄️ โทนเย็น' : '❄️ Cool';
+  document.getElementById('theme-custom1').innerText  = isThai ? '✨ กำหนดเอง 1' : '✨ Custom 1';
+  document.getElementById('theme-custom2').innerText  = isThai ? '🌈 กำหนดเอง 2' : '🌈 Custom 2';
+
+  // ซ่อน sidebar เสมอ
+  const sidebar = document.querySelector('.sidebar');
+  const toggleBtn = document.getElementById('sidebarToggle');
+  const body = document.body;
+
+  sidebar.classList.add('hidden');
+  body.classList.add('sidebar-hidden');
+  toggleBtn.innerText = '❯';
+  toggleBtn.style.left = '0px';
+
+  localStorage.setItem('sidebarHidden', '1'); // reset เสมอ
+});
+
+
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const toggleBtn = document.getElementById('sidebarToggle');
+  const body = document.body;
+
+  sidebar.classList.toggle('hidden');
+  body.classList.toggle('sidebar-hidden');
+
+  const isHidden = sidebar.classList.contains('hidden');
+  toggleBtn.innerText = isHidden ? '❯' : '❮';
+  toggleBtn.style.left = isHidden ? '0px' : '140px';
+
+  localStorage.setItem('sidebarHidden', isHidden ? '1' : '0');
+}

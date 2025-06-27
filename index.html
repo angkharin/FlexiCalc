@@ -7,6 +7,15 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <button id="sidebarToggle" onclick="toggleSidebar()">❮</button>
+  <div class="sidebar">
+    <div class="theme-option" id="theme-original" onclick="setTheme('original')">🎨 Original</div>
+    <div class="theme-option" id="theme-warm" onclick="setTheme('warm')">🔥 Warm</div>
+    <div class="theme-option" id="theme-cool" onclick="setTheme('cool')">❄️ Cool</div>
+    <div class="theme-option" id="theme-custom1">✨ Custom 1</div>
+    <div class="theme-option" id="theme-custom2">🌈 Custom 2</div>
+  </div>
+
   <div class="calculator">
     <div class="display-container">
      <div class="display" id="display">
@@ -14,7 +23,7 @@
       data-tooltip-th="โหมดวิทยาศาสตร์" data-tooltip-en="Scientific mode">🔣</button>
         <pre id="display-text" class="display-text"></pre>
     </div>
-      <button class="btn1 side-toggle" onclick="toggleMenu()">☰</button>
+      <button class="side-toggle" onclick="toggleMenu()">☰</button>
     </div>
     
     <div id="extraMenu" class="extra-menu hidden">
@@ -23,7 +32,7 @@
 </div>
 
     <div class="buttons">
-      <button class="btn1 function" onclick="clearAll()" onmousedown="showTooltip(this)"
+      <button class="function" onclick="clearAll()" onmousedown="showTooltip(this)"
       data-tooltip-th="ล้าง" data-tooltip-en="Clear">AC</button>
       <button class="btn1 operator" onclick="insertBracket()" onmousedown="showTooltip(this)"
       data-tooltip-th="วงเล็บ" data-tooltip-en="Brackets">()</button>
@@ -32,28 +41,28 @@
       <button class="btn1 operator" onclick="appendOperator('÷')" onmousedown="showTooltip(this)"
       data-tooltip-th="หาร" data-tooltip-en="Division">÷</button>
 
-      <button class="btn1" onclick="appendNumber('7')">7</button> 
-      <button class="btn1" onclick="appendNumber('8')">8</button>
-      <button class="btn1" onclick="appendNumber('9')">9</button>
+      <button class="number" onclick="appendNumber('7')">7</button> 
+      <button class="number" onclick="appendNumber('8')">8</button>
+      <button class="number" onclick="appendNumber('9')">9</button>
       <button class="btn1 operator" onclick="appendOperator('×')" onmousedown="showTooltip(this)"
       ata-tooltip-th="คูณ" data-tooltip-en="Multiplication">×</button>
 
-      <button class="btn1" onclick="appendNumber('4')">4</button>
-      <button class="btn1" onclick="appendNumber('5')">5</button>
-      <button class="btn1" onclick="appendNumber('6')">6</button>
+      <button class="number" onclick="appendNumber('4')">4</button>
+      <button class="number" onclick="appendNumber('5')">5</button>
+      <button class="number" onclick="appendNumber('6')">6</button>
       <button class="btn1 operator" onclick="appendOperator('−')" onmousedown="showTooltip(this)"
       data-tooltip-th="ลบ" data-tooltip-en="Minus">−</button>
 
-      <button class="btn1" onclick="appendNumber('1')">1</button>
-      <button class="btn1" onclick="appendNumber('2')">2</button>
-      <button class="btn1" onclick="appendNumber('3')">3</button>
+      <button class="number" onclick="appendNumber('1')">1</button>
+      <button class="number" onclick="appendNumber('2')">2</button>
+      <button class="number" onclick="appendNumber('3')">3</button>
       <button class="btn1 operator" onclick="appendOperator('+')" onmousedown="showTooltip(this)"
       data-tooltip-th="บวก" data-tooltip-en="Plus">+</button>
       
-      <button class="btn1" onclick="appendDot()">.</button>
-      <button class="btn1" onclick="appendNumber('0')">0</button>
+      <button class="number" onclick="appendDot()">.</button>
+      <button class="number" onclick="appendNumber('0')">0</button>
       <button class="btn2" onclick="clearEntry()">⌫</button>
-      <button class="btn1 equal" onclick="calculate()" onmousedown="showTooltip(this)"
+      <button class="equal" onclick="calculate()" onmousedown="showTooltip(this)"
       data-tooltip-th="การคำนวณ" data-tooltip-en="Equal">=</button>
 
     </div>
@@ -64,6 +73,7 @@
 function openSciPanel() {
   window.location.href = "Scipannel.html";
 }
+
 </script>
 </body>
 </html>
