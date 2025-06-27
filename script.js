@@ -833,6 +833,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const lang = navigator.language || 'en';
   const isThai = lang.startsWith('th');
 
+  document.getElementById('theme-header').innerText = isThai ? 'ธีม' : 'Theme';
   document.getElementById('theme-original').innerText = isThai ? '🎨 ดั้งเดิม' : '🎨 Original';
   document.getElementById('theme-warm').innerText     = isThai ? '🔥 โทนร้อน' : '🔥 Warm';
   document.getElementById('theme-cool').innerText     = isThai ? '❄️ โทนเย็น' : '❄️ Cool';

@@ -612,3 +612,15 @@ body.sidebar-hidden {
   cursor: pointer;
   transition: left 0.3s ease;
 }
+
+
+
+
+.theme-header {
+  font-weight: bold;
+  padding: 16px 20px 8px;
+  font-size: 1.1em;
+  color: #333;
+  border-bottom: 1px solid #ccc;
+  background-color: transparent;
+}
