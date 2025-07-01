@@ -13,7 +13,7 @@ body {
 
 .calculator {
   display: grid;
-  background: #b2ebf2;
+  background:var(--calc-bg, #b2ebf2);
   border-radius: 20px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.2);
   max-width: 500px;
@@ -23,7 +23,7 @@ body {
 }
 .calculator2 {
   display: grid;
-  background: #b2ebf2;
+  background:var(--calc2-bg, #b2ebf2);
   border-radius: 20px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.2);
   max-width: 700px;
@@ -500,6 +500,8 @@ body {
 .theme-warm {
   --bg-color: #fff3e0;
   --btn-color: #ffcc80;
+  --calc-bg: #fbe9e7;
+  --calc2-bg: #fbe9e7;
   --number-color: #FF6666;
   --number-hover: #FF3333;
   --function-color: #FF9900;
