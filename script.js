@@ -835,10 +835,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('theme-header').innerText = isThai ? 'ธีม' : 'Theme';
   document.getElementById('theme-original').innerText = isThai ? '🎨 ดั้งเดิม' : '🎨 Original';
-  document.getElementById('theme-warm').innerText     = isThai ? '🔥 โทนร้อน' : '🔥 Warm';
-  document.getElementById('theme-cool').innerText     = isThai ? '❄️ โทนเย็น' : '❄️ Cool';
-  document.getElementById('theme-custom1').innerText  = isThai ? '✨ กำหนดเอง 1' : '✨ Custom 1';
-  document.getElementById('theme-custom2').innerText  = isThai ? '🌈 กำหนดเอง 2' : '🌈 Custom 2';
+  document.getElementById('theme-warm').innerText = isThai ? '🔥 โทนร้อน' : '🔥 Warm';
+  document.getElementById('theme-cool').innerText = isThai ? '❄️ โทนเย็น' : '❄️ Cool';
+  document.getElementById('theme-love').innerText = isThai ? '🩷 ความรัก' : '🩷 Love';
+  document.getElementById('theme-natural').innerText  = isThai ? '🍀 ธรรมชาติ' : '🍀 Natural';
 
   // ซ่อน sidebar เสมอ
   const sidebar = document.querySelector('.sidebar');
