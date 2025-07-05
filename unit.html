@@ -91,6 +91,27 @@
       color: white;
     }
 
+    #btnBack {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    z-index: 1000;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  #btnBack:hover {
+    background-color: #e6554f;
+    transform: scale(1.05);
+  }
+
   </style>
 </head>
 <body>
@@ -99,7 +120,6 @@
   <div class="header sticky-header">
   <h1 id="title-main">ตัวแปลงหน่วย</h1>
 </div>
-
   <div class="unit-grid">
   <div class="unit-item" onclick="window.location.href='age.html'">
     <img src="image/age.png">
@@ -167,8 +187,13 @@
   </div>
 </div>
 
+<button id="btnBack">⬅ กลับ</button>
+
+
 <script>
   const isThai = (navigator.language || 'en').toLowerCase().startsWith('th');
+
+  document.getElementById('btnBack').textContent = isThai ? '⬅ กลับ' : '⬅ Back';
 
   document.querySelectorAll('.unit-label').forEach(el => {
     el.textContent = isThai ? el.dataset.th : el.dataset.en;

@@ -862,7 +862,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const translations = {
     'bg-color': isThai ? 'พื้นหลัง' : 'Background',
     'number-color': isThai ? 'ปุ่มเลข' : 'Number',
-    'number-hover': isThai ? 'เลข Hover' : 'Number Hover',
+    'number-hover': isThai ? 'เลขโฮเวอร์' : 'Number Hover',
     'function-color': isThai ? 'ฟังก์ชัน' : 'Function',
     'equal-color': isThai ? 'เท่ากับ' : 'Equal',
     'calc-bg': isThai ? 'พื้นเครื่องคิดเลข' : 'Calc BG',
