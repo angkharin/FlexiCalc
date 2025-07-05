@@ -738,3 +738,33 @@ body.sidebar-hidden {
   cursor: pointer;
   transition: right 0.3s ease;
 }
+#applyCustomBtn {
+  display: block;
+  margin: 25px auto 0 auto; /* บน 25px, ซ้าย-ขวา auto, ล่าง 0 */
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  background: var(--equal-color, #CC99FF);
+  color: var(--text-color, #333);
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#applyCustomBtn:hover {
+  background: var(--equal-hover, #9966FF);
+  transform: scale(1.05);
+}
+.custom-theme-panel label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--text-color, #333);
+  transition: color 0.3s ease;
+  padding-left: 2px;
+}
+
+.custom-theme-panel label:hover {
+  color: #666; /* เปลี่ยนสีเวลา hover */
+}
