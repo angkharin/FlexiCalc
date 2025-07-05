@@ -472,6 +472,7 @@ body {
   box-shadow: 2px 0 8px rgba(0,0,0,0.1);
   z-index: 9999;
 }
+
 .theme-option {
   padding: 14px 20px;
   cursor: pointer;
@@ -700,8 +701,8 @@ body.sidebar-hidden {
 }
 .custom-theme-panel {
   position: fixed;
-  right: 0;
   top: 0;
+  right: 0;
   width: 220px;
   height: 100vh;
   background: #e0f7fa;
@@ -709,7 +710,8 @@ body.sidebar-hidden {
   padding: 60px 15px 15px;
   z-index: 9998;
   overflow-y: auto;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(0);
 }
 .custom-theme-panel.hidden {
   transform: translateX(220px); /* ซ่อนไว้ด้านขวา */
@@ -721,10 +723,12 @@ body.sidebar-hidden {
   padding: 10px 0;
   border-bottom: 1px solid #ccc;
 }
+
 #customThemeToggle {
   position: fixed;
-  right: 0;
   top: 20px;
+  right: 0;
+  z-index: 10000;
   background: #90caf9;
   color: #333;
   border: none;
@@ -732,5 +736,5 @@ body.sidebar-hidden {
   font-size: 18px;
   border-radius: 4px 0 0 4px;
   cursor: pointer;
-  z-index: 10000;
+  transition: right 0.3s ease;
 }

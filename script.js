@@ -828,22 +828,25 @@ window.onload = function () {
   setTheme(theme);
   // (โค้ดโหลดหน้าจอของคุณเดิมก็ตามมาครับ)
 };
+
 // ฟังก์ชันสำหรับเปลี่ยนธีม
 window.addEventListener('DOMContentLoaded', () => {
+  // --- ตั้งธีมเริ่มต้น ---
   setTheme('original');
 
-  // แปลภาษา
+  // --- ตรวจภาษา ---
   const lang = navigator.language || 'en';
   const isThai = lang.startsWith('th');
 
+  // --- แปลข้อความฝั่งซ้าย (Theme Sidebar) ---
   document.getElementById('theme-header').innerText = isThai ? 'ธีม' : 'Theme';
   document.getElementById('theme-original').innerText = isThai ? '🎨 ดั้งเดิม' : '🎨 Original';
   document.getElementById('theme-warm').innerText = isThai ? '🔥 โทนร้อน' : '🔥 Warm';
   document.getElementById('theme-cool').innerText = isThai ? '❄️ โทนเย็น' : '❄️ Cool';
   document.getElementById('theme-love').innerText = isThai ? '🩷 ความรัก' : '🩷 Love';
-  document.getElementById('theme-natural').innerText  = isThai ? '🍀 ธรรมชาติ' : '🍀 Natural';
+  document.getElementById('theme-natural').innerText = isThai ? '🍀 ธรรมชาติ' : '🍀 Natural';
 
-  // ซ่อน sidebar เสมอ
+  // --- ซ่อน sidebar ซ้าย เสมอ ---
   const sidebar = document.querySelector('.sidebar');
   const toggleBtn = document.getElementById('sidebarToggle');
   const body = document.body;
@@ -852,8 +855,37 @@ window.addEventListener('DOMContentLoaded', () => {
   body.classList.add('sidebar-hidden');
   toggleBtn.innerText = '❯';
   toggleBtn.style.left = '0px';
+  localStorage.setItem('sidebarHidden', '1');
+  
 
-  localStorage.setItem('sidebarHidden', '1'); // reset เสมอ
+  // --- แปล custom theme panel ---
+  const translations = {
+    'bg-color': isThai ? 'พื้นหลัง' : 'Background',
+    'number-color': isThai ? 'ปุ่มเลข' : 'Number',
+    'number-hover': isThai ? 'เลข Hover' : 'Number Hover',
+    'function-color': isThai ? 'ฟังก์ชัน' : 'Function',
+    'equal-color': isThai ? 'เท่ากับ' : 'Equal',
+    'calc-bg': isThai ? 'พื้นเครื่องคิดเลข' : 'Calc BG',
+    'menu-color': isThai ? 'เมนู' : 'Menu',
+    'applyCustomBtn': isThai ? 'ใช้' : 'Apply',
+    'custom-theme-header': isThai ? '✏️ กำหนดธีม' : '✏️ Custom Theme'
+  };
+
+  for (const key in translations) {
+    if (key === 'applyCustomBtn') {
+      const btn = document.getElementById(key);
+      if (btn) btn.innerText = translations[key];
+    } else if (key === 'custom-theme-header') {
+      const header = document.getElementById(key);
+      if (header) header.innerText = translations[key];
+    } else {
+      const label = document.querySelector(`label[for="${key}"]`) ||
+                    document.querySelector(`input#${key}`)?.closest('label');
+      if (label) {
+        label.childNodes[0].nodeValue = translations[key] + ': ';
+      }
+    }
+  }
 });
 
 
@@ -884,6 +916,7 @@ function toggleCustomTheme() {
 }
 
 
+
 function applyCustomTheme() {
   const vars = [
     "bg-color", "btn-color", "btn-hover", "calc-bg", "calc2-bg",
@@ -912,39 +945,3 @@ function applyCustomTheme() {
   localStorage.setItem("theme", "custom");
   localStorage.setItem("customColors", JSON.stringify(themeValues));
 }
-
-
-
-// เมื่อโหลดหน้าจอ ให้ restore custom theme
-window.addEventListener('DOMContentLoaded', () => {
-  const lang = navigator.language || 'en';
-  const isThai = lang.startsWith('th');
-
-  const translations = {
-    'bg-color': isThai ? 'พื้นหลัง' : 'Background',
-    'number-color': isThai ? 'ปุ่มเลข' : 'Number',
-    'number-hover': isThai ? 'เลข Hover' : 'Number Hover',
-    'function-color': isThai ? 'ฟังก์ชัน' : 'Function',
-    'equal-color': isThai ? 'เท่ากับ' : 'Equal',
-    'calc-bg': isThai ? 'พื้นเครื่องคิดเลข' : 'Calc BG',
-    'menu-color': isThai ? 'เมนู' : 'Menu',
-    'applyCustomBtn': isThai ? 'ใช้' : 'Apply',
-    'custom-theme-header': isThai ? '✏️ กำหนดธีม' : '✏️​ Custom Theme'
-  };
-
-  for (const key in translations) {
-    if (key === 'applyCustomBtn') {
-      const btn = document.getElementById(key);
-      if (btn) btn.innerText = translations[key];
-    } else if (key === 'custom-theme-header') {
-      const header = document.getElementById(key);
-      if (header) header.innerText = translations[key];
-    } else {
-      const label = document.querySelector(`label[for="${key}"]`) ||
-                    document.querySelector(`input#${key}`)?.closest('label');
-      if (label) {
-        label.childNodes[0].nodeValue = translations[key] + ': ';
-      }
-    }
-  }
-});
