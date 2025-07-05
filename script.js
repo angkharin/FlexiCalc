@@ -816,9 +816,12 @@ function hideHint() {
   clearTimeout(hintTimeout);
   document.getElementById("hintBox").style.display = "none";
 }
+
 function setTheme(themeName) {
-  document.body.classList.remove('theme-original', 'theme-warm', 'theme-cool');
+  const themes = ['theme-original', 'theme-warm', 'theme-cool', 'theme-love', 'theme-natural'];
+  document.body.classList.remove(...themes);
   document.body.classList.add(`theme-${themeName}`);
+  localStorage.setItem('theme', themeName); // ✅ บันทึกด้วย
 }
 window.onload = function () {
   const theme = localStorage.getItem('theme') || 'original';
@@ -868,3 +871,80 @@ function toggleSidebar() {
 
   localStorage.setItem('sidebarHidden', isHidden ? '1' : '0');
 }
+
+function toggleCustomTheme() {
+  const panel = document.getElementById('customThemePanel');
+  const toggleBtn = document.getElementById('customThemeToggle');
+
+  panel.classList.toggle('hidden');
+
+  const isHidden = panel.classList.contains('hidden');
+  toggleBtn.innerText = isHidden ? '❮' : '❯';
+  toggleBtn.style.right = isHidden ? '0px' : '220px';
+}
+
+
+function applyCustomTheme() {
+  const vars = [
+    "bg-color", "btn-color", "btn-hover", "calc-bg", "calc2-bg",
+    "number-color", "number-hover", "function-color", "function-hover",
+    "equal-color", "equal-hover", "menu-color", "menu-hover",
+    "btn2-color", "btn2-hover", "sci-color", "sci-hover",
+    "sci2-color", "sci2-hover"
+  ];
+
+  const themeValues = {};
+  for (const v of vars) {
+    const input = document.getElementById(v);
+    if (input) {
+      const color = input.value;
+      document.body.style.setProperty(`--${v}`, color);
+      themeValues[v] = color;
+    }
+  }
+
+  // ลบธีมเก่าแล้วตั้ง class ใหม่
+  document.body.classList.remove(
+    "theme-original", "theme-warm", "theme-cool", "theme-love", "theme-natural"
+  );
+  document.body.classList.add("theme-custom");
+
+  localStorage.setItem("theme", "custom");
+  localStorage.setItem("customColors", JSON.stringify(themeValues));
+}
+
+
+
+// เมื่อโหลดหน้าจอ ให้ restore custom theme
+window.addEventListener('DOMContentLoaded', () => {
+  const lang = navigator.language || 'en';
+  const isThai = lang.startsWith('th');
+
+  const translations = {
+    'bg-color': isThai ? 'พื้นหลัง' : 'Background',
+    'number-color': isThai ? 'ปุ่มเลข' : 'Number',
+    'number-hover': isThai ? 'เลข Hover' : 'Number Hover',
+    'function-color': isThai ? 'ฟังก์ชัน' : 'Function',
+    'equal-color': isThai ? 'เท่ากับ' : 'Equal',
+    'calc-bg': isThai ? 'พื้นเครื่องคิดเลข' : 'Calc BG',
+    'menu-color': isThai ? 'เมนู' : 'Menu',
+    'applyCustomBtn': isThai ? 'ใช้' : 'Apply',
+    'custom-theme-header': isThai ? '✏️ กำหนดธีม' : '✏️​ Custom Theme'
+  };
+
+  for (const key in translations) {
+    if (key === 'applyCustomBtn') {
+      const btn = document.getElementById(key);
+      if (btn) btn.innerText = translations[key];
+    } else if (key === 'custom-theme-header') {
+      const header = document.getElementById(key);
+      if (header) header.innerText = translations[key];
+    } else {
+      const label = document.querySelector(`label[for="${key}"]`) ||
+                    document.querySelector(`input#${key}`)?.closest('label');
+      if (label) {
+        label.childNodes[0].nodeValue = translations[key] + ': ';
+      }
+    }
+  }
+});
