@@ -757,7 +757,7 @@ body.sidebar-hidden {
 }
 .custom-theme-panel label {
   display: block;
-  margin-top: 15px;
+  margin-top: 5px;
   font-weight: bold;
   font-size: 14px;
   color: var(--text-color, #333);
@@ -765,6 +765,19 @@ body.sidebar-hidden {
   padding-left: 2px;
 }
 
-.custom-theme-panel label:hover {
-  color: #666; /* เปลี่ยนสีเวลา hover */
+input[type="color"] {
+  width: 40px;
+  height: 30px;
+  padding: 0;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  background: none;
+  cursor: pointer;
+  transition: border 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  vertical-align: middle;
+}
+
+input[type="color"]:hover {
+  transform: scale(1.05);
 }
