@@ -118,7 +118,7 @@
   
 
   <div class="header sticky-header">
-  <h1 id="title-main">ตัวแปลงหน่วย</h1>
+  <h1 id="title-main">ตัวแปลงหน่วย<br>และการคิดเลขต่างๆ</h1>
 </div>
 
   <div class="unit-grid">
@@ -130,7 +130,7 @@
     <img src="image/Corporate Income Tax.png">
     <div class="unit-label" data-en="Corporate Income Tax" data-th="ภาษีสำหรับนิติบุคคล"></div>
   </div>
-  <div class="unit-item" onclick="window.location.href='decimal.html'">
+  <div class="unit-item" onclick="window.location.href='sales.html'">
     <img src="image/online sales.png">
     <div class="unit-label" data-en="Taxes on online sales" data-th="ภาษีสำหรับขายสินค้าออนไลน์"></div>
   </div>
@@ -237,7 +237,9 @@
     el.textContent = isThai ? el.dataset.th : el.dataset.en;
   });
 
-  document.getElementById('title-main').textContent = isThai ? 'ตัวแปลงหน่วย' : 'Unit Converter';
+document.getElementById('title-main').innerHTML = isThai 
+  ? 'ตัวแปลงหน่วย<br>และการคิดเลขต่างๆ' 
+  : 'Unit Converter<br>&nbsp and Calculators';
   document.getElementById('title-sub').textContent = isThai ? 'Unit Converter' : '';
 </script>
 </body>

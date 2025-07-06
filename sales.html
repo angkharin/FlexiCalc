@@ -3,7 +3,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="image/logo.png">
-  <title>Tax Calculator</title>
+  <title>คำนวณภาษีขายสินค้าออนไลน์</title>
   <style>
     /* สไตล์รวมของ body */
     body {
@@ -79,7 +79,7 @@
 </head>
 <body>
 <div class="container">
-  <h1 id="title">Tax Calculator</h1>
+  <h1 id="title">คำนวณภาษีขายสินค้าออนไลน์</h1>
 
   <div class="warning" id="warningText"></div>
 
@@ -106,7 +106,7 @@
   const isThai = (navigator.language || '').toLowerCase().startsWith("th");
   // ตั้งค่าข้อความตามภาษา
   const text = {
-    title: isThai ? "เครื่องคำนวณภาษี (VAT)" : "Tax Calculator (VAT)",
+    title: isThai ? "คำนวณภาษีขายสินค้าออนไลน์" : " Online Sales Tax Calculator",
     amountLabel: isThai ? "กรอกจำนวนเงิน (บาท):" : "Enter amount (THB):",
     rateLabel: isThai ? "อัตราภาษีมูลค่าเพิ่ม (%):" : "VAT Rate (%):",
     methodLabel: isThai ? "เลือกรูปแบบการคำนวณ:" : "Select calculation method:",
