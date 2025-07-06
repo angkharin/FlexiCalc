@@ -5,12 +5,14 @@
   <link rel="icon" href="image/logo.png">
   <title>Personal Tax Calculator</title>
   <style>
+    /* สไตล์รวมของ body */
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #fbe9e7;
       padding: 20px;
       margin: 0;
     }
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
     .container {
       max-width: 600px;
       margin: auto;
@@ -19,15 +21,18 @@
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
+    /* หัวข้อ */
     h1 {
       text-align: center;
       color: #ff8a65;
     }
+    /* ป้าย label */
     label {
       font-weight: bold;
       margin-top: 15px;
       display: block;
     }
+    /* ช่องกรอกเลข*/
     input, select {
       width: 100%;
       padding: 10px;
@@ -35,6 +40,7 @@
       margin-top: 5px;
       box-sizing: border-box;
     }
+    /* ปุ่มคำนวณ */
     button {
       margin-top: 20px;
       width: 100%;
@@ -86,7 +92,7 @@
     </select>
 
     <button onclick="calculateTax()" id="calcBtn">Calculate Tax</button>
-
+    <!-- แสดงผลลัพธ์ -->
     <div class="result" id="resultBox"></div>
     <div class="example" id="exampleBox"></div>
     <div class="note" id="noteBox"></div>
@@ -121,7 +127,7 @@
     // หักลดหย่อนส่วนตัว: โสด 60,000 สมรสเพิ่ม 60,000 คู่สมรส
     const deductionSingle = 60000;
     const deductionMarried = 120000;
-
+    // ฟังก์ชันภาษีบุคคลธรรมดา
     function calculateTax() {
       const raw = document.getElementById('income').value.replace(/,/g,'');
       const income = parseFloat(raw);
@@ -129,13 +135,14 @@
       const resultBox = document.getElementById('resultBox');
       const exampleBox = document.getElementById('exampleBox');
       const noteBox = document.getElementById('noteBox');
-
+      // ตรวจสอบว่ากรอกค่าถูกต้องหรือไม่
       if(isNaN(income) || income <= 0) {
         alert(isThai 
           ? 'กรุณากรอกจำนวนเงินให้ถูกต้อง' 
           : 'Please enter a valid amount.');
         return;
       }
+      // จำกัดไม่ให้เกิน 15 หลัก
       if(raw.replace('.', '').length > 15) {
         alert(isThai 
           ? 'ไม่สามารถคำนวณตัวเลขเกิน 15 หลักได้' 
@@ -175,12 +182,12 @@
         remaining -= span;
         last = b.max;
       }
-
+      //ผลลัพธ์
       resultBox.innerHTML = `
         💰 ${isThai ? 'รายได้สุทธิหลังหักลดหย่อน' : 'Net taxable income'}: ${netIncome.toLocaleString()}<br>
         🧾 ${isThai ? 'ภาษีที่ต้องชำระ' : 'Estimated tax'}: ${tax.toLocaleString(undefined, {minimumFractionDigits:2})} บาท
       `;
-
+      //ตัวอย่างการคำนวณ
       exampleBox.innerHTML = `<strong>${isThai ? '🔍 ตัวอย่างการคำนวณ:' : '🔍 Example Calculation:'}</strong><br>` +
         (isThai
           ? `รายได้ทั้งหมด = ${income.toLocaleString()} บาท<br>
@@ -196,15 +203,16 @@
             Tax brackets calculations:<br>${steps.map(s=>`- ${s}`).join('<br>')}<br>
             Total tax = ${tax.toLocaleString(undefined,{minimumFractionDigits:2})} THB`
         );
-
+      //หมายเหตุ
       noteBox.innerHTML = isThai
         ? "📝 ผลลัพธ์จากเครื่องมือนี้ใช้เพื่อประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถใช้เป็นหลักฐานทางกฎหมายหรือภาษีได้ ผู้ใช้งานควรปรึกษาผู้เชี่ยวชาญหรือหน่วยงานที่เกี่ยวข้องก่อนดำเนินการทางการเงินหรือภาษี"
         : "📝 This tax calculator is intended for preliminary informational purposes only and should not be used as legal, tax, or financial advice. Users are encouraged to consult professionals or relevant authorities before making any financial or tax-related decisions.";
     }
-
+    // ฟังก์ชันคำนวณภาษีเมื่อกด Enter
     document.getElementById('income').addEventListener('keydown', e => {
       if(e.key==='Enter') { e.preventDefault(); calculateTax(); }
     });
+    //ใส่ คอมม่าในช่องกรอกเงิน
     document.getElementById('income').addEventListener('input', function() {
       let v = this.value.replace(/,/g,'').replace(/[^\d.]/g,'');
       const parts = v.split('.');
