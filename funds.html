@@ -5,11 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Funds Calculator</title>
   <style>
+    /* สไตล์รวมของ body */
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #eef2f5;
       padding: 20px;
     }
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
     .container {
       max-width: 600px;
       background: #fff;
@@ -18,15 +20,18 @@
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
+    /* หัวข้อ */
     h1 {
       text-align: center;
       color: #2e7d32;
     }
+    /* ป้าย label */
     label {
       font-weight: bold;
       margin-top: 15px;
       display: block;
     }
+    /* ช่องกรอกเลข*/
     input, select {
       width: 100%;
       padding: 10px;
@@ -34,6 +39,7 @@
       margin-top: 5px;
       box-sizing: border-box;
     }
+    /* ปุ่มคำนวณ */
     button {
       width: 100%;
       padding: 10px;
@@ -76,7 +82,7 @@
     <input type="number" id="years" placeholder="enter number of years">
 
     <button onclick="calculateFunds()" id="calcBtn">Calculate</button>
-
+    <!-- แสดงผลลัพธ์ -->
     <div class="result" id="resultBox"></div>
     <div class="example" id="exampleBox"></div>
     <div class="note" id="noteBox"></div>
@@ -92,6 +98,7 @@
       rateLabel: isThai ? 'อัตราดอกเบี้ยต่อปี (%):' : 'Annual Interest Rate (%):',
       yearsLabel: isThai ? 'จำนวนปี:' : 'Years:',
       button: isThai ? 'คำนวณ' : 'Calculate',
+      //หมายเหตุ
       note: isThai
         ? "📝 ผลลัพธ์นี้ใช้เพื่อประกอบการตัดสินใจเบื้องต้นเท่านั้น อิงสูตรดอกเบี้ยทบต้น ไม่ใช่คำแนะนำทางการเงิน ควรปรึกษาผู้เชี่ยวชาญ"
         : "📝 This result is for informational use only: it's based on compound interest formula and not financial advice. Please consult a professional."
