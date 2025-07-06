@@ -19,16 +19,16 @@
 
     .header {
       text-align: center;
-      margin-bottom: 30px auto;
+      margin-bottom: 30px;
     }
 
     .header h1 {
-      font-size: 24px auto;
+      font-size: 24px;
       margin: 0;
     }
 
     .header h2 {
-      font-size: 16px auto;
+      font-size: 16px;
       margin: 0;
       color: #666;
     }
@@ -37,14 +37,14 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
       gap: 20px;
-      max-width: 600px auto;
+      max-width: 600px;
       margin: 0 auto;
       width: 100%;
     }
 
     .unit-item {
       background: #FFFF99;
-      border-radius: 12px auto;
+      border-radius: 12px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       text-align: center;
       padding: 15px 10px;
@@ -58,30 +58,30 @@
     }
 
     .unit-item img {
-      width: 32px auto;
-      height: 32px auto;
+      width: 32px;
+      height: 32px;
       margin-bottom: 8px;
     }
 
     .unit-label {
-      font-size: 14px auto;
+      font-size: 14px;
       font-weight: bold;
     }
     .next-items {
       display:flex ;
       grid-column: 1 / -1; /* ✅ ขยายเต็มแถวใน grid */
       justify-content: center;
-      gap: 10px auto;
-      margin-top: -10px auto;
+      gap: 10px;
+      margin-top: -10px;
     }
 
     .next-items a {
       text-decoration: none;
       color: white;
       background: #ffc107;
-      padding: 8px 20px auto auto;
-      border-radius: 8px auto;
-      font-size: 16px auto;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 16px;
       transition: background 0.3s ease;
     }
     .next-items a:hover {
@@ -93,14 +93,14 @@
 
     #btnBack {
     position: fixed;
-    bottom: 20px auto;
-    left: 20px auto;
+    bottom: 20px;
+    left: 20px;
     background-color: #ff6f61;
     color: white;
     border: none;
-    padding: 10px 18px auto auto;
+    padding: 10px 18px;
     border-radius: 8px;
-    font-size: 16px auto;
+    font-size: 16px;
     cursor: pointer;
     box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     z-index: 1000;
@@ -187,7 +187,7 @@
   </div>
 </div>
 
-<button id="btnBack">⬅ กลับ</button>
+<button id="btnBack" onclick="history.back()">⬅ กลับ</button>
 
 
 <script>
