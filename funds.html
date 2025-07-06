@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Funds Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #eef2f5;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      background: #fff;
+      margin: auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #2e7d32;
+    }
+    label {
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 20px;
+      background: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1b5e20;
+    }
+    .result, .example, .note {
+      margin-top: 20px;
+      font-size: 15px;
+      color: #333;
+    }
+    .note {
+      font-size: 13px;
+      color: #555;
+      background: #f3f3f3;
+      padding: 10px;
+      border-left: 4px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="title">Funds Calculator</h1>
+
+    <label id="label-invest">Initial Investment:</label>
+    <input type="text" id="invest" placeholder="enter amount in THB">
+
+    <label id="label-rate">Annual Interest Rate (%):</label>
+    <input type="number" id="rate" placeholder="enter rate">
+
+    <label id="label-years">Years:</label>
+    <input type="number" id="years" placeholder="enter number of years">
+
+    <button onclick="calculateFunds()" id="calcBtn">Calculate</button>
+
+    <div class="result" id="resultBox"></div>
+    <div class="example" id="exampleBox"></div>
+    <div class="note" id="noteBox"></div>
+  </div>
+
+  <script>
+    const isThai = (navigator.language || '').toLowerCase().startsWith('th');
+
+    // เปลี่ยนข้อความตามภาษา
+    const txt = {
+      title: isThai ? 'เครื่องคำนวณกองทุน' : 'Funds Calculator',
+      investLabel: isThai ? 'เงินลงทุนเบื้องต้น (บาท):' : 'Initial Investment (THB):',
+      rateLabel: isThai ? 'อัตราดอกเบี้ยต่อปี (%):' : 'Annual Interest Rate (%):',
+      yearsLabel: isThai ? 'จำนวนปี:' : 'Years:',
+      button: isThai ? 'คำนวณ' : 'Calculate',
+      note: isThai
+        ? "📝 ผลลัพธ์นี้ใช้เพื่อประกอบการตัดสินใจเบื้องต้นเท่านั้น อิงสูตรดอกเบี้ยทบต้น ไม่ใช่คำแนะนำทางการเงิน ควรปรึกษาผู้เชี่ยวชาญ"
+        : "📝 This result is for informational use only: it's based on compound interest formula and not financial advice. Please consult a professional."
+    };
+
+    // เปลี่ยนข้อความตามภาษา
+    document.title = txt.title;
+    document.getElementById('title').textContent = txt.title;
+    document.getElementById('label-invest').textContent = txt.investLabel;
+    document.getElementById('label-rate').textContent = txt.rateLabel;
+    document.getElementById('label-years').textContent = txt.yearsLabel;
+    document.getElementById('calcBtn').textContent = txt.button;
+    document.getElementById('noteBox').textContent = txt.note;
+    document.getElementById('invest').placeholder = isThai ? 'กรอกจำนวนเงิน' : 'Enter amount in THB';
+    document.getElementById('rate').placeholder = isThai ? 'กรอกอัตราดอกเบี้ย' : 'Enter interest rate';
+    document.getElementById('years').placeholder = isThai ? 'จำนวนปี' : 'Enter number of years';
+
+
+    // ฟังก์ชั่นคำนวณเงินกองทุนด้วยสูตรดอกเบี้ยทบต้น
+    function calculateFunds() {
+      let raw = document.getElementById('invest').value.replace(/,/g, '').trim();
+      const invest = parseFloat(raw);
+      const rate = parseFloat(document.getElementById('rate').value);
+      const years = parseFloat(document.getElementById('years').value);
+
+      // ตรวจค่าถูกต้อง
+      if (isNaN(invest) || isNaN(rate) || isNaN(years) || invest < 0 || rate < 0 || years < 0) {
+        alert(isThai ? 'กรุณากรอกข้อมูลให้ถูกต้อง' : 'Please enter valid values.');
+        return;
+      }
+
+      // จำกัดไม่เกิน 15 หลัก
+      if (raw.replace('.', '').length > 15) {
+        alert(isThai ? 'ตัวเลขเกิน 15 หลักไม่ได้' : 'Numbers over 15 digits are not allowed.');
+        return;
+      }
+
+      // สมมติ compounding ปีละครั้ง
+      const finalAmount = invest * Math.pow((1 + rate / 100), years);
+      const profit = finalAmount - invest;
+
+      // แสดงผล
+      document.getElementById('resultBox').innerHTML = `
+        ${isThai ? 'ยอดสุดท้าย: ' : 'Final Amount: '}<b>${finalAmount.toLocaleString(undefined, {maximumFractionDigits: 2})} ฿</b><br>
+        ${isThai ? 'กำไรจากดอกเบี้ย: ' : 'Interest Earned: '}<b>${profit.toLocaleString(undefined, {maximumFractionDigits: 2})} ฿</b>
+      `;
+
+      // ตัวอย่างการคำนวณ
+      document.getElementById('exampleBox').innerHTML = `<strong>${isThai ? '🔍 ตัวอย่างคำนวณ:' : '🔍 Example calculation:'}</strong><br>
+        ${isThai
+          ? `${invest.toLocaleString()} × (1 + ${rate}% )^${years} = ${finalAmount.toLocaleString(undefined, {maximumFractionDigits: 2})}`
+          : `${invest.toLocaleString()} × (1 + ${rate}% )^${years} = ${finalAmount.toLocaleString(undefined, {maximumFractionDigits: 2})}`
+        }`;
+    }
+
+    // ติด comma ตอนพิมพ์
+    document.getElementById('invest').addEventListener('input', function(){
+      let v = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+      const p = v.split('.');
+      const ip = p[0].replace(/^0+(?!$)/, '');
+      const dp = p[1] || '';
+      this.value = dp ? `${ip.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}.${dp}` : ip.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    });
+
+    // Enter เพื่อคำนวณ
+    document.getElementById('invest').addEventListener('keydown', function(e){
+      if (e.key === 'Enter') { e.preventDefault(); calculateFunds(); }
+    });
+  </script>
+</body>
+</html>
