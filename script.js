@@ -877,6 +877,7 @@ window.addEventListener('DOMContentLoaded', () => {
     'calc-bg': isThai ? 'สีเครื่องคิดเลข' : 'Calc BG',
     'calc2-bg': isThai ? 'สีเครื่องคิดเลข' : 'Calc BG',
     'menu-color': isThai ? 'เมนู' : 'Menu',
+    'menu-hover': isThai ? 'เมนูโฮเวอร์' : 'Menu Hover',
     'applyCustomBtn': isThai ? 'ใช้' : 'Apply',
     'custom-theme-header': isThai ? '✏️ กำหนดธีม' : '✏️ Custom Theme'
   };
