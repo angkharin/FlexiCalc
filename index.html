@@ -24,10 +24,17 @@
     <label for="bg-color">พื้นหลัง: <input type="color" id="bg-color"></label><br>
     <label for="bg-color">ปุ่มเลข: <input type="color" id="number-color"></label><br>
     <label for="bg-color">เลขโฮเวอร์: <input type="color" id="number-hover"></label><br>
-    <label for="bg-color">ฟังก์ชัน: <input type="color" id="function-color"></label><br>
-    <label for="bg-color">เท่ากับ: <input type="color" id="equal-color"></label><br>
-    <label for="bg-color">พื้นเครื่องคิดเลข: <input type="color" id="calc-bg"></label><br>
+    <label for="bg-color">ปุ่มเลขคณิต: <input type="color" id="btn-color"></label><br>    
+    <label for="bg-color">เลขคณิตโฮเวอร์: <input type="color" id="btn-hover"></label><br>
+    <label for="bg-color">ปุ่มลบ: <input type="color" id="btn2-color"></label><br>
+    <label for="bg-color">ลบโฮเวอร์: <input type="color" id="btn2-hover"></label><br>
+    <label for="bg-color">ปุ่มล้าง: <input type="color" id="function-color"></label><br>
+    <label for="bg-color">ล้างโฮเวอร์:<input type="color" id="function-hover"></label><br>
+    <label for="bg-color">ปุ่มเท่ากับ: <input type="color" id="equal-color"></label><br>
+    <label for="bg-color">เท่ากับโฮเวอร์: <input type="color" id="equal-hover"></label><br>
+    <label for="bg-color">สีเครื่องคิดเลข: <input type="color" id="calc-bg"></label><br>
     <label for="bg-color">ปุ่มเมนู: <input type="color" id="menu-color"></label><br>
+    <label for="bg-color">ปุ่มเมนูโฮเวอร์: <input type="color" id="menu-hover"></label><br>
     <!-- เพิ่มต่อได้ตามชื่อ CSS Variable -->
     <button id="applyCustomBtn" onclick="applyCustomTheme()">ใช้</button>
   </div>
@@ -45,8 +52,8 @@
     </div>
     
     <div id="extraMenu" class="extra-menu hidden">
-  <div class="menu-item" onclick="window.location.href='unit.html'">ตัวแปลงหน่วย</div>
-  <div class="menu-item" onclick="alert('ยังไม่เปิดใช้งาน')">ประวัติผู้วิจัย</div>
+  <div class="menu-item" id="menu-unit" onclick="window.location.href='unit.html'">ตัวแปลงหน่วย</div>
+  <div class="menu-item" id="menu-researcher" onclick="alert('ยังไม่เปิดใช้งาน')">ประวัติผู้วิจัย</div>
 </div>
 
     <div class="buttons">

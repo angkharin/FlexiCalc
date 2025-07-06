@@ -3,7 +3,7 @@ body {
   justify-content: center;
   align-items: start;
   min-height: 100vh;
-  background: #e0f7fa;
+  background: var(--bg-color,#e0f7fa);
   font-family: 'Arial', sans-serif;
   overflow-y: auto; 
   overflow-x: auto; 
@@ -157,14 +157,14 @@ body {
   border-radius: 50%;
   border: none;
   font-size: 1.2em;
-  background: #f8bbd0;
+  background: var(--btn-color,#f8bbd0);
   color: #333;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .btn1:hover {
-  background: #f48fb1;
+  background: var(--btn-hover,#f48fb1);
   transform: scale(1.05);
 }
 
@@ -173,7 +173,7 @@ body {
   border-radius: 50%;
   border: none;
   font-size: 1.2em;
-  background:#FF6666;
+  background:var(--btn2-color,#FF6666);
   color: #333;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
@@ -185,7 +185,7 @@ body {
 }
 
 .operator {
-  background: #ffecb3;
+  background: var(--btn-hover,#ffecb3);
   color: #333;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
@@ -202,7 +202,7 @@ body {
 }
 
 .function {
-  background: #FF9900;
+  background: var(--function-color,#FF9900);
   color: #333;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
@@ -219,7 +219,7 @@ body {
 }
 
 .equal {
-  background:#CC99FF;
+  background:var(--equal-color,#CC99FF);
   color: #333;
   width: 75px;
   aspect-ratio: 1/1;;
@@ -241,7 +241,7 @@ body {
   border-radius: 50%;
   border: none;
   font-size: 1.2em;
-  background: #6495ED;
+  background: var(--sci-color,#6495ED);
   color: #333;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
@@ -268,7 +268,7 @@ body {
 }
 
 .btn.sci {
-  background-color: #6495ED;
+  background-color: var(--sci-color,#6495ED);
   color: #333;
   width: 75px;
   aspect-ratio: 1/1;;
@@ -343,7 +343,7 @@ body {
   transition: background 0.3s ease, transform 0.2s ease;
   margin-left: 10px;
   font-size: 1.2em;
-  background: #ce93d8; 
+  background: var(--menu-color,#ce93d8); 
   border-radius: 5px;
   padding: 5px;
   height: 40px;
@@ -514,8 +514,8 @@ body {
   --btn2-hover: #ff7043;
   --sci-color: #ffab91;
   --sci-hover: #ff8a65;
-  --sci2-color: #fff59d;
-  --sci2-hover: #ffee58;
+  --sci2-color: #ffd54f;
+  --sci2-hover: #ffc107;
   --text-color: #333;
 }
 .theme-cool {
@@ -618,29 +618,6 @@ body {
   background: var(--btn-color, #ffecb3);
   color: var(--text-color, #333);
 }
-.btn2 {
-  background: var(--btn2-color, #FF6666);
-  color: var(--text-color, #333);
-  background: var(--menu-hover, #F4A460);
-}
-.btn.sci,
-#modeToggle {
-  background: var(--sci-color, #6495ED);
-}
-
-.function {
-  background: var(--function-color, #FF9900);
-  color: var(--text-color, #333);
-}
-.equal {
-  background: var(--equal-color, #CC99FF);
-  color: var(--text-color, #333);
-}
-.side-toggle {
-  background: var(--menu-color, #ce93d8);
-  color: var(--text-color, #333);
-}
-
 
 .number {
   background: var(--number-color, #f8bbd0);
@@ -675,7 +652,7 @@ body.sidebar-hidden {
   left: 0px; /* เริ่มที่ซ้าย */
   top: 20px;
   z-index: 10000;
-  background: #90caf9;
+  background: var(--equal-color,#90caf9);
   color: #333;
   border: none;
   padding: 6px 10px;
@@ -694,7 +671,7 @@ body.sidebar-hidden {
 .theme-header {
   font-weight: bold;
   padding: 16px 20px 8px;
-  font-size: 1.1em;
+  font-size: 16px;
   color: #333;
   border-bottom: 1px solid #ccc;
   background-color: transparent;
@@ -705,7 +682,7 @@ body.sidebar-hidden {
   right: 0;
   width: 220px;
   height: 100vh;
-  background: #e0f7fa;
+  background: var(--bg-color,#e0f7fa);
   box-shadow: -2px 0 8px rgba(0,0,0,0.1);
   padding: 60px 15px 15px;
   z-index: 9998;
@@ -719,7 +696,7 @@ body.sidebar-hidden {
 #custom-theme-header {
   text-align: center;
   font-weight: bold;
-  font-size: 1.1em;
+  font-size: 16px;
   padding: 10px 0;
   border-bottom: 1px solid #ccc;
 }
@@ -729,7 +706,7 @@ body.sidebar-hidden {
   top: 20px;
   right: 0;
   z-index: 10000;
-  background: #90caf9;
+  background: var(--equal-color,#90caf9);
   color: #333;
   border: none;
   padding: 6px 10px;
@@ -756,10 +733,8 @@ body.sidebar-hidden {
   transform: scale(1.05);
 }
 .custom-theme-panel label {
-  display: block;
-  margin-top: 5px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 12px;
   color: var(--text-color, #333);
   transition: color 0.3s ease;
   padding-left: 2px;

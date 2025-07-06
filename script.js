@@ -856,16 +856,26 @@ window.addEventListener('DOMContentLoaded', () => {
   toggleBtn.innerText = '❯';
   toggleBtn.style.left = '0px';
   localStorage.setItem('sidebarHidden', '1');
-  
 
   // --- แปล custom theme panel ---
   const translations = {
     'bg-color': isThai ? 'พื้นหลัง' : 'Background',
     'number-color': isThai ? 'ปุ่มเลข' : 'Number',
     'number-hover': isThai ? 'เลขโฮเวอร์' : 'Number Hover',
-    'function-color': isThai ? 'ฟังก์ชัน' : 'Function',
+    'btn-color': isThai ? 'ปุ่มเลขคณิต' : 'Button',
+    'btn-hover': isThai ? 'เลขคณิตโฮเวอร์' : 'Button Hover',
+    'btn2-color': isThai ? 'ปุ่มลบ': 'Clear Button',
+    'btn2-hover': isThai ? 'ลบโฮเวอร์' : 'Clear Hover',
+    'sci-color': isThai ? 'ปุ่มวิทย์1' : 'sci1 Button',
+    'sci-hover': isThai ? 'วิทย์1โฮเวอร์' : 'sci1 Hover',
+    'sci2-color': isThai ? 'ปุ่มวิทย์2' : 'sci2 Button',
+    'sci2-hover': isThai ? 'วิทย์2โฮเวอร์' : 'sci2 Hover',
+    'function-color': isThai ? 'ปุ่มล้าง' : 'AC',
+    'function-hover': isThai ? 'ล้างโฮเวอร์' : 'AC Hover',
     'equal-color': isThai ? 'เท่ากับ' : 'Equal',
-    'calc-bg': isThai ? 'พื้นเครื่องคิดเลข' : 'Calc BG',
+    'equal-hover': isThai ? 'เท่ากับโฮเวอร์' : 'Equal Hover',
+    'calc-bg': isThai ? 'สีเครื่องคิดเลข' : 'Calc BG',
+    'calc2-bg': isThai ? 'สีเครื่องคิดเลข' : 'Calc BG',
     'menu-color': isThai ? 'เมนู' : 'Menu',
     'applyCustomBtn': isThai ? 'ใช้' : 'Apply',
     'custom-theme-header': isThai ? '✏️ กำหนดธีม' : '✏️ Custom Theme'
@@ -886,7 +896,19 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
   }
+
+  // --- แปลเมนูเพิ่มเติม (extraMenu) ---
+  const menuTranslations = {
+    'menu-unit': isThai ? 'ตัวแปลงหน่วย' : 'Unit Converter',
+    'menu-researcher': isThai ? 'ประวัติผู้วิจัย' : 'About Researcher'
+  };
+
+  for (const id in menuTranslations) {
+    const el = document.getElementById(id);
+    if (el) el.innerText = menuTranslations[id];
+  }
 });
+
 
 
 function toggleSidebar() {
