@@ -19,16 +19,16 @@
 
     .header {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 30px auto;
     }
 
     .header h1 {
-      font-size: 24px;
+      font-size: 24px auto;
       margin: 0;
     }
 
     .header h2 {
-      font-size: 16px;
+      font-size: 16px auto;
       margin: 0;
       color: #666;
     }
@@ -37,14 +37,14 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
       gap: 20px;
-      max-width: 600px;
+      max-width: 600px auto;
       margin: 0 auto;
       width: 100%;
     }
 
     .unit-item {
       background: #FFFF99;
-      border-radius: 12px;
+      border-radius: 12px auto;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       text-align: center;
       padding: 15px 10px;
@@ -58,30 +58,30 @@
     }
 
     .unit-item img {
-      width: 32px;
-      height: 32px;
+      width: 32px auto;
+      height: 32px auto;
       margin-bottom: 8px;
     }
 
     .unit-label {
-      font-size: 14px;
+      font-size: 14px auto;
       font-weight: bold;
     }
     .next-items {
       display:flex ;
       grid-column: 1 / -1; /* ✅ ขยายเต็มแถวใน grid */
       justify-content: center;
-      gap: 10px;
-      margin-top: -10px;
+      gap: 10px auto;
+      margin-top: -10px auto;
     }
 
     .next-items a {
       text-decoration: none;
       color: white;
       background: #ffc107;
-      padding: 8px 20px;
-      border-radius: 8px;
-      font-size: 16px;
+      padding: 8px 20px auto auto;
+      border-radius: 8px auto;
+      font-size: 16px auto;
       transition: background 0.3s ease;
     }
     .next-items a:hover {
@@ -93,14 +93,14 @@
 
     #btnBack {
     position: fixed;
-    bottom: 20px;
-    left: 20px;
+    bottom: 20px auto;
+    left: 20px auto;
     background-color: #ff6f61;
     color: white;
     border: none;
-    padding: 10px 18px;
+    padding: 10px 18px auto auto;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 16px auto;
     cursor: pointer;
     box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     z-index: 1000;
