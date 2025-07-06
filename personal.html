@@ -1,0 +1,219 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="image/logo.png">
+  <title>Personal Tax Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #d3969f;
+      padding: 20px;
+      margin: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #af3b4d;
+    }
+    label {
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      background-color: #af3b4d;
+      color: white;
+      border: none;
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    button:hover {
+      background: #8c1d2e;
+    }
+    .result, .example, .note {
+      margin-top: 20px;
+      font-size: 15px;
+      color: #333;
+    }
+    .note {
+      font-size: 13px;
+      color: #777;
+      background: #f9f9f9;
+      padding: 10px;
+      border-left: 4px solid #ccc;
+    }
+    .source {
+      margin-top: 15px;
+      font-size: 13px;
+      text-align: center;
+    }
+    .source a {
+      color: #1976d2;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="title">Personal Income Tax Calculator</h1>
+
+    <label id="label-income">Total annual income (THB):</label>
+    <input type="text" id="income" placeholder="Enter annual income">
+
+    <label id="label-status">Marital status:</label>
+    <select id="statusSelect">
+      <option value="single">Single</option>
+      <option value="married">Married</option>
+    </select>
+
+    <button onclick="calculateTax()" id="calcBtn">Calculate Tax</button>
+
+    <div class="result" id="resultBox"></div>
+    <div class="example" id="exampleBox"></div>
+    <div class="note" id="noteBox"></div>
+
+    <div class="source">
+      🔗 <a href="https://www.rd.go.th" target="_blank">Source: Thai Revenue Department</a>
+    </div>
+  </div>
+
+  <script>
+    const isThai = (navigator.language || '').toLowerCase().startsWith('th');
+
+    // เปลี่ยนข้อความตามภาษา
+    document.title = isThai ? 'เครื่องคำนวณภาษีบุคคลธรรมดา' : 'Personal Income Tax Calculator';
+    document.getElementById('title').textContent = isThai 
+      ? 'เครื่องคำนวณภาษีบุคคลธรรมดา' 
+      : 'Personal Income Tax Calculator';
+    document.getElementById('income').placeholder = isThai 
+      ? 'ใส่รายได้ทั้งปี' 
+      : 'Enter annual income';
+    document.getElementById('label-income').textContent = isThai 
+      ? 'รายได้ทั้งปี (บาท):' 
+      : 'Total annual income (THB):';
+    document.getElementById('label-status').textContent = isThai 
+      ? 'สถานภาพสมรส:' 
+      : 'Marital status:';
+    document.getElementById('statusSelect').options[0].textContent = isThai ? 'ไม่ได้สมรส' : 'Single';
+    document.getElementById('statusSelect').options[1].textContent = isThai ? 'สมรสแล้ว' : 'Married';
+    document.getElementById('calcBtn').textContent = isThai ? 'คำนวณภาษี' : 'Calculate Tax';
+    document.querySelector('.source a').textContent = isThai ? 'ข้อมูลจากกรมสรรพากร' : 'Source: Thai Revenue Department';
+
+    // หักลดหย่อนส่วนตัว: โสด 60,000 สมรสเพิ่ม 60,000 คู่สมรส
+    const deductionSingle = 60000;
+    const deductionMarried = 120000;
+
+    function calculateTax() {
+      const raw = document.getElementById('income').value.replace(/,/g,'');
+      const income = parseFloat(raw);
+      const status = document.getElementById('statusSelect').value;
+      const resultBox = document.getElementById('resultBox');
+      const exampleBox = document.getElementById('exampleBox');
+      const noteBox = document.getElementById('noteBox');
+
+      if(isNaN(income) || income <= 0) {
+        alert(isThai 
+          ? 'กรุณากรอกจำนวนเงินให้ถูกต้อง' 
+          : 'Please enter a valid amount.');
+        return;
+      }
+      if(raw.replace('.', '').length > 15) {
+        alert(isThai 
+          ? 'ไม่สามารถคำนวณตัวเลขเกิน 15 หลักได้' 
+          : 'Cannot calculate numbers exceeding 15 digits.');
+        return;
+      }
+
+      const personal = deductionSingle;
+      const totalDeduction = personal + (status==='married'? deductionSingle:0);
+      const netIncome = Math.max(income - totalDeduction, 0);
+
+      // อัตราภาษีขั้นบันได (ข้อมูลจากกรมสรรพากร)
+      const brackets = [
+        { max: 150000, rate: 0 },
+        { max: 300000, rate: 0.05 },
+        { max: 500000, rate: 0.10 },
+        { max: 750000, rate: 0.15 },
+        { max: 1000000, rate: 0.20 },
+        { max: 2000000, rate: 0.25 },
+        { max: 5000000, rate: 0.30 },
+        { max: Infinity, rate: 0.35 }
+      ];
+
+      let tax = 0, remaining = netIncome, last = 0;
+      let steps = [];
+
+      for(const b of brackets) {
+        if(remaining<=0) break;
+        const span = Math.min(b.max - last, remaining);
+        const tx = +(span * b.rate).toFixed(2);
+        if(b.rate>0 && span>0) {
+          steps.push(isThai 
+            ? `${last.toLocaleString()} ถึง ${(last+span).toLocaleString()} = ${span.toLocaleString()} × ${b.rate*100}% = ${tx.toLocaleString()}`
+            : `${last.toLocaleString()} to ${(last+span).toLocaleString()} = ${span.toLocaleString()} × ${(b.rate*100)}% = ${tx.toLocaleString()}`);
+        }
+        tax += tx;
+        remaining -= span;
+        last = b.max;
+      }
+
+      resultBox.innerHTML = `
+        💰 ${isThai ? 'รายได้สุทธิหลังหักลดหย่อน' : 'Net taxable income'}: ${netIncome.toLocaleString()}<br>
+        🧾 ${isThai ? 'ภาษีที่ต้องชำระ' : 'Estimated tax'}: ${tax.toLocaleString(undefined, {minimumFractionDigits:2})} บาท
+      `;
+
+      exampleBox.innerHTML = `<strong>${isThai ? '🔍 ตัวอย่างการคำนวณ:' : '🔍 Example Calculation:'}</strong><br>` +
+        (isThai
+          ? `รายได้ทั้งหมด = ${income.toLocaleString()} บาท<br>
+            หักลดหย่อนส่วนตัว = ${personal.toLocaleString()} บาท<br>
+            ${status==='married'?'หักคู่สมรส = '+personal.toLocaleString()+' บาท<br>':''}
+            รายได้สุทธิ = ${income.toLocaleString()} − ${totalDeduction.toLocaleString()} = ${netIncome.toLocaleString()} บาท<br>
+            คำนวณภาษีขั้นบันได:<br>${steps.map(s=>`- ${s}`).join('<br>')}<br>
+            รวมภาษี = ${tax.toLocaleString(undefined,{minimumFractionDigits:2})} บาท`
+          : `Total income = ${income.toLocaleString()}<br>
+            Personal deduction = ${personal.toLocaleString()} THB<br>
+            ${status==='married'?'Spouse deduction = '+personal.toLocaleString()+' THB<br>':''}
+            Net taxable income = ${income.toLocaleString()} − ${totalDeduction.toLocaleString()} = ${netIncome.toLocaleString()}<br>
+            Tax brackets calculations:<br>${steps.map(s=>`- ${s}`).join('<br>')}<br>
+            Total tax = ${tax.toLocaleString(undefined,{minimumFractionDigits:2})} THB`
+        );
+
+      noteBox.innerHTML = isThai
+        ? "📝 ผลลัพธ์จากเครื่องมือนี้ใช้เพื่อประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถใช้เป็นหลักฐานทางกฎหมายหรือภาษีได้ ผู้ใช้งานควรปรึกษาผู้เชี่ยวชาญหรือหน่วยงานที่เกี่ยวข้องก่อนดำเนินการทางการเงินหรือภาษี"
+        : "📝 This tax calculator is intended for preliminary informational purposes only and should not be used as legal, tax, or financial advice. Users are encouraged to consult professionals or relevant authorities before making any financial or tax-related decisions.";
+    }
+
+    document.getElementById('income').addEventListener('keydown', e => {
+      if(e.key==='Enter') { e.preventDefault(); calculateTax(); }
+    });
+    document.getElementById('income').addEventListener('input', function() {
+      let v = this.value.replace(/,/g,'').replace(/[^\d.]/g,'');
+      const parts = v.split('.');
+      const intP = parts[0].replace(/^0+(?!$)/,'');
+      const decP = parts[1] || '';
+      this.value = decP ?
+        `${intP.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}.${decP}` :
+        intP.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    });
+  </script>
+</body>
+</html>
