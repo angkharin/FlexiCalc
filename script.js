@@ -901,7 +901,8 @@ window.addEventListener('DOMContentLoaded', () => {
   // --- แปลเมนูเพิ่มเติม (extraMenu) ---
   const menuTranslations = {
     'menu-unit': isThai ? 'ตัวแปลงหน่วย' : 'Unit Converter',
-    'menu-researcher': isThai ? 'ประวัติผู้วิจัย' : 'About Researcher'
+    'menu-researcher': isThai ? 'ประวัติผู้วิจัย' : 'About Researcher',
+    'menu-questionnaire' : isThai ? 'แบบสอบถาม' : 'Questionnaire'
   };
 
   for (const id in menuTranslations) {
