@@ -1,0 +1,232 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="image/logo.png">
+  <title>ตัวแปลงแรงดัน</title>
+  <style>
+    /* สไตล์รวมของ body */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #e7e9fd;
+      margin: 0;
+      padding: 20px;
+    }
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+    /* หัวข้อ */
+    h1 {
+      text-align: center;
+      color: #1976d2;
+    }
+    /* ป้าย label */
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+    /* ช่องกรอกเลข */
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    /* ปุ่มคำนวณ */
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0d47a1;
+    }
+    .result, .example, .note {
+      margin-top: 20px;
+      font-size: 15px;
+      color: #333;
+    }
+    /*หมายเหตุ*/
+    .note {
+      font-size: 11px;
+      color: #777;
+      background: #f9f9f9;
+      padding: 10px;
+      border-left: 4px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="title">Pressure Converter</h1>
+
+    <label id="label-value">Enter pressure:</label>
+    <input type="text" id="pressureValue" placeholder="enter pressure value" />
+
+    <label id="label-unit">Select unit:</label>
+    <select id="unitSelect">
+      <option value="pa">Pascal (Pa)</option>
+      <option value="atm">Atmosphere (atm)</option>
+      <option value="bar">Bar (bar)</option>
+      <option value="psi">Pound-force per square inch (psi)</option>
+      <option value="inhg">Inches of Mercury (inHg)</option>
+      <option value="inh2o">Inches of Water (inH₂O)</option>
+      <option value="kgm2">kilogram per square meter (kg/m²)</option>
+      <option value="mbar">Millibar (mbar)</option>
+      <option value="mmhg">Millimeter of Mercury (mmHg)</option>
+      <option value="mmh2o">Millimeter of Water (mmH₂O)</option>
+      <option value="lbf_ft2">Pounds per square foot (lbf/ft²)</option>
+      <option value="torr">Torr (T)</option>
+    </select>
+
+    <button onclick="convertPressure()" id="convertBtn">Convert</button>
+    <!-- แสดงผลลัพธ์ -->
+    <div class="result" id="resultBox"></div>
+    <div class="example" id="exampleBox"></div>
+    <div class="note" id="noteBox"></div>
+  </div>
+
+  <script>
+    const isThai = (navigator.language || '').toLowerCase().startsWith('th');
+
+    const txt = {
+      title: isThai ? 'ตัวแปลงแรงดัน' : 'Pressure Converter',
+      value: isThai ? 'กรอกแรงดัน:' : 'Enter pressure:',
+      unit: isThai ? 'เลือกหน่วย:' : 'Select unit:',
+      button: isThai ? 'แปลง' : 'Convert',
+      note: isThai
+        ? "ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษหรือตัดเศษ ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานอ้างอิงทางกฎหมายหรือทางการเงินได้"
+        : "This result is based on standard general formulas and may contain slight rounding or truncation errors.<br>It is intended for preliminary informational purposes only and should not be used as legal or financial evidence.",
+      example: isThai ? 'ตัวอย่างการคำนวณ:' : 'Example Calculation:'
+    };
+    // ✅ แปลข้อความตามภาษา
+    document.title = txt.title;
+    document.getElementById('title').textContent = txt.title;
+    document.getElementById('label-value').textContent = txt.value;
+    document.getElementById('label-unit').textContent = txt.unit;
+    document.getElementById('convertBtn').textContent = txt.button;
+    document.getElementById('noteBox').innerHTML = txt.note;
+    document.getElementById('pressureValue').placeholder = isThai ? 'กรอกแรงดัน' : 'Enter pressure value';
+    document.getElementById('unitSelect').options[0].textContent = isThai ? 'ปาสกาล (Pa)' : 'Pascal (Pa)';
+    document.getElementById('unitSelect').options[1].textContent = isThai ? 'บาร์ (Bar)' : 'Bar (bar)';
+    document.getElementById('unitSelect').options[2].textContent = isThai ? 'แรงปอนด์ต่อตารางนิ้ว (psi)' : 'Pound-force per square inch (psi)';
+    document.getElementById('unitSelect').options[3].textContent = isThai ? 'บรรยากาศ (atm)' : 'Atmosphere (atm)';
+    document.getElementById('unitSelect').options[4].textContent = isThai ? 'นิ้วปรอท (inHg)' : 'Inches of Mercury (inHg)';
+    document.getElementById('unitSelect').options[5].textContent = isThai ? 'นิ้วน้ำ (inH₂O)' : 'Inches of Water (inH₂O)';
+    document.getElementById('unitSelect').options[6].textContent = isThai ? 'แรงกิโลกรัมต่อตารางเมตร (kg/m²)' : 'Kilogram per square meter (kg/m²)';
+    document.getElementById('unitSelect').options[7].textContent = isThai ? 'นิวตันต่อตารางเมตร (N/m²)' : 'Newton per square meter (N/m²)';
+    document.getElementById('unitSelect').options[7].textContent = isThai ? 'มิลลิบาร์ (mbar)' : 'Millibar (mbar)';
+    document.getElementById('unitSelect').options[8].textContent = isThai ? 'มิลลิเมตรปรอท (mmHg)' : 'Millimeter of Mercury (mmHg)';
+    document.getElementById('unitSelect').options[9].textContent = isThai ? 'มิลลิเมตรน้ำ (mmH₂O)' : 'Millimeter of Water (mmH₂O)';
+    document.getElementById('unitSelect').options[10].textContent = isThai ? 'แรงปอนด์ต่อตารางฟุต (lbf/ft²)' : 'Pounds per square foot (lbf/ft²)';
+    document.getElementById('unitSelect').options[11].textContent = isThai ? 'ทอร์ (Torr)' : 'Torr (T)';
+    function convertPressure() {
+  const raw = document.getElementById('pressureValue').value.replace(/,/g,'').trim();
+  const value = parseFloat(raw);
+  // ตรวจสอบว่ากรอกค่าถูกต้องหรือไม่
+  if (isNaN(value) || value < 0) {
+    alert(isThai ? 'กรุณากรอกตัวเลขที่ถูกต้อง' : 'Please enter a valid number');
+    return;
+  }
+  // จำกัดไม่ให้เกิน 15 หลัก
+  if (raw.replace('.', '').length > 15) {
+    alert(isThai ? 'ไม่สามารถกรอกเกิน 15 หลักได้' : 'Cannot enter more than 15 digits');
+    return;
+  }
+
+  const unit = document.getElementById('unitSelect').value;
+
+  // ✅ ค่าการแปลงเป็น Pa
+  const toPa = {
+    pa: 1,
+    atm: 101325,
+    bar: 100000,
+    nm2: 1,
+    kgm2: 9.80665,
+    mbar: 100,
+    mmhg: 133.322,
+    mmh2o: 9.80665,
+    inhg: 3386.389,
+    inh2o: 249.089,
+    psi: 6894.757,
+    lbf_ft2: 47.88026,
+    torr: 133.322
+  };
+
+  // ✅ ชื่อหน่วย
+  const names = {
+    pa: isThai ? 'ปาสกาล (Pa)' : 'Pascal (Pa)',
+    atm: isThai ? 'บรรยากาศ (atm)' : 'Atmosphere (atm)',
+    bar: isThai ? 'บาร์ (bar)' : 'Bar (bar)',
+    nm2: isThai ? 'นิวตันต่อตารางเมตร (N/m²)' : 'Newton per square meter (N/m²)',
+    kgm2: isThai ? 'แรงกิโลกรัมต่อตารางเมตร (kg/m²)' : 'Kilogram per square meter (kg/m²)',
+    mbar: isThai ? 'มิลลิบาร์ (mbar)' : 'Millibar (mbar)',
+    mmhg: isThai ? 'มิลลิเมตรปรอท (mmHg)' : 'Millimeter of Mercury (mmHg)',
+    mmh2o: isThai ? 'มิลลิเมตรน้ำ (mmH₂O)' : 'Millimeter of Water (mmH₂O)',
+    inhg: isThai ? 'นิ้วปรอท (inHg)' : 'Inches of Mercury (inHg)',
+    inh2o: isThai ? 'นิ้วน้ำ (inH₂O)' : 'Inches of Water (inH₂O)',
+    psi: isThai ? 'แรงปอนด์ต่อตารางนิ้ว (psi)' : 'Pound per square inch (psi)',
+    lbf_ft2: isThai ? 'แรงปอนด์ต่อตารางฟุต (lbf/ft²)' : 'Pounds per square foot (lbf/ft²)',
+    torr: isThai ? 'ทอร์ (Torr)' : 'Torr'
+  };
+
+  // ✅ แปลงค่าทุกหน่วย
+  const paValue = value * toPa[unit];
+  const results = {};
+  for (const k in toPa) {
+    results[k] = paValue / toPa[k];
+  }
+
+  // ✅ แสดงผลลัพธ์
+  let out = `<h3>${isThai ? 'ผลลัพธ์' : 'Result'}</h3><ul>`;
+  for (const k in results) {
+    out += `<li>${results[k].toLocaleString(undefined, {maximumFractionDigits:6})} ${names[k]}</li>`;
+  }
+  out += '</ul>';
+  document.getElementById('resultBox').innerHTML = out;
+
+  // ✅ สร้างตัวอย่างการคำนวณ
+  let ex = `<strong>${isThai ? '🔍 ตัวอย่างการคำนวณ:' : '🔍 Example Calculation:'}</strong><ul style="text-align:left;">`;
+  ex += `<li>${value.toLocaleString()} ${names[unit]} <span style="color:#999;">(${isThai ? 'หน่วยเดิม ไม่มีการแปลง' : 'Same unit, no conversion'})</span></li>`;
+  for (const k in results) {
+    if (k !== unit) {
+      ex += `<li>${names[k]} = ${value.toLocaleString()} × ${toPa[unit].toLocaleString()} ÷ ${toPa[k].toLocaleString()} = ${results[k].toLocaleString(undefined,{maximumFractionDigits:12})}</li>`;
+    }
+  }
+  ex += '</ul>';
+  document.getElementById('exampleBox').innerHTML = ex;
+}
+    // ✅ Enter เพื่อคำนวณ
+    document.getElementById('pressureValue').addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        convertPressure();
+      }
+    });
+    // ✅ คำนวณเมื่อเปลี่ยนหน่วย
+    document.getElementById('pressureValue').addEventListener("input", function () {
+      let val = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+      const parts = val.split('.');
+      const intPart = parts[0].replace(/^0+(?!$)/, '');
+      const decPart = parts[1] || '';
+      this.value = decPart
+        ? `${intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}.${decPart}`
+        : intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    });
+  </script>
+</body>
+</html>
