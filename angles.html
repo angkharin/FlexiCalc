@@ -133,10 +133,12 @@
 function convertAngle() {
     const raw = document.getElementById('angleValue').value.replace(/,/g,'').trim();
     const value = parseFloat(raw);
+    // ตรวจสอบว่ากรอกค่าถูกต้องหรือไม่
     if (isNaN(value) || value < 0) {
       alert(isThai ? 'กรุณากรอกตัวเลขที่ถูกต้อง' : 'Please enter a valid number');
       return;
     }
+    // จำกัดไม่ให้เกิน 15 หลัก
     if (raw.replace('.', '').length > 15) {
       alert(isThai ? 'ไม่สามารถกรอกเกิน 15 หลักได้' : 'Cannot enter more than 15 digits');
       return;
