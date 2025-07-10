@@ -82,6 +82,13 @@
       <option value="rad">Radians (rad)</option>
       <option value="grad">Gradians (grad)</option>
       <option value="mil">Milliradians (mrad)</option>
+      <option value="mil_nato">NATO Mil</option>
+      <option value="mil_british">British Mil</option>
+      <option value="mil_usww2">US WW2 Mil</option>
+      <option value="mil_soviet">Soviet Mil</option>
+      <option value="arcmin">Arcminute</option>
+      <option value="arcsec">Arcsecond</option>
+      <option value="sine">Sine</option>
     </select>
 
     <button onclick="convertAngle()" id="convertBtn">Convert</button>
@@ -112,8 +119,15 @@
     document.getElementById('angleValue').placeholder = isThai ? 'กรอกมุม' : 'Enter angle value';
     document.getElementById('unitSelect').options[0].textContent = isThai ? 'องศา (°)' : 'Degrees (°)';
     document.getElementById('unitSelect').options[1].textContent = isThai ? 'เรเดียน (rad)' : 'Radians (rad)';
-    document.getElementById('unitSelect').options[2].textContent = isThai ? 'กราด (grad)' : 'Gradians (grad)';
+    document.getElementById('unitSelect').options[2].textContent = isThai ? 'แกร็ด (grad)' : 'Gradians (grad)';
     document.getElementById('unitSelect').options[3].textContent = isThai ? 'มิลิเรเดียน (mrad)' : 'Milliradians (mrad)';
+    document.getElementById('unitSelect').options[4].textContent = isThai ? 'มิลิเรเดียน (นาโต)' : 'NATO Mil';
+    document.getElementById('unitSelect').options[5].textContent = isThai ? 'มิลิเรเดียน (อังกฤษ)' : 'British Mil';
+    document.getElementById('unitSelect').options[6].textContent = isThai ? 'มิลิเรเดียน (อเมริกา WW2)' : 'US WW2 Mil';
+    document.getElementById('unitSelect').options[7].textContent = isThai ? 'มิลิเรเดียน (สหภาพโซเวียต)' : 'Soviet Mil';
+    document.getElementById('unitSelect').options[8].textContent = isThai ? 'ลิปดา' : 'Arcminute';
+    document.getElementById('unitSelect').options[9].textContent = isThai ? 'ฟิลิปดา' : 'Arcsecond';
+    document.getElementById('unitSelect').options[10].textContent = isThai ? 'ไซน์' : 'Sine';
     document.getElementById('noteBox').innerHTML = txt.note;
 //ฟังก์ชันคำนวณมุม
 function convertAngle() {
@@ -133,42 +147,53 @@ function convertAngle() {
       deg: { deg: value, rad: value * Math.PI/180, grad: value * 10/9, mrad: value * Math.PI/180*1000 },
       rad: { deg: value * 180/Math.PI, rad: value, grad: value * 200/Math.PI, mrad: value * 1000 },
       grad: { deg: value * 9/10, rad: value * Math.PI/200, grad: value, mrad: value * Math.PI/200*1000 },
-      mrad: { deg: value * 180/(Math.PI*1000), rad: value/1000, grad: value * 200/(Math.PI*1000), mrad: value }
+      mrad: { deg: value * 180/(Math.PI*1000), rad: value/1000, grad: value * 200/(Math.PI*1000), mrad: value },
+      mil_nato: value / 0.05625,
+      mil_british: value / 0.05625,
+      mil_usww2: value / 0.05625,
+      mil_soviet: value / 0.06,
+      arcmin: value * 60,
+      arcsec: value * 3600,
+      sine: Math.sin(value * Math.PI / 180)
     };
     const res = conv[unit];
 
     const unitNames = {
       deg: isThai ? 'องศา (°)' : 'degrees (°)',
       rad: isThai ? 'เรเดียน' : 'radians',
-      grad: isThai ? 'กราด' : 'gradians',
-      mrad: isThai ? 'มิลิเรเดียน' : 'milliradians'
+      grad: isThai ? 'แกร็ด' : 'gradians',
+      mrad: isThai ? 'มิลิเรเดียน' : 'milliradians',
+      mil_nato: isThai ? 'มิลิเรเดียน (นาโต)' : 'NATO Mil',
+      mil_british: isThai ? 'มิลิเรเดียน (อังกฤษ)' : 'British Mil',
+      mil_usww2: isThai ? 'มิลิเรเดียน (อเมริกา WW2)' : 'US WW2 Mil',
+      mil_soviet: isThai ? 'มิลิเรเดียน (สหภาพโซเวียต)' : 'Soviet Mil',
+      arcmin: isThai ? 'ลิปดา' : 'Arcminute',
+      arcsec: isThai ? 'ฟิลิปดา' : 'Arcsecond',
+      sine: isThai ? 'ไซน์' : 'Sine'
     };
 
     // แสดงผลลัพธ์
     let out = `<h3>${isThai ? 'ผลลัพธ์' : 'Result'}</h3><ul>`;
-    out += `<li>${res.deg.toLocaleString(undefined,{maximumFractionDigits:6})} ${unitNames.deg}</li>`;
-    out += `<li>${res.rad.toLocaleString(undefined,{maximumFractionDigits:6})} ${unitNames.rad}</li>`;
-    out += `<li>${res.grad.toLocaleString(undefined,{maximumFractionDigits:6})} ${unitNames.grad}</li>`;
-    out += `<li>${res.mrad.toLocaleString(undefined,{maximumFractionDigits:6})} ${unitNames.mrad}</li>`;
-    out += `</ul>`;
+    for (const k in unitNames) {
+      if (conv.deg[k] !== undefined) {
+        out += `<li>${conv.deg[k].toLocaleString(undefined,{maximumFractionDigits:12})} ${unitNames[k]}</li>`;
+      }
+    }
+    out += '</ul>';
     document.getElementById('resultBox').innerHTML = out;
+    ;
 
     // สร้างตัวอย่าง
-    let ex = `<strong>${txt.example}</strong><ul style="text-align:left;">`;
-    ex += `<li>${value.toLocaleString()} ${unitNames[unit]} <span style="color:#999;">(${isThai ? 'หน่วยเดิม ไม่มีการแปลง' : 'same unit, no conversion'})</li>`;
-
-    if (unit !== 'rad') {
-      ex += `<li>${unitNames.rad} = ${value.toLocaleString()} × π/180 = ${conv.deg.radNothing ? conv.deg.radNothing : res.rad.toPrecision(12)}</li>`;
-      // แต่ใช้ res.rad ถ้าเลือก deg
-      ex = ex.replace('π/180', 'π/180');
-    }
-    if (unit !== 'grad') {
-      ex += `<li>${unitNames.grad} = ${value.toLocaleString()} × 10/9 = ${res.grad.toPrecision(12)}</li>`;
-    }
-    if (unit !== 'mrad') {
-      ex += `<li>${unitNames.mrad} = ${value.toLocaleString()} × π/180*1000 = ${res.mrad.toPrecision(12)}</li>`;
-    }
-    ex += `</ul>`;
+    let ex = `<strong>${txt.example}</strong><ul>`;
+    ex += `<li>${value} ${unitNames.deg} (${isThai ? 'หน่วยเดิม' : 'same unit'})</li>`;
+    ex += `<li>เรเดียน = ${value} × π/180 = ${conv.deg.rad.toPrecision(12)}</li>`;
+    ex += `<li>กราด = ${value} × 10/9 = ${conv.deg.grad.toPrecision(12)}</li>`;
+    ex += `<li>มิลิเรเดียน (นาโต) = ${value} ÷ 0.05625 = ${conv.deg.mil_nato.toPrecision(12)}</li>`;
+    ex += `<li>มิลิเรเดียน (สหภาพโซเวียต) = ${value} ÷ 0.06 = ${conv.deg.mil_soviet.toPrecision(12)}</li>`;
+    ex += `<li>ลิปดา = ${value} × 60 = ${conv.deg.arcmin.toPrecision(12)}</li>`;
+    ex += `<li>ฟิลิปดา = ${value} × 3600 = ${conv.deg.arcsec.toPrecision(12)}</li>`;
+    ex += `<li>ไซน์ = sin(${value}°) = ${conv.deg.sine.toPrecision(12)}</li>`;
+    ex += '</ul>';
     document.getElementById('exampleBox').innerHTML = ex;
   }
     // ✅ Enter เพื่อคำนวณ
