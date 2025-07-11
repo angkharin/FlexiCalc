@@ -64,8 +64,8 @@
       font-size: 13px;
       color: #666;
       background: #f9f9f9;
-      padding: 10px;
       border-left: 4px solid #ccc;
+      /* ไม่กำหนด padding ตอนโหลด */
     }
     /* คำเตือน */
     .warning {
@@ -107,7 +107,7 @@
   const isThai = (navigator.language || '').toLowerCase().startsWith("th");
   // ตั้งค่าข้อความตามภาษา
   const text = {
-    title: isThai ? "คำนวณภาษีขายสินค้าออนไลน์" : " Online Sales Tax Calculator",
+    title: isThai ? "คำนวณภาษีขายสินค้าออนไลน์" : "Online Sales Tax Calculator",
     amountLabel: isThai ? "กรอกจำนวนเงิน (บาท):" : "Enter amount (THB):",
     rateLabel: isThai ? "อัตราภาษีมูลค่าเพิ่ม (%):" : "VAT Rate (%):",
     methodLabel: isThai ? "เลือกรูปแบบการคำนวณ:" : "Select calculation method:",
@@ -118,7 +118,7 @@
     warning: isThai
       ? '⚠️ กรุณาตรวจสอบข้อมูลก่อนคำนวณ — โปรแกรมนี้อ้างอิง <a href="https://www.rd.go.th" target="_blank">กรมสรรพากร</a> และอัตราภาษีปีปัจจุบัน'
       : '⚠️ Please verify your input — this calculator references <a href="https://www.rd.go.th" target="_blank">Thai Revenue Department</a> and current VAT rates.',
-   note: isThai
+    note: isThai
       ? "📝 ผลลัพธ์จากโปรแกรมคำนวณภาษีนี้ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถใช้เป็นหลักฐานทางกฎหมายหรือภาษีได้ ผู้ใช้งานควรปรึกษาผู้เชี่ยวชาญหรือหน่วยงานที่เกี่ยวข้องก่อนดำเนินการทางการเงินหรือภาษี"
       : "📝 This tax calculator is intended for preliminary informational purposes only and should not be used as legal, tax, or financial advice. Users are encouraged to consult professionals or relevant authorities before making any financial or tax-related decisions."
   };
@@ -134,7 +134,10 @@
   document.getElementById("method").options[0].textContent = text.methodBefore;
   document.getElementById("method").options[1].textContent = text.methodAfter;
   document.getElementById("warningText").innerHTML = text.warning;
-  document.getElementById("noteBox").innerHTML = text.note;
+  // ซ่อนไว้ก่อน
+  document.getElementById("noteBox").innerHTML = "";
+  document.getElementById("noteBox").style.padding = "0";
+
   // ฟังก์ชันแปลงภาษีมูลค่าเพิ่ม
   function calculateVAT() {
     const raw = document.getElementById("amount").value.replace(/,/g, '');
@@ -190,7 +193,12 @@
     document.getElementById("exampleBox").innerHTML = `
       <strong>${isThai ? "🔍 ตัวอย่างการคำนวณ:" : "🔍 Example Calculation:"}</strong><br>${example}
     `;
+
+    // แสดงหมายเหตุเมื่อคำนวณ
+    document.getElementById("noteBox").innerHTML = text.note;
+    document.getElementById("noteBox").style.padding = "10px";
   }
+
   // ✅ กด Enter ใน amount → ไป vatRate
   document.getElementById("amount").addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
@@ -207,7 +215,7 @@
     }
   });
 
-  // ✅ กด Enter ใน method → ไปปุ่ม Calculate (ไม่คำนวณทันที)
+  // ✅ กด Enter ใน method → ไปปุ่ม Calculate
   document.getElementById("method").addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -222,6 +230,7 @@
       calculateVAT();
     }
   });
+
   // ใส่ comma ตอนพิมพ์
   document.getElementById("amount").addEventListener("input", function () {
     const val = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
