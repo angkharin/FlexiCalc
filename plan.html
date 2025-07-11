@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="image/logo.png">
+  <title>Plan Watch</title>
+  <style>
+    /* สไตล์รวมของ body */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #e0f2f1;
+      margin: 0;
+      padding: 20px;
+    }
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+    /* หัวข้อ */
+    h1 {
+      text-align: center;
+      color: #009688;
+    }
+    /* ป้าย label */
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+    /* ช่องกรอกเลข */
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    /* กลุ่มระยะเวลา */
+    .duration-group {
+      display: flex;
+      gap: 10px;
+    }
+    .duration-group input {
+      flex: 1;
+    }
+    .duration-group select {
+      width: 120px;
+    }
+    /* ปุ่มคำนวณ */
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background: #009688;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #00796b;
+    }
+    .result, .example, .note {
+      margin-top: 20px;
+      font-size: 15px;
+      color: #333;
+    }
+    /* ตัวอย่างการคำนวณ */
+    .note {
+      font-size: 12px;
+      color: #777;
+      background: #f9f9f9;
+      padding: 10px;
+      border-left: 4px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1 id="title">Plan Watch</h1>
+
+  <label id="label-title">Title:</label>
+  <input type="text" id="seriesTitle" placeholder="Enter title" />
+
+  <label id="label-episodes">Number of Episodes:</label>
+  <input type="text" id="episodes" placeholder="Enter episodes" />
+
+  <label id="label-duration">Duration per Episode:</label>
+  <div class="duration-group">
+    <input type="text" id="duration" placeholder="Enter duration">
+    <select id="durationUnit">
+      <option value="minutes">Minutes</option>
+      <option value="hours">Hours</option>
+    </select>
+  </div>
+
+  <label id="label-daily">Hours you can watch per day:</label>
+  <input type="text" id="dailyHours" placeholder="Enter hours per day" />
+
+  <button id="calcBtn">Calculate</button>
+  <!-- แสดงผลลัพธ์ -->
+  <div class="result" id="resultBox"></div>
+  <div class="example" id="exampleBox"></div>
+  <div class="note" id="noteBox"></div>
+</div>
+
+<script>
+const isThai = (navigator.language || '').toLowerCase().startsWith('th');
+// กำหนดข้อความตามภาษา
+const txt = {
+  title: isThai ? "วางแผนดูซีรีส์/อนิเมะ/ละคร" : "Plan to Watch Series/Anime/Drama",
+  labelTitle: isThai ? "เรื่อง:" : "Title:",
+  labelEpisodes: isThai ? "จำนวนตอน:" : "Number of Episodes:",
+  labelDuration: isThai ? "ระยะเวลาต่อตอน (นาที/ชั่วโมง):" : "Duration per Episode:",
+  labelDaily: isThai ? "ชั่วโมงที่สามารถดูต่อวัน:" : "Hours you can watch per day:",
+  placeholderTitle: isThai ? "ชื่อเรื่อง" : "Enter title",
+  placeholderEpisodes: isThai ? "กรอกจำนวนตอน" : "Enter episodes",
+  placeholderDuration: isThai ? "กรอกระยะเวลา" : "Enter duration",
+  placeholderDaily: isThai ? "กรอกชั่วโมงต่อวัน" : "Enter hours per day",
+  button: isThai ? "คำนวณ" : "Calculate",
+  result: isThai ? "ผลลัพธ์:" : "Result:",
+  example: isThai ? "ตัวอย่างการคำนวณ:" : "Example Calculation:",
+  note: isThai
+  //หมายเหตุ
+    ? "📝 นี่เป็นการประมาณ ใช้เพื่อวางแผนส่วนบุคคลเท่านั้น ไม่ใช่ข้อมูลทางกฎหมายหรือข้อผูกพัน"
+    : "📝 This is an estimate for personal planning only. Not legal or binding advice."
+};
+// กำหนดข้อความใน HTML
+document.title = txt.title;
+document.getElementById('title').textContent = txt.title;
+document.getElementById('label-title').textContent = txt.labelTitle;
+document.getElementById('label-episodes').textContent = txt.labelEpisodes;
+document.getElementById('label-duration').textContent = txt.labelDuration;
+document.getElementById('label-daily').textContent = txt.labelDaily;
+document.getElementById('seriesTitle').placeholder = txt.placeholderTitle;
+document.getElementById('episodes').placeholder = txt.placeholderEpisodes;
+document.getElementById('duration').placeholder = txt.placeholderDuration;
+document.getElementById('dailyHours').placeholder = txt.placeholderDaily;
+document.getElementById('calcBtn').textContent = txt.button;
+document.getElementById('noteBox').innerHTML = txt.note;
+document.getElementById('durationUnit').options[0].textContent = isThai ? 'นาที' : 'Minutes';
+document.getElementById('durationUnit').options[1].textContent = isThai ? 'ชั่วโมง' : 'Hours';
+// ฟังก์ชันคำนวณแผนการดู
+function calculatePlan() {
+  const title = document.getElementById('seriesTitle').value.trim() || (isThai ? "ไม่มีชื่อเรื่อง" : "Untitled");
+  const episodes = parseInt(document.getElementById('episodes').value.replace(/,/g,''));
+  const duration = parseFloat(document.getElementById('duration').value.replace(/,/g,''));
+  const durationUnit = document.getElementById('durationUnit').value;
+  const dailyHours = parseFloat(document.getElementById('dailyHours').value.replace(/,/g,''));
+  // ตรวจสอบค่าที่กรอก
+  if (isNaN(episodes) || episodes <= 0 || isNaN(duration) || duration <= 0 || isNaN(dailyHours) || dailyHours <= 0) {
+    alert(isThai ? "กรุณากรอกค่าทุกช่องให้ถูกต้อง" : "Please enter valid numbers in all fields.");
+    return;
+  }
+  // จำกัดไม่ให้เกิน 15 หลัก
+  if (
+    episodes.toString().replace('.', '').length > 15 ||
+    duration.toString().replace('.', '').length > 15 ||
+    dailyHours.toString().replace('.', '').length > 15
+  ) {
+    alert(isThai ? "ไม่สามารถกรอกเกิน 15 หลักได้" : "Cannot enter more than 15 digits");
+    return;
+  }
+  // แปลงระยะเวลาเป็นนาที
+  const durationInMinutes = durationUnit === 'hours' ? duration * 60 : duration;
+  const totalMinutes = episodes * durationInMinutes;
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = Math.round(totalMinutes % 60);
+  const days = Math.ceil((totalMinutes / 60) / dailyHours);
+  // แสดงผลลัพธ์
+  const result = `
+    ${txt.result}<br>
+    ${isThai ? "📺 เรื่อง:" : "📺 Title:"} ${title}<br>
+    ${isThai ? "🕒 ใช้เวลาทั้งหมด:" : "🕒 Total watch time:"} ${hours.toLocaleString()} ${isThai ? "ชั่วโมง" : "hours"} ${minutes} ${isThai ? "นาที" : "minutes"}<br>
+    ${isThai ? "📅 หากดูวันละ" : "📅 If you watch"} ${dailyHours.toLocaleString()} ${isThai ? "ชั่วโมงต่อวัน จะใช้เวลา" : "hours per day, it will take about"} ~${days.toLocaleString()} ${isThai ? "วัน" : "days"}
+  `;
+  // แสดงตัวอย่างการคำนวณ
+  const example = `
+    <strong>${txt.example}</strong><br>
+    ${episodes.toLocaleString()} × ${duration.toLocaleString()} ${isThai ? (durationUnit === 'hours' ? "ชั่วโมง" : "นาที") : durationUnit} = ${totalMinutes.toLocaleString()} นาที<br>
+    ${totalMinutes.toLocaleString()} ÷ 60 = ${hours.toLocaleString()} ${isThai ? "ชั่วโมง" : "hours"} ${minutes.toLocaleString()} ${isThai ? "นาที" : "minutes"}<br>
+    (${hours.toLocaleString()} ÷ ${dailyHours.toLocaleString()}) ≈ ${days.toLocaleString()} ${isThai ? "วัน" : "days"}
+  `;
+  document.getElementById('resultBox').innerHTML = result;
+  document.getElementById('exampleBox').innerHTML = example;
+}
+
+document.getElementById("calcBtn").addEventListener("click", calculatePlan);
+
+// กด Enter เพื่อโฟกัสช่องถัดไป หรือคำนวณ
+document.getElementById('seriesTitle').addEventListener("keydown", function(e) {
+  if (e.key === "Enter") { e.preventDefault(); document.getElementById('episodes').focus(); }
+});
+document.getElementById('episodes').addEventListener("keydown", function(e) {
+  if (e.key === "Enter") { e.preventDefault(); document.getElementById('duration').focus(); }
+});
+document.getElementById('duration').addEventListener("keydown", function(e) {
+  if (e.key === "Enter") { e.preventDefault(); document.getElementById('dailyHours').focus(); }
+});
+document.getElementById('dailyHours').addEventListener("keydown", function(e) {
+  if (e.key === "Enter") { e.preventDefault(); calculatePlan(); }
+});
+
+// คอมม่าอัตโนมัติ
+["episodes","duration","dailyHours"].forEach(id => {
+  document.getElementById(id).addEventListener("input", function () {
+    const val = this.value.replace(/,/g,'').replace(/[^\d.]/g,'');
+    const parts = val.split('.');
+    const intPart = parts[0].replace(/^0+(?!$)/, '');
+    const decPart = parts[1] || '';
+    this.value = decPart
+      ? `${intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",")}.${decPart}`
+      : intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",");
+  });
+});
+</script>
+</body>
+</html>
