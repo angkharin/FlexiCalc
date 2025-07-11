@@ -66,7 +66,6 @@
       font-size: 13px;
       color: #777;
       background: #f9f9f9;
-      padding: 10px;
       border-left: 4px solid #ccc;
     }
     /*ลิงค์แหล่งข้อมูล*/
@@ -202,7 +201,8 @@
     document.getElementById("noteBox").innerHTML = isThai
       ? "📝 ผลลัพธ์จากเครื่องมือนี้ใช้เพื่อประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถใช้เป็นหลักฐานทางกฎหมายหรือภาษีได้ ผู้ใช้งานควรปรึกษาผู้เชี่ยวชาญหรือหน่วยงานที่เกี่ยวข้องก่อนดำเนินการทางการเงินหรือภาษี"
       : "📝 This tax calculator is intended for preliminary informational purposes only and should not be used as legal, tax, or financial advice. Users are encouraged to consult professionals or relevant authorities before making any financial or tax-related decisions.";
-  }
+    document.getElementById("noteBox").style.padding = "10px"; // เพิ่ม padding
+    }
 
   // กด Enter เพื่อคำนวณ
   document.getElementById("income").addEventListener("keydown", function (e) {
