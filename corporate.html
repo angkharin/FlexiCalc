@@ -118,11 +118,18 @@
   const raw = document.getElementById("profit").value.replace(/,/g, '');
   const profit = parseFloat(raw);
   const type = document.getElementById("companyType").value;
-
+    // ตรวจสอบว่ากรอกค่าถูกต้องหรือไม่
   if (isNaN(profit) || profit < 0) {
-    alert(isThai ? "กรุณากรอกตัวเลขให้ถูกต้อง" : "Please enter a valid number.");
+    alert(isThai ? "กรุณากรอกตัวเลข" : "Please enter a valid number.");
     return;
   }
+  // จำกัดไม่ให้เกิน 15 หลัก
+  if(raw.replace('.', '').length > 15) {
+    alert(isThai 
+    ? 'ไม่สามารถคำนวณตัวเลขเกิน 15 หลักได้' 
+    : 'Cannot calculate numbers exceeding 15 digits.');
+    return;
+ }
 
   let tax = 0;
   let explanation = '';

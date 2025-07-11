@@ -140,7 +140,7 @@
   const value = parseFloat(raw);
   // ตรวจสอบว่ากรอกค่าถูกต้องหรือไม่
   if (isNaN(value) || value < 0) {
-    alert(isThai ? 'กรุณากรอกตัวเลขที่ถูกต้อง' : 'Please enter a valid number');
+    alert(isThai ? 'กรุณากรอกตัวเลข' : 'Please enter a valid number');
     return;
   }
   // จำกัดไม่ให้เกิน 15 หลัก
@@ -218,7 +218,7 @@
         convertPressure();
       }
     });
-    // ✅ คำนวณเมื่อเปลี่ยนหน่วย
+    // ✅ ตอมม่าในช่องกรอกแรงดัน
     document.getElementById('pressureValue').addEventListener("input", function () {
       let val = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
       const parts = val.split('.');
