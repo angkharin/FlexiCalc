@@ -1,0 +1,198 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="image/logo.png">
+  <title>Energy Converter</title>
+  <style>
+    /* สไตล์รวมของ body */
+    body { 
+      font-family: 'Segoe UI', sans-serif; 
+      background: #fce4ec; 
+      margin: 0; 
+      padding: 20px; 
+    }
+    /* กล่องคอนเทนเนอร์ตรงกลาง */
+    .container { 
+      max-width: 600px; 
+      margin: auto; 
+      background: #fff; 
+      padding: 20px; 
+      border-radius: 12px; 
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1); 
+    }
+    /* หัวข้อ */
+    h1 { 
+      text-align: center; 
+      color: #ec407a; 
+    }
+    /* ป้าย label */
+    label { 
+      font-weight: bold; 
+      display: block; 
+      margin-top: 15px; 
+    }
+    /* ช่องกรอกเลข */
+    input, select { 
+      width: 100%; 
+      padding: 10px; 
+      font-size: 16px; 
+      margin-top: 5px; 
+      box-sizing: border-box; 
+    }
+    /* ปุ่มคำนวณ */
+    button { 
+      margin-top: 20px; 
+      width: 100%; 
+      padding: 10px; 
+      font-size: 16px; 
+      background: #ec407a; 
+      color: white; 
+      border: none; 
+      border-radius: 6px; 
+      cursor: pointer; 
+    }
+    button:hover { 
+      background: #d81b60; 
+    }
+    .result, .example, .note { 
+      margin-top: 20px; 
+      font-size: 15px; 
+      color: #333; 
+    }
+    /*หมายเหตุ*/
+    .note { 
+      font-size: 12px; 
+      color: #777; 
+      background: #f9f9f9; 
+      padding: 10px; 
+      border-left: 4px solid #ccc; 
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="title">Energy Converter and Power</h1>
+
+    <label id="label-value">Enter energy:</label>
+    <input type="text" id="energyValue" placeholder="Enter energy value" />
+
+    <label id="label-unit">Select unit:</label>
+    <select id="unitSelect"></select>
+
+    <button id="convertBtn">Convert</button>
+    <!-- แสดงผลลัพธ์ -->
+    <div class="result" id="resultBox"></div>
+    <div class="example" id="exampleBox"></div>
+    <div class="note" id="noteBox"></div>
+  </div>
+
+  <script>
+    const isThai = (navigator.language || '').toLowerCase().startsWith('th');
+    // กำหนดหน่วยพลังงานและพลังงาน
+    const units = {
+      btu: 1055.05585,
+      cal: 4.184,
+      ev: 1.60218e-19,
+      erg: 1e-7,
+      ft_lbf: 1.35582,
+      j: 1,
+      kj: 1000,
+      kt: 4.184e12,
+      kwh: 3600000,
+      mev: 1.60218e-13,
+      mwh: 3.6e9,
+      nm: 1,
+      therm: 105505585.257348
+    };
+    // ชื่อหน่วย
+    const unitNames = {
+      btu: isThai ? "บีทียู (BTU)" : "British Thermal Unit (BTU)",
+      cal: isThai ? "แคลอรี่ (แคล)" : "Calorie (cal)",
+      ev: isThai ? "อิเล็กตรอนโวลต์ (eV)" : "Electronvolt (eV)",
+      erg: isThai ? "เออร์ก (erg)" : "Employee Resource Group (erg)",
+      ft_lbf: isThai ? "แรงปอนด์ฟุต (ปอนด์-ฟุต)" : "Foot-pound force (lb-ft)",
+      j: isThai ? "จูล (จ.)" : "Joule (J)",
+      kj: isThai ? "กิโลจูล (กจ.)" : "Kilojoule (kJ)",
+      kt: isThai ? "กิโลตัน เมตริก, พลังงานระเบิด (กต.)" : "Kiloton TNT equivalent (kt)",
+      kwh: isThai ? "กิโลวัตต์ชั่วโมง (กว./ช.)" : "Kilowatt hour (kWh)",
+      mev: isThai ? "เมกะอิเล็กตรอนโวลต์ (เมกะอีวี)" : "Mega Electronvolt (MeV)",
+      mwh: isThai ? "เมกะวัตต์ชั่วโมง (MWh)" : "Megawatt hour (MWh)",
+      nm: isThai ? "นิวตันเมตร (นต./ม.)" : "Newton meter (Nm)",
+      therm: isThai ? "เธิร์ม (ธ.)" : "Therm (Th)"
+    };
+    // สร้างตัวเลือกหน่วยใน select
+    const select = document.getElementById('unitSelect');
+    Object.keys(units).forEach(u => {
+      const opt = document.createElement('option');
+      opt.value = u;
+      opt.textContent = unitNames[u];
+      select.appendChild(opt);
+    });
+    // แปลข้อความตามภาษา
+    document.title = isThai ? "ตัวแปลงพลังงานและพลัง" : "Energy Converter and Power";
+    document.getElementById('title').textContent = document.title;
+    document.getElementById('label-value').textContent = isThai ? "กรอกพลังงาน:" : "Enter energy:";
+    document.getElementById('label-unit').textContent = isThai ? "เลือกหน่วย:" : "Select unit:";
+    document.getElementById('energyValue').placeholder = isThai ? "กรอกค่าพลังงาน" : "Enter energy value";
+    document.getElementById('convertBtn').textContent = isThai ? "แปลง" : "Convert";
+    document.getElementById('noteBox').innerHTML = isThai 
+      ? "ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษหรือตัดเศษ ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานทางกฎหมายหรือทางการเงินได้"
+      : "This result is based on standard general formulas and may contain slight rounding or truncation errors.<br>It is intended for preliminary informational purposes only and should not be used as legal or financial evidence.";
+    // ฟังก์ชันแปลงพลังงาน
+    function convertEnergy() {
+      const raw = document.getElementById('energyValue').value.replace(/,/g,'').trim();
+      const value = parseFloat(raw);
+      // ตรวจสอบค่าที่กรอก
+      if (isNaN(value) || value < 0) {
+        alert(isThai ? "กรุณากรอกตัวเลขที่ถูกต้อง" : "Please enter a valid number");
+        return;
+      }
+      // จำกัดไม่ให้เกิน 15 หลัก
+      if (raw.replace('.', '').length > 15) {
+        alert(isThai ? "ไม่สามารถกรอกเกิน 15 หลักได้" : "Cannot enter more than 15 digits");
+        return;
+      }
+      // แปลงค่าพลังงาน
+      const unit = select.value;
+      const joule = value * units[unit];
+      let out = `<h3>${isThai ? "ผลลัพธ์" : "Result"}</h3><ul>`;
+      Object.keys(units).forEach(k => {
+        out += `<li>${(joule/units[k]).toLocaleString(undefined, {maximumFractionDigits:12})} ${unitNames[k]}</li>`;
+      });
+      out += "</ul>";
+      document.getElementById('resultBox').innerHTML = out;
+        // แสดงตัวอย่างการคำนวณ
+      let ex = `<strong>${isThai ? "ตัวอย่างการคำนวณ:" : "Example Calculation:"}</strong><ul style="text-align:left;">`;
+      ex += `<li>${value.toLocaleString()} ${unitNames[unit]} (${isThai ? "หน่วยเดิม" : "same unit"})</li>`;
+      Object.keys(units).forEach(k => {
+        if (k !== unit) {
+          const formula = `= ${value} × ${units[unit].toLocaleString()} ÷ ${units[k].toLocaleString()} = ${(joule/units[k]).toLocaleString(undefined,{maximumFractionDigits:12})}`;
+          ex += `<li>${unitNames[k]} ${formula}</li>`;
+        }
+      });
+      ex += "</ul>";
+      document.getElementById('exampleBox').innerHTML = ex;
+    }
+    // กำหนดเหตุการณ์เมื่อกดปุ่มแปลง
+    document.getElementById("convertBtn").addEventListener("click", convertEnergy);
+    // กำหนดเหตุการณ์เมื่อกด Enter ในช่องกรอกพลังงาน
+    document.getElementById("energyValue").addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        convertEnergy();
+      }
+    });
+    // ฟังก์ชันจคอมม่าในช่องกรอกพลังงาน
+    document.getElementById("energyValue").addEventListener("input", function () {
+      const val = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+      const parts = val.split('.');
+      const intPart = parts[0].replace(/^0+(?!$)/, '');
+      const decPart = parts[1] || '';
+      this.value = decPart
+        ? `${intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}.${decPart}`
+        : intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    });
+  </script>
+</body>
+</html>
