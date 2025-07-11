@@ -134,7 +134,8 @@
     document.getElementById('unitSelect').options[9].textContent = isThai ? 'มิลลิเมตรน้ำ (mmH₂O)' : 'Millimeter of Water (mmH₂O)';
     document.getElementById('unitSelect').options[10].textContent = isThai ? 'แรงปอนด์ต่อตารางฟุต (lbf/ft²)' : 'Pounds per square foot (lbf/ft²)';
     document.getElementById('unitSelect').options[11].textContent = isThai ? 'ทอร์ (Torr)' : 'Torr (T)';
-    function convertPressure() {
+  //ฟังก์ชันแปลงแรงดัน 
+  function convertPressure() {
   const raw = document.getElementById('pressureValue').value.replace(/,/g,'').trim();
   const value = parseFloat(raw);
   // ตรวจสอบว่ากรอกค่าถูกต้องหรือไม่
