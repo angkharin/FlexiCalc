@@ -72,10 +72,10 @@
 <body>
   <div class="container">
     <h1 id="title">Measure Angle Converter</h1>
-
+    <!-- ช่องกรอกมุม -->
     <label id="label-value">Enter angle:</label>
     <input type="text" id="angleValue" placeholder="enter angle value" />
-
+    <!-- เลือกหน่วย -->
     <label id="label-unit">Select unit:</label>
     <select id="unitSelect">
       <option value="deg">Degrees (°)</option>
@@ -90,7 +90,7 @@
       <option value="arcsec">Arcsecond (arcsec)</option>
       <option value="sine">Sine (sin)</option>
     </select>
-
+    <!-- ปุ่มคำนวณ -->
     <button onclick="convertAngle()" id="convertBtn">Convert</button>
     <!-- แสดงผลลัพธ์ -->
     <div class="result" id="resultBox"></div>
@@ -144,8 +144,9 @@ function convertAngle() {
       alert(isThai ? 'ไม่สามารถกรอกเกิน 15 หลักได้' : 'Cannot enter more than 15 digits');
       return;
     }
-
+    // แปลงค่าตามหน่วยที่เลือก
     const unit = document.getElementById('unitSelect').value;
+    // แปลงมุมเป็นหน่วยต่างๆ
     const conv = {
       deg: { deg: value, rad: value * Math.PI/180, grad: value * 10/9, mrad: value * Math.PI/180*1000 },
       rad: { deg: value * 180/Math.PI, rad: value, grad: value * 200/Math.PI, mrad: value * 1000 },
@@ -160,7 +161,7 @@ function convertAngle() {
       sine: Math.sin(value * Math.PI / 180)
     };
     const res = conv[unit];
-
+    // แปลงมุมเป็นหน่วยต่างๆ
     const unitNames = {
       deg: isThai ? 'องศา (°)' : 'degrees (°)',
       rad: isThai ? 'เรเดียน' : 'radians (rad)',

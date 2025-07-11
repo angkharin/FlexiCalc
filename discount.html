@@ -67,19 +67,20 @@
 
 <div class="container">
   <h1 id="title">คำนวณส่วนลด</h1>
-
+  <!-- ช่องกรอกราคาสินค้า -->
   <label id="label-price">ราคาสินค้า:</label>
   <input type="text" id="price" placeholder="กรอกราคา">
-
+  <!-- ช่องกรอกส่วนลด -->
   <label id="label-discount">ส่วนลด (%):</label>
   <input type="text" id="discount" placeholder="กรอกส่วนลด">
-
+  <!-- ปุ่มคำนวณ -->
   <button onclick="calculateDiscount()" id="calcBtn">แปลง</button>
-
+  <!-- แสดงผลลัพธ์ -->
   <div class="result" id="resultBox"></div>
 </div>
 
 <script>
+  // ตรวจสอบภาษาเบราว์เซอร์
   const isThai = (navigator.language || '').toLowerCase().startsWith('th');
   document.title = isThai ? "ส่วนลดสินค้า" : "Discount Calculator";
   document.getElementById("title").textContent = isThai ? "คำนวณส่วนลด" : "Discount Calculator";
@@ -103,23 +104,23 @@
   function calculateDiscount() {
     const rawPrice = document.getElementById("price").value.replace(/,/g, '');
     const rawDiscount = document.getElementById("discount").value.replace(/,/g, '');
-
+    // ตรวจสอบเลขเกิน 15 หลัก
     if (rawPrice.length > 15 || rawDiscount.length > 15) {
       alert(isThai ? "ไม่สามารถแปลงตัวเลขเกิน 15 หลักได้" : "Cannot convert numbers exceeding 15 digits.");
       return;
     }
-
+    // แปลงเป็นตัวเลข
     const price = parseFloat(rawPrice);
     const discount = parseFloat(rawDiscount);
-
+    // ตรวจสอบว่าราคาหรือส่วนลดเป็น NaN หรือไม่
     if (isNaN(price) || isNaN(discount) || price <= 0 || discount < 0) {
       alert(isThai ? "กรุณากรอกตัวเลข" : "Please enter numbers.");
       return;
     }
-
+    // คำนวณส่วนลด
     const discountAmount = price * discount / 100;
     const finalPrice = price - discountAmount;
-
+    // แสดงผลลัพธ์
     const resultText = `
       <strong>${isThai ? "ผลลัพธ์" : "Result"}</strong><br>
       ${isThai ? "ราคาสินค้า" : "Original price"}: ${price.toLocaleString()}<br>

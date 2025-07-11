@@ -59,6 +59,7 @@
       font-size: 16px;
       text-align: left;
     }
+    /*หมายเหตุ*/
     .note {
       margin-top: 30px;
       font-size: 13px;
@@ -69,10 +70,10 @@
 <body>
   <div class="container">
     <h1 id="title">ตัวแปลงความเร็ว</h1>
-
+    <!-- กรอกความเร็ว -->
     <label id="label-value">กรอกค่าความเร็ว:</label>
     <input type="text" id="speedValue" placeholder="กรอกตัวเลข">
-
+    <!-- เลือกหน่วย -->
     <label id="label-unit">เลือกหน่วย:</label>
     <select id="unitSelect">
       <option value="mps">เมตรต่อวินาที</option>
@@ -87,7 +88,7 @@
       <option value="miph">ไมล์ต่อชั่วโมง</option>
       <option value="kn">น็อต</option>
     </select>
-
+    <!-- ปุ่มแปลง -->
     <button onclick="convertSpeed()" id="convertBtn">แปลง</button>
     <!-- แสดงผลลัพธ์ -->
     <div class="result" id="resultBox"></div>
@@ -136,7 +137,7 @@
       miph: 1609.344 / 3600,
       kn: 1852 / 3600
     };
-// ฟังก์ชันแปลงความเร็ว
+    // ฟังก์ชันแปลงความเร็ว
     function convertSpeed() {
       const inputEl = document.getElementById("speedValue");
       const raw = inputEl.value.replace(/,/g, '').trim();
@@ -152,13 +153,13 @@
         alert(isThai ? "ไม่สามารถแปลงตัวเลขเกิน 15 หลักได้" : "Cannot convert numbers exceeding 15 digits.");
         return;
       }
-
+      // แปลงค่าตามหน่วยที่เลือก
       const base = value * toMps[unit];
       const results = {};
       for (const key in toMps) {
         results[key] = base / toMps[key];
       }
-
+      // แสดงผลลัพธ์
       let output = `<h3>${isThai ? "ผลลัพธ์" : "Results"}</h3><ul style="text-align:left;">`;
       for (const key in results) {
         const label = isThai ? unitMap[key][0] : unitMap[key][1];
@@ -170,7 +171,7 @@
       }
       output += `</ul>`;
       document.getElementById("resultBox").innerHTML = output;
-
+      // สร้างตัวอย่างการคำนวณ
       const examples = [];
       for (const key in toMps) {
         const label = isThai ? unitMap[key][0] : unitMap[key][1];

@@ -65,6 +65,7 @@
       font-size: 18px;
       color: #000;
     }
+    /*หมายเหตุ*/
     .note {
       font-size: 13px;
       color: #555;
@@ -76,18 +77,18 @@
 <body>
 <div class="container">
   <h1 id="title">Tip Calculator</h1>
-
+  <!-- ช่องกรอกข้อมูล -->
   <label id="label-amount">Enter amount:</label>
   <input type="text" id="amount" placeholder="ใส่จำนวนเงิน">
-
+  <!-- เลือกเปอร์เซ็นต์ทิป -->
   <label id="label-tip">Tip %:</label>
   <select id="tipPercent"></select>
-
+  <!-- เลือกจำนวนคน -->
   <label id="label-people">Number of people:</label>
   <select id="peopleCount"></select>
   <!-- แสดงผลลัพธ์ -->
   <button onclick="calculateTip()" id="calcBtn">Calculate</button>
-
+  <!-- กล่องแสดงผลลัพธ์ -->
   <div class="result" id="resultBox"></div>
   <div class="result" id="exampleBox"></div>
   <div class="note" id="noteBox"></div>
@@ -95,7 +96,7 @@
 
 <script>
   const isThai = (navigator.language || '').startsWith("th");
-
+  // ข้อความต่างๆ ตามภาษา
   const text = {
     title: isThai ? "เครื่องคำนวณทิป" : "Tip Calculator",
     amountLabel: isThai ? "กรอกจำนวนเงิน:" : "Enter amount:",
@@ -181,7 +182,7 @@
       calculateTip();
     }
   });
-
+  // ✅ แปลงตัวเลขเป็นรูปแบบที่มีคอมมา
   document.getElementById("amount").addEventListener("input", function () {
     const val = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
     const parts = val.split('.');

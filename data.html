@@ -67,10 +67,10 @@
 <body>
   <div class="container">
     <h1 id="title">ตัวแปลงข้อมูล</h1>
-
+    <!-- ช่องกรอกค่าข้อมูล -->
     <label id="label-value">กรอกค่าข้อมูล:</label>
     <input type="text" id="dataValue" placeholder="กรอกตัวเลข" />
-
+    <!-- เลือกหน่วย -->
     <label id="label-unit">เลือกหน่วย:</label>
     <select id="unitSelect">
       <option value="bit">บิต</option>
@@ -84,9 +84,9 @@
       <option value="TB">เทระไบต์</option>
       <option value="TiB">เทบิไบต์</option>
     </select>
-
+    <!-- ปุ่มแปลงข้อมูล -->
     <button onclick="convertData()" id="convertBtn">แปลง</button>
-
+    <!-- แสดงผลลัพธ์ -->
     <div class="result" id="resultBox"></div>
     <div class="result" id="explanationBox"></div>
   </div>
@@ -113,7 +113,7 @@
       TB: ["เทระไบต์ (TB)", "Terabytes (TB)"],
       TiB: ["เทบิไบต์ (TiB)", "Tebibytes (TiB)"]
     };
-
+    // เปลี่ยนชื่อหน่วยใน select
     document.querySelectorAll("#unitSelect option").forEach(opt => {
       opt.textContent = isThai ? unitMap[opt.value][0] : unitMap[opt.value][1];
     });
@@ -133,7 +133,7 @@
         alert(isThai ? "ไม่สามารถแปลงตัวเลขเกิน 15 หลักได้" : "Cannot convert numbers exceeding 15 digits.");
         return;
       }
-
+      // การแปลงหน่วยเป็นไบต์
       const toBytes = {
         bit: 1 / 8,
         B: 1,
@@ -146,14 +146,14 @@
         TB: 1000 ** 4,
         TiB: 1024 ** 4
       };
-
+      // แปลงค่าจากหน่วยที่เลือกเป็นไบต์
       const baseBytes = value * toBytes[unit];
-
+      // คำนวณค่าทุกหน่วย
       const results = {};
       for (const key in toBytes) {
         results[key] = baseBytes / toBytes[key];
       }
-
+      // แสดงผลลัพธ์
       let output = `<h3>${isThai ? "ผลลัพธ์" : "Results"}</h3><ul style="text-align:left;">`;
       for (const key in results) {
         const label = isThai ? unitMap[key][0] : unitMap[key][1];

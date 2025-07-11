@@ -60,6 +60,7 @@
       font-size: 16px;
       text-align: left;
     }
+    /*หมายเหตุ*/
     .note {
       margin-top: 30px;
       font-size: 13px;
@@ -70,17 +71,17 @@
 <body>
   <div class="container">
     <h1 id="title">ตัวแปลงอุณหภูมิ</h1>
-
+    <!-- ช่องกรอกอุณหภูมิ -->
     <label id="label-value">กรอกอุณหภูมิ:</label>
     <input type="text" id="tempValue" placeholder="กรอกตัวเลข">
-
+    <!-- เลือกหน่วย -->
     <label id="label-unit">เลือกหน่วย:</label>
     <select id="unitSelect">
       <option value="C">เซลเซียส</option>
       <option value="F">ฟาเรนไฮต์</option>
       <option value="K">เคลวิน</option>
     </select>
-
+    <!-- ปุ่มคำนวณ -->
     <button onclick="convertTemp()" id="convertBtn">แปลง</button>
     <!-- แสดงผลลัพธ์ -->
     <div class="result" id="resultBox"></div>
@@ -156,9 +157,9 @@
       const examples = [];
       const inputLabel = isThai ? unitMap[unit][0] : unitMap[unit][1];
       const inputVal = value.toLocaleString(undefined, { maximumFractionDigits: 6 });
-
+      // แสดงค่าที่กรอก
       examples.push(`<li>${inputVal} ${inputLabel} = ${inputVal} ${inputLabel} <span style="color:gray;">(${isThai ? "หน่วยเดิม" : "same unit"})</span></li>`);
-
+      // แปลงหน่วยอื่นๆ
       if (unit === "C") {
         examples.push(`<li>${value} × 9 ÷ 5 + 32 = ${F.toFixed(2)} ${isThai ? unitMap.F[0] : unitMap.F[1]}</li>`);
         examples.push(`<li>${value} + 273.15 = ${K.toFixed(2)} ${isThai ? unitMap.K[0] : unitMap.K[1]}</li>`);

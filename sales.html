@@ -59,6 +59,7 @@
       font-size: 15px;
       color: #333;
     }
+    /*หมายเหตุ*/
     .note {
       font-size: 13px;
       color: #666;
@@ -80,23 +81,23 @@
 <body>
 <div class="container">
   <h1 id="title">คำนวณภาษีขายสินค้าออนไลน์</h1>
-
+  <!-- คำเตือน -->
   <div class="warning" id="warningText"></div>
-
+  <!-- ฟอร์มกรอกข้อมูล -->
   <label id="label-amount">Amount:</label>
   <input type="text" id="amount" placeholder="Enter amount" />
-
+  <!-- ช่องกรอกอัตราภาษี -->
   <label id="label-rate">VAT Rate (%):</label>
   <input type="number" id="vatRate" value="7" />
-
+  <!-- ช่องเลือกวิธีคำนวณ -->
   <label id="label-method">Select method:</label>
   <select id="method">
     <option value="before">Before VAT</option>
     <option value="after">Including VAT</option>
   </select>
-
+  <!-- ปุ่มคำนวณ -->
   <button onclick="calculateVAT()" id="calcBtn">Calculate</button>
-
+  <!-- กล่องแสดงผลลัพธ์ -->
   <div class="result" id="resultBox"></div>
   <div class="example" id="exampleBox"></div>
   <div class="note" id="noteBox"></div>
@@ -150,7 +151,7 @@
       alert(isThai ? "ไม่สามารถคำนวณตัวเลขเกิน 15 หลักได้" : "Cannot calculate numbers exceeding 15 digits.");
       return;
     }
-
+    // คำนวณภาษีมูลค่าเพิ่ม
     let base, vat, total;
     if (method === "before") {
       base = amount;

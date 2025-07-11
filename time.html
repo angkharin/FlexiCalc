@@ -66,10 +66,10 @@
 <body>
 <div class="container">
   <h1 id="title">ตัวแปลงเวลา</h1>
-
+  <!-- ช่องกรอกค่า -->
   <label id="label-value">กรอกค่าเวลา:</label>
   <input type="text" id="timeValue" placeholder="กรอกตัวเลข" />
-
+  <!-- เลือกหน่วย -->
   <label id="label-unit">เลือกหน่วย:</label>
   <select id="unitSelect">
     <option value="ms">มิลลิวินาที</option>
@@ -81,9 +81,9 @@
     <option value="mo">เดือน</option>
     <option value="y">ปี</option>
   </select>
-
+  <!-- ปุ่มคำนวณ -->
   <button onclick="convertTime()" id="convertBtn">แปลง</button>
-
+  <!-- กล่องแสดงผลลัพธ์ -->
   <div class="result" id="resultBox"></div>
   <div class="result" id="explanationBox"></div>
 </div>
@@ -121,7 +121,7 @@ const unitMap = {
   mo: ["เดือน (ด.)", "Months (m)"],
   y: ["ปี (ป.)", "Years (y)"]
 };
-
+// แปลงชื่อหน่วยใน select
 document.querySelectorAll("#unitSelect option").forEach(opt => {
   opt.textContent = isThai ? unitMap[opt.value][0] : unitMap[opt.value][1];
 });
@@ -141,9 +141,9 @@ function convertTime() {
     alert(isThai ? "ไม่สามารถแปลงตัวเลขเกิน 15 หลักได้" : "Cannot convert numbers exceeding 15 digits.");
     return;
   }
-
+  // แปลงค่าเป็นวินาที
   const baseSec = value * toSeconds[unit];
-
+  // แปลงเป็นหน่วยอื่นๆ
   const results = {};
   for (const key in toSeconds) {
     results[key] = baseSec / toSeconds[key];
@@ -190,7 +190,7 @@ function convertTime() {
   </div>
 `;
 }
-
+// กด Enter เพื่อคำนวณ
 document.getElementById("timeValue").addEventListener("keydown", function (e) {
   if (e.key === "Enter") {
     e.preventDefault();

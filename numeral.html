@@ -60,6 +60,7 @@
       text-align: left;
       color: #333;
     }
+    /* ตารางแสดงผลลัพธ์ */
     .note {
       margin-top: 25px;
       font-size: 13px;
@@ -70,10 +71,10 @@
 <body>
   <div class="container">
     <h1 id="title">ตัวแปลงเลขฐาน</h1>
-
+    <!-- ช่องกรอกข้อมูล -->
     <label id="label-value">กรอกตัวเลข:</label>
     <input type="text" id="numValue" placeholder="กรอกตัวเลข">
-
+    <!-- เลือกฐาน -->
     <label id="label-base">เลือกฐาน:</label>
     <select id="baseSelect">
       <option value="2">ฐานสอง</option>
@@ -81,7 +82,7 @@
       <option value="10">ฐานสิบ</option>
       <option value="16">ฐานสิบหก</option>
     </select>
-
+    <!-- ปุ่มคำนวณ -->
     <button onclick="convertBase()" id="convertBtn">แปลง</button>
     <!-- แสดงผลลัพธ์ -->
     <div class="result" id="resultBox"></div>
@@ -104,7 +105,7 @@
   10: isThai ? "ฐานสิบ" : "Decimal",
   16: isThai ? "ฐานสิบหก" : "Hexadecimal"
 };
-
+// ตั้งค่าชื่อหน่วยในตัวเลือก
 const options = document.querySelectorAll("#baseSelect option");
 options.forEach(opt => {
   const base = opt.value;
@@ -142,7 +143,7 @@ options.forEach(opt => {
         10: decimalValue.toString(10),
         16: decimalValue.toString(16).toUpperCase()
       };
-
+      // แสดงผลลัพธ์
       let result = `<h3>${isThai ? "ผลลัพธ์" : "Results"}</h3><ul>`;
       for (const base in conversions) {
         result += `<li>${baseLabel[base]}: <strong>${conversions[base]}</strong></li>`;
@@ -171,7 +172,7 @@ options.forEach(opt => {
       </thead>
       <tbody>
     `;
-
+    // สร้างแถวสำหรับเลขฐาน 0 ถึง 15
     for (let i = 0; i <= 15; i++) {
     table += `
     <tr>

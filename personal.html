@@ -67,6 +67,7 @@
       padding: 10px;
       border-left: 4px solid #ccc;
     }
+    /*ลิงค์แหล่งข้อมูล*/
     .source {
       margin-top: 15px;
       font-size: 13px;
@@ -81,16 +82,16 @@
 <body>
   <div class="container">
     <h1 id="title">Personal Income Tax Calculator</h1>
-
+    <!-- ช่องกรอกข้อมูล -->
     <label id="label-income">Total annual income (THB):</label>
     <input type="text" id="income" placeholder="Enter annual income">
-
+    <!-- สถานภาพสมรส -->
     <label id="label-status">Marital status:</label>
     <select id="statusSelect">
       <option value="single">Single</option>
       <option value="married">Married</option>
     </select>
-
+    <!-- ปุ่มคำนวณ -->
     <button onclick="calculateTax()" id="calcBtn">Calculate Tax</button>
     <!-- แสดงผลลัพธ์ -->
     <div class="result" id="resultBox"></div>
@@ -149,7 +150,7 @@
           : 'Cannot calculate numbers exceeding 15 digits.');
         return;
       }
-
+      // คำนวณหักลดหย่อน
       const personal = deductionSingle;
       const totalDeduction = personal + (status==='married'? deductionSingle:0);
       const netIncome = Math.max(income - totalDeduction, 0);
@@ -165,10 +166,10 @@
         { max: 5000000, rate: 0.30 },
         { max: Infinity, rate: 0.35 }
       ];
-
+      // คำนวณภาษี
       let tax = 0, remaining = netIncome, last = 0;
       let steps = [];
-
+      // คำนวณภาษีตามขั้นบันได
       for(const b of brackets) {
         if(remaining<=0) break;
         const span = Math.min(b.max - last, remaining);

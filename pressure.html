@@ -73,10 +73,10 @@
 <body>
   <div class="container">
     <h1 id="title">Pressure Converter</h1>
-
+    <!-- ช่องกรอกแรงดัน -->
     <label id="label-value">Enter pressure:</label>
     <input type="text" id="pressureValue" placeholder="enter pressure value" />
-
+    <!-- เลือกหน่วย -->
     <label id="label-unit">Select unit:</label>
     <select id="unitSelect">
       <option value="pa">Pascal (Pa)</option>
@@ -92,7 +92,7 @@
       <option value="lbf_ft2">Pounds per square foot (lbf/ft²)</option>
       <option value="torr">Torr (T)</option>
     </select>
-
+    <!-- ปุ่มแปลง -->
     <button onclick="convertPressure()" id="convertBtn">Convert</button>
     <!-- แสดงผลลัพธ์ -->
     <div class="result" id="resultBox"></div>
@@ -102,7 +102,7 @@
 
   <script>
     const isThai = (navigator.language || '').toLowerCase().startsWith('th');
-
+    // ✅ ข้อความแปลตามภาษา
     const txt = {
       title: isThai ? 'ตัวแปลงแรงดัน' : 'Pressure Converter',
       value: isThai ? 'กรอกแรงดัน:' : 'Enter pressure:',

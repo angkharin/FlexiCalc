@@ -65,6 +65,7 @@
       color: #666;
       font-size: 13px;
     }
+    /*ลิงค์แหล่งข้อมูล*/
     .source {
       margin-top: 15px;
       font-size: 13px;
@@ -78,16 +79,16 @@
 <body>
   <div class="container">
     <h1 id="title">Corporate Tax Calculator</h1>
-
+    <!-- ช่องกรอกกำไรสุทธิ -->
     <label id="label-profit">Net Profit (THB):</label>
     <input type="text" id="profit" placeholder="Enter net profit">
-
+    <!-- เลือกประเภทบริษัท -->
     <label id="label-small">Type of company:</label>
     <select id="companyType">
       <option value="small">SME (ทุน ≤ 5 ล้าน, รายได้ ≤ 30 ล้าน)</option>
       <option value="normal">General Company</option>
     </select>
-
+    <!-- ปุ่มคำนวณภาษี -->
     <button onclick="calculateTax()" id="calcBtn">Calculate Tax</button>
     <!-- แสดงผลลัพธ์ -->
     <div class="result" id="resultBox"></div>

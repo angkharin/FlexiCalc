@@ -69,10 +69,10 @@
 <body>
   <div class="container">
     <h1 id="title">ตัวแปลงความยาว</h1>
-
+    <!-- ช่องกรอกค่าความยาว -->
     <label id="label-value">กรอกค่าความยาว:</label>
     <input type="text" id="lengthValue" placeholder="กรอกตัวเลข">
-
+    <!-- เลือกหน่วย -->
     <label id="label-unit">เลือกหน่วย:</label>
     <select id="unitSelect">
       <option value="mm">มิลลิเมตร</option>
@@ -86,7 +86,7 @@
       <option value="nmi">ไมล์ทะเล</option>
       <option value="mil">มิล</option>
     </select>
-
+    <!-- ปุ่มแปลง -->
     <button onclick="convertLength()" id="convertBtn">แปลง</button>
     <!-- แสดงผลลัพธ์ -->
     <div class="result" id="resultBox"></div>
@@ -95,6 +95,7 @@
   </div>
 
   <script>
+    // ตรวจสอบภาษาเบราว์เซอร์
     const isThai = (navigator.language || '').startsWith('th');
     document.title = isThai ? "ตัวแปลงความยาว" : "Length Converter";
     document.getElementById("title").textContent = isThai ? "ตัวแปลงความยาว" : "Length Converter";
@@ -148,13 +149,13 @@
         alert(isThai ? "ไม่สามารถแปลงตัวเลขเกิน 15 หลักได้" : "Cannot convert numbers exceeding 15 digits.");
         return;
       }
-
+      // แปลงค่าตามหน่วยที่เลือก
       const base = value * toMeter[unit];
       const results = {};
       for (const key in toMeter) {
         results[key] = base / toMeter[key];
       }
-
+      // แสดงผลลัพธ์
       let output = `<h3>${isThai ? "ผลลัพธ์" : "Results"}</h3><ul>`;
       for (const key in results) {
         const label = isThai ? unitMap[key][0] : unitMap[key][1];

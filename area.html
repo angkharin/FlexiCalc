@@ -3,7 +3,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="image/logo.png">
-
   <title>ตัวแปลงพื้นที่</title>
   <style>
     /* สไตล์รวมของ body */
@@ -72,10 +71,10 @@
 
   <div class="container">
     <h1 id="title">ตัวแปลงพื้นที่</h1>
-
+    <!-- ช่องกรอกค่าพื้นที่ -->
     <label id="label-value">กรอกค่าพื้นที่:</label>
     <input type="text" id="areaValue" placeholder="กรอกตัวเลข">
-
+    <!-- เลือกหน่วย -->
     <label id="label-unit">เลือกหน่วย:</label>
     <select id="unitSelect">
       <option value="ac">เอเคอร์</option>
@@ -86,7 +85,7 @@
       <option value="in2">ตารางนิ้ว</option>
       <option value="m2">ตารางเมตร</option>
     </select>
- 
+    <!-- ปุ่มแปลง -->
     <button onclick="convertArea()" id="convertBtn">แปลง</button>
     <!-- แสดงผลลัพธ์ -->
     <div class="result" id="resultBox"></div>

@@ -69,7 +69,7 @@
       padding: 10px;
       border-left: 4px solid #ccc;
     }
-
+    /*ลิงค์แหล่งข้อมูล*/
     .source {
       margin-top: 15px;
       font-size: 13px;
@@ -84,16 +84,16 @@
 <body>
 <div class="container">
   <h1 id="title">Freelance Tax Calculator</h1>
-
+  <!-- ช่องกรอกข้อมูล -->
   <label id="label-income">Total annual income (THB):</label>
   <input type="text" id="income" placeholder="ใส่รายได้ทั้งปี">
-
+  <!-- เลือกประเภทค่าใช้จ่าย -->
   <label id="label-expense">Expense type:</label>
   <select id="expenseType">
     <option value="60">General freelancer (60% deduction)</option>
     <option value="50">Service/consultant (50% deduction)</option>
   </select>
-
+  <!-- ปุ่มคำนวณ -->
   <button onclick="calculateTax()" id="calcBtn">Calculate Tax</button>
   <!-- แสดงผลลัพธ์ -->
   <div class="result" id="resultBox"></div>
@@ -135,7 +135,7 @@
       alert(isThai ? "ไม่สามารถคำนวณตัวเลขเกิน 15 หลักได้" : "Cannot calculate numbers exceeding 15 digits.");
       return;
     }
-
+    // คำนวณค่าใช้จ่าย
     const expense = +(income * expensePercent / 100).toFixed(2);
     const afterExpense = income - expense;
     const netIncome = Math.max(afterExpense - personalDeduction, 0);
@@ -151,12 +151,12 @@
       { max: 5000000, rate: 0.30 },
       { max: Infinity, rate: 0.35 }
     ];
-
+    // ตัวแปรเก็บภาษี
     let tax = 0;
     let remaining = netIncome;
     let last = 0;
     let bracketSteps = [];
-
+    // คำนวณภาษีตามขั้นบันได
     for (const bracket of brackets) {
       if (remaining <= 0) break;
       const range = Math.min(bracket.max - last, remaining);
@@ -173,7 +173,7 @@
       last = bracket.max;
     }
 
-
+    // ผลลัพธ์
     resultBox.innerHTML = `
       💰 ${isThai ? "รายได้สุทธิหลังหักค่าใช้จ่ายและลดหย่อน" : "Net taxable income"}: ${netIncome.toLocaleString()}<br>
       🧾 ${isThai ? "ภาษีที่ต้องชำระ" : "Estimated tax"}: ${tax.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท
