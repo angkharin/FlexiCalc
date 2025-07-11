@@ -92,7 +92,10 @@
   <!-- แสดงผลลัพธ์ -->
   <button onclick="calculateTip()" id="calcBtn">Calculate</button>
   <!-- กล่องแสดงผลลัพธ์ -->
-  <div class="result" id="resultBox"></div>
+  <div class="result">
+  <h3 id="resultTitle"></h3>
+  <div id="resultBox"></div>
+</div>
   <div class="result" id="exampleBox"></div>
   <div class="note" id="noteBox"></div>
 </div>
@@ -111,6 +114,7 @@
     total: isThai ? "รวม" : "Total",
     perPerson: isThai ? "แต่ละคน" : "Each",
     exampleTitle: isThai ? "ตัวอย่างการคำนวณ:" : "Example Calculation:",
+    result: isThai ? "ผลลัพธ์" : "Result",
     note: isThai
       ? "📝 ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษ <br>ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานทางกฎหมายหรือทางการเงินได้"
       : "📝 This result is based on standard general formulas and may contain slight rounding errors. It is intended for informational purposes only and should not be used as legal or financial evidence."
@@ -124,7 +128,9 @@
   document.getElementById("label-tip").textContent = text.tipLabel;
   document.getElementById("label-people").textContent = text.peopleLabel;
   document.getElementById("calcBtn").textContent = text.calcBtn;
-  // ไม่แสดง note ทันที
+  // ✅ ซ่อนหัวข้อผลลัพธ์ก่อน
+  document.getElementById("resultTitle").textContent = "";
+  // ✅ ไม่แสดงหมายเหตุทันที
   document.getElementById("noteBox").innerHTML = "";
   document.getElementById("noteBox").style.padding = "0";
 
@@ -150,7 +156,8 @@
 
   // ฟังก์ชันแปลงทิป
   function calculateTip() {
-    // ล้าง note ก่อน
+    // ✅ ล้างหัวข้อและหมายเหตุก่อนคำนวณ
+    document.getElementById("resultTitle").textContent = "";
     document.getElementById("noteBox").innerHTML = "";
     document.getElementById("noteBox").style.padding = "0";
 
@@ -158,6 +165,7 @@
     const amount = parseFloat(raw);
     const tip = parseFloat(document.getElementById("tipPercent").value);
     const people = parseInt(document.getElementById("peopleCount").value);
+
     // ตรวจสอบว่ากรอกค่าถูกต้องหรือไม่
     if (isNaN(amount) || amount <= 0 || people <= 0) {
       alert(isThai ? "กรุณากรอกข้อมูลให้ถูกต้อง" : "Please enter valid information.");
@@ -173,12 +181,16 @@
     const total = +(amount + tipAmount).toFixed(2);
     const perPerson = +(total / people).toFixed(2);
 
+    // ✅ แสดงหัวข้อผลลัพธ์เมื่อคำนวณสำเร็จ
+    document.getElementById("resultTitle").textContent = text.result;
+
     document.getElementById("resultBox").innerHTML = `
-      ${text.tipAmount}: ${tipAmount.toLocaleString()}<br>
-      ${text.total}: ${total.toLocaleString()}<br>
-      ${text.perPerson}: ${perPerson.toLocaleString()}
+    <div style="margin-bottom:-45px;">${text.tipAmount}: ${tipAmount.toLocaleString()}</div>
+    <div style="margin-bottom:18px;">${text.total}: ${total.toLocaleString()}</div>
+    <div>${text.perPerson}: ${perPerson.toLocaleString()}</div>
     `;
-    //แสดงตัวอย่างการคำนวณ
+
+    // ✅ แสดงตัวอย่างการคำนวณ
     document.getElementById("exampleBox").innerHTML = `
       <strong>${text.exampleTitle}</strong><br>
       ${amount.toLocaleString()} × ${tip}% = ${tipAmount.toLocaleString()}<br>
@@ -186,12 +198,12 @@
       ${total.toLocaleString()} ÷ ${people} = ${perPerson.toLocaleString()}
     `;
 
-    // แสดงหมายเหตุเมื่อคำนวณ
+    // ✅ แสดงหมายเหตุเมื่อคำนวณ
     document.getElementById("noteBox").innerHTML = text.note;
     document.getElementById("noteBox").style.padding = "10px";
   }
 
-  // ✅ พิมพ์วันเกิดแล้วกด Enter เพื่อคำนวณ
+  // ✅ Enter เพื่อคำนวณ
   document.getElementById("amount").addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -199,7 +211,7 @@
     }
   });
 
-  // ✅ แปลงตัวเลขเป็นรูปแบบที่มีคอมมา
+  // ✅ ใส่ comma ขณะพิมพ์
   document.getElementById("amount").addEventListener("input", function () {
     const val = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
     const parts = val.split('.');
@@ -210,5 +222,6 @@
       : intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   });
 </script>
+
 </body>
 </html>
