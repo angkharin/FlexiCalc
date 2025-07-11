@@ -77,7 +77,6 @@
       font-size: 12px;
       color: #777;
       background: #f9f9f9;
-      padding: 10px;
       border-left: 4px solid #ccc;
     }
   </style>
@@ -147,6 +146,8 @@ document.getElementById('calcBtn').textContent = txt.button;
 document.getElementById('noteBox').innerHTML = txt.note;
 document.getElementById('durationUnit').options[0].textContent = isThai ? 'นาที' : 'Minutes';
 document.getElementById('durationUnit').options[1].textContent = isThai ? 'ชั่วโมง' : 'Hours';
+document.getElementById('noteBox').textContent = '';
+document.getElementById('noteBox').style.padding = '0';
 // ฟังก์ชันคำนวณแผนการดู
 function calculatePlan() {
   const title = document.getElementById('seriesTitle').value.trim() || (isThai ? "ไม่มีชื่อเรื่อง" : "Untitled");
@@ -189,6 +190,8 @@ function calculatePlan() {
     (${hours.toLocaleString()} ÷ ${dailyHours.toLocaleString()}) ≈ ${days.toLocaleString()} ${isThai ? "วัน" : "days"}
   `;
   document.getElementById('resultBox').innerHTML = result;
+  document.getElementById('noteBox').innerHTML = txt.note;
+  document.getElementById('noteBox').style.padding = '10px';
   document.getElementById('exampleBox').innerHTML = example;
 }
 

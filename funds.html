@@ -64,7 +64,6 @@
       font-size: 13px;
       color: #555;
       background: #f3f3f3;
-      padding: 10px;
       border-left: 4px solid #ccc;
     }
   </style>
@@ -116,7 +115,8 @@
     document.getElementById('invest').placeholder = isThai ? 'กรอกจำนวนเงิน' : 'Enter amount in THB';
     document.getElementById('rate').placeholder = isThai ? 'กรอกอัตราดอกเบี้ย' : 'Enter interest rate';
     document.getElementById('years').placeholder = isThai ? 'จำนวนปี' : 'Enter number of years';
-
+    document.getElementById('noteBox').textContent = '';
+    document.getElementById('noteBox').style.padding = '0';
 
     // ฟังก์ชั่นคำนวณเงินกองทุนด้วยสูตรดอกเบี้ยทบต้น
     function calculateFunds() {
@@ -153,6 +153,8 @@
           ? `${invest.toLocaleString()} × (1 + ${rate}% )^${years} = ${finalAmount.toLocaleString(undefined, {maximumFractionDigits: 2})}`
           : `${invest.toLocaleString()} × (1 + ${rate}% )^${years} = ${finalAmount.toLocaleString(undefined, {maximumFractionDigits: 2})}`
         }`;
+        document.getElementById('noteBox').textContent = txt.note;
+        document.getElementById('noteBox').style.padding = '10px';
     }
 
     // ติด comma ตอนพิมพ์

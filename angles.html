@@ -64,7 +64,6 @@
     font-size:11px; 
     color:#777; 
     background:#f9f9f9; 
-    padding:10px; 
     border-left:4px solid #ccc; 
    }
   </style>
@@ -106,6 +105,7 @@
       value: isThai ? 'กรอกมุม:' : 'Enter angle:',
       unit: isThai ? 'เลือกหน่วย:' : 'Select unit:',
       button: isThai ? 'แปลง' : 'Convert',
+      example: isThai ? ' ตัวอย่างการคำนวณ:' : ' Example Calculation:',
       note: isThai
       //หมายเหตุ
         ? "ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษหรือตัดเศษ ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานอ้างอิงทางกฎหมายหรือทางการเงินได้"
@@ -129,7 +129,8 @@
     document.getElementById('unitSelect').options[8].textContent = isThai ? 'ลิปดา (arcmin)' : 'Arcminute (arcmin)';
     document.getElementById('unitSelect').options[9].textContent = isThai ? 'ฟิลิปดา (arcsec)' : 'Arcsecond (arcsec)';
     document.getElementById('unitSelect').options[10].textContent = isThai ? 'ไซน์ (sin)' : 'Sine (sin)';
-    document.getElementById('noteBox').innerHTML = txt.note;
+    document.getElementById('noteBox').textContent = '';
+    document.getElementById('noteBox').style.padding = '0';
 //ฟังก์ชันคำนวณมุม
 function convertAngle() {
     const raw = document.getElementById('angleValue').value.replace(/,/g,'').trim();
@@ -185,18 +186,20 @@ function convertAngle() {
     }
     out += '</ul>';
     document.getElementById('resultBox').innerHTML = out;
+    document.getElementById('noteBox').innerHTML = txt.note;
+    document.getElementById('noteBox').style.padding = '10px';
     ;
 
     // สร้างตัวอย่าง
     let ex = `<strong>${txt.example}</strong><ul>`;
     ex += `<li>${value} ${unitNames.deg} (${isThai ? 'หน่วยเดิม' : 'same unit'})</li>`;
     ex += `<li>เรเดียน = ${value} × π/180 = ${conv.deg.rad.toPrecision(12)}</li>`;
-    ex += `<li>กราด = ${value} × 10/9 = ${conv.deg.grad.toPrecision(12)}</li>`;
-    ex += `<li>มิลิเรเดียน (นาโต) = ${value} ÷ 0.05625 = ${conv.deg.mil_nato.toPrecision(12)}</li>`;
-    ex += `<li>มิลิเรเดียน (สหภาพโซเวียต) = ${value} ÷ 0.06 = ${conv.deg.mil_soviet.toPrecision(12)}</li>`;
-    ex += `<li>ลิปดา = ${value} × 60 = ${conv.deg.arcmin.toPrecision(12)}</li>`;
-    ex += `<li>ฟิลิปดา = ${value} × 3600 = ${conv.deg.arcsec.toPrecision(12)}</li>`;
-    ex += `<li>ไซน์ = sin(${value}°) = ${conv.deg.sine.toPrecision(12)}</li>`;
+    ex += `<li>แกร็ด = ${value} × 10/9 = ${conv.deg.grad.toPrecision(12)}</li>`;
+    ex += `<li>มิลิเรเดียน (นาโต) = ${value} ÷ 0.05625 = ${(value / 0.05625).toPrecision(12)}</li>`;
+    ex += `<li>มิลิเรเดียน (สหภาพโซเวียต) = ${value} ÷ 0.06 = ${(value / 0.06).toPrecision(12)}</li>`;
+    ex += `<li>ลิปดา = ${value} × 60 = ${(value * 60).toPrecision(12)}</li>`;
+    ex += `<li>ฟิลิปดา = ${value} × 3600 = ${(value * 3600).toPrecision(12)}</li>`;
+    ex += `<li>ไซน์ = sin(${value}°) = ${Math.sin(value * Math.PI / 180).toPrecision(12)}</li>`;
     ex += '</ul>';
     document.getElementById('exampleBox').innerHTML = ex;
   }
