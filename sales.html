@@ -190,15 +190,37 @@
       <strong>${isThai ? "🔍 ตัวอย่างการคำนวณ:" : "🔍 Example Calculation:"}</strong><br>${example}
     `;
   }
-
-  // Enter เพื่อคำนวณ
+  // ✅ กด Enter ใน amount → ไป vatRate
   document.getElementById("amount").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      document.getElementById("vatRate").focus();
+    }
+  });
+
+  // ✅ กด Enter ใน vatRate → ไป method
+  document.getElementById("vatRate").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      document.getElementById("method").focus();
+    }
+  });
+
+  // ✅ กด Enter ใน method → ไปปุ่ม Calculate (ไม่คำนวณทันที)
+  document.getElementById("method").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      document.getElementById("calcBtn").focus();
+    }
+  });
+
+  // ✅ กด Enter ตอนอยู่ที่ปุ่ม → เรียกฟังก์ชันคำนวณ
+  document.getElementById("calcBtn").addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
       e.preventDefault();
       calculateVAT();
     }
   });
-
   // ใส่ comma ตอนพิมพ์
   document.getElementById("amount").addEventListener("input", function () {
     const val = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
