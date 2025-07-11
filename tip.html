@@ -68,9 +68,12 @@
     /*หมายเหตุ*/
     .note {
       font-size: 13px;
-      color: #555;
+      color: #777;
       margin-top: 30px;
       line-height: 1.6;
+      background:#f9f9f9; 
+      padding:10px; 
+      border-left:4px solid #ccc;
     }
   </style>
 </head>
@@ -109,7 +112,7 @@
     perPerson: isThai ? "แต่ละคน" : "Each",
     exampleTitle: isThai ? "ตัวอย่างการคำนวณ:" : "Example Calculation:",
     note: isThai
-      ? "📝 ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษ ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานทางกฎหมายหรือทางการเงินได้"
+      ? "📝 ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษ <br>ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานทางกฎหมายหรือทางการเงินได้"
       : "📝 This result is based on standard general formulas and may contain slight rounding errors. It is intended for informational purposes only and should not be used as legal or financial evidence."
   };
   // ตั้งค่าข้อความตามภาษา
@@ -120,7 +123,7 @@
   document.getElementById("label-tip").textContent = text.tipLabel;
   document.getElementById("label-people").textContent = text.peopleLabel;
   document.getElementById("calcBtn").textContent = text.calcBtn;
-  document.getElementById("noteBox").textContent = text.note;
+  document.getElementById("noteBox").innerHTML = text.note
 
   // ทิป % 0-99
   const tipSelect = document.getElementById("tipPercent");
