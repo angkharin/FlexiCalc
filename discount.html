@@ -57,8 +57,6 @@
     .result {
       margin-top: 20px;
       font-size: 18px;
-      background: #9575cd;
-      padding: 15px;
       border-radius: 8px;
     }
   </style>
@@ -89,7 +87,8 @@
   document.getElementById("label-discount").textContent = isThai ? "ส่วนลด (%):" : "Discount (%):";
   document.getElementById("discount").placeholder = isThai ? "กรอกส่วนลด" : "Enter discount";
   document.getElementById("calcBtn").textContent = isThai ? "แปลง" : "Convert";
-
+  document.getElementById('noteBox').textContent = '';
+  document.getElementById('noteBox').style.padding = '0';
   // ใส่ comma ระหว่างพิมพ์
   ["price", "discount"].forEach(id => {
     document.getElementById(id).addEventListener("input", function () {
@@ -133,17 +132,19 @@
     `;
     // หมายเหตุ
     const disclaimer = `
-    <div style="margin-top: 20px; font-size: 13px; color: black; background:#f9f9f9; 
+    <div style="margin-top: 30px; font-size: 13px; color: black; background:#f9f9f9; 
     padding:10px; 
     border-left:4px solid #ccc;">
     ${isThai 
       ? "โปรแกรมคำนวณนี้ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาเป็นหลักฐานอ้างอิงได้"
       : "This calculator is for informational purposes only and cannot be used as legal or official proof."
-    }
+      }
   </div>
 `;
 // สมมุติว่าแสดงไว้ใต้ explanationBox:
-document.getElementById("resultBox").innerHTML = resultText + disclaimer; 
+document.getElementById("resultBox").innerHTML = resultText + disclaimer;
+document.getElementById('noteBox').innerHTML = txt.note;
+document.getElementById('noteBox').style.padding = '10px'; 
   }
 
   // Enter → ไปช่องถัดไปหรือคำนวณ
