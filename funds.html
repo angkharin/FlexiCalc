@@ -164,10 +164,30 @@
       this.value = dp ? `${ip.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}.${dp}` : ip.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     });
 
-    // Enter เพื่อคำนวณ
+    // ✅ Enter flow: invest → rate → years → calculate
     document.getElementById('invest').addEventListener('keydown', function(e){
-      if (e.key === 'Enter') { e.preventDefault(); calculateFunds(); }
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('rate').focus();
+      }
     });
+
+    document.getElementById('rate').addEventListener('keydown', function(e){
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('years').focus();
+      }
+    });
+
+    document.getElementById('years').addEventListener('keydown', function(e){
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        calculateFunds();
+      }
+    });
+
+    // ✅ ปุ่มกดคำนวณ
+    document.getElementById('calcBtn').addEventListener('click', calculateFunds);
   </script>
 </body>
 </html>
