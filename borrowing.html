@@ -1,0 +1,222 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="image/logo.png">
+  <title>Borrowing Calculator</title>
+  <style>
+    /* ✅ โซน body */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f3e5f5;
+      margin: 0;
+      padding: 20px;
+    }
+    /* ✅ กล่องคอนเทนเนอร์ */
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+    /* ✅ หัวข้อหลัก */
+    h1 {
+      text-align: center;
+      color: #9c27b0;
+    }
+    /* ✅ Label */
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    /* ✅ ช่องกรอก input */
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    /* ✅ ปุ่มคำนวณ */
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background: #9c27b0;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #8e24aa;
+    }
+    /* ✅ ผลลัพธ์ */
+    .result {
+      margin-top: 25px;
+      font-size: 15px;
+      color: #333;
+    }
+    /* ✅ ตัวอย่างการคำนวณ */
+    .example {
+      margin-top: 25px;
+      font-size: 15px;
+      color: #333;
+    }
+
+    .result h3,
+    .example h3 {
+      font-size: 20px;
+      margin-top: 0;
+      margin-bottom: 12px;
+    }
+    /* ✅ หมายเหตุ */
+    .note {
+      margin-top: 25px;
+      font-size: 13px;
+      color: #777;
+      background: #f9f9f9;
+      border-left: 4px solid #ccc;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="title">Borrowing Calculator</h1>
+
+    <!-- ✅ ฟอร์มกรอก -->
+    <label id="label-emi">Affordable Monthly Payment:</label>
+    <input type="text" id="emi" placeholder="Enter amount in THB">
+
+    <label id="label-rate">Annual Interest Rate (%):</label>
+    <input type="number" id="interestRate" placeholder="Interest rate">
+
+    <label id="label-months">Loan Term (Months):</label>
+    <input type="number" id="months" placeholder="Number of months">
+
+    <button onclick="calculateBorrowing()" id="calcBtn">Calculate</button>
+
+    <!-- ✅ ผลลัพธ์ -->
+    <div class="result" style="display:none;">
+      <h3 id="resultTitle"></h3>
+      <div id="resultBox"></div>
+    </div>
+
+    <!-- ✅ ตัวอย่างการคำนวณ -->
+    <div class="example" style="display:none;">
+      <h3 id="exampleTitle"></h3>
+      <div id="exampleBox"></div>
+    </div>
+
+    <!-- ✅ หมายเหตุ -->
+    <div class="note" id="noteBox" style="display:none;"></div>
+  </div>
+
+  <script>
+    const isThai = (navigator.language || '').startsWith('th');
+    //การแปลภาษา
+    const txt = {
+      title: isThai ? 'เครื่องคำนวณวงเงินกู้' : 'Borrowing Calculator',
+      emi: isThai ? 'จำนวนเงินที่สามารถผ่อนต่อเดือน:' : 'Affordable Monthly Payment:',
+      rate: isThai ? 'อัตราดอกเบี้ยต่อปี (%):' : 'Annual Interest Rate (%):',
+      months: isThai ? 'ระยะเวลากู้ (เดือน):' : 'Loan Term (Months):',
+      button: isThai ? 'คำนวณ' : 'Calculate',
+      result: isThai ? 'ผลลัพธ์' : 'Result',
+      example: isThai ? '🔍 ตัวอย่างการคำนวณ:' : '🔍 Example Calculation:',
+      note: isThai 
+        ? '📝 เครื่องมือนี้เป็นเพียงการประมาณการวงเงินกู้ตามสูตรทั่วไปเพื่อการวางแผนเบื้องต้นเท่านั้น ผู้ใช้ควรตรวจสอบเงื่อนไขจริงกับธนาคารหรือไฟแนนซ์ก่อนตัดสินใจ'
+        : '📝 This calculator provides an approximate borrowing estimate based on standard formulas. Please verify actual conditions with your bank or finance company before making any commitments.'
+    };
+
+    // ✅ ตั้งค่า UI
+    document.title = txt.title;
+    document.getElementById('title').textContent = txt.title;
+    document.getElementById('label-emi').textContent = txt.emi;
+    document.getElementById('label-rate').textContent = txt.rate;
+    document.getElementById('label-months').textContent = txt.months;
+    document.getElementById('calcBtn').textContent = txt.button;
+    //placeholder
+    document.getElementById('emi').placeholder = isThai ? 'กรอกจำนวนเงิน' : 'Enter amount in THB';
+    document.getElementById('interestRate').placeholder = isThai ? 'อัตราดอกเบี้ย' : 'Interest rate';
+    document.getElementById('months').placeholder = isThai ? 'จำนวนเดือน' : 'Number of months';
+    //ฟังก์ชันคำนวณเงินกู้
+    function calculateBorrowing() {
+      const rawEmi = document.getElementById('emi').value.replace(/,/g,'').trim();
+      const emi = parseFloat(rawEmi);
+      const rate = parseFloat(document.getElementById('interestRate').value);
+      const months = parseInt(document.getElementById('months').value);
+      // ✅ ตรวจสอบค่าที่กรอก
+      if (isNaN(emi) || isNaN(rate) || isNaN(months) || emi <= 0 || rate < 0 || months <= 0) {
+        alert(isThai ? 'กรุณากรอกข้อมูล' : 'Please enter valid inputs.');
+        return;
+      }
+      // จำกัดไม่ให้เกิน 15 หลัก
+      if (rawEmi.replace('.','').length > 15) {
+        alert(isThai ? 'ตัวเลขเกิน 15 หลักไม่ได้' : 'Numbers over 15 digits are not allowed.');
+        return;
+      }
+
+      const monthlyRate = (rate / 100) / 12;
+
+      // ✅ สูตรย้อนจาก EMI: P = EMI / r * [1 - (1 + r)^-n]
+      const factor = Math.pow(1 + monthlyRate, -months);
+      const loanAmount = emi / monthlyRate * (1 - factor);
+      const totalPayment = emi * months;
+      const totalInterest = totalPayment - loanAmount;
+
+      // ✅ แสดงผลลัพธ์
+      document.querySelector('.result').style.display = 'block';
+      document.querySelector('.example').style.display = 'block';
+      document.getElementById('noteBox').style.display = 'block';
+
+      document.getElementById('resultTitle').innerHTML = txt.result;
+      document.getElementById('exampleTitle').innerHTML = txt.example;
+      
+      document.getElementById('resultBox').innerHTML = `
+        ${isThai ? 'วงเงินกู้โดยประมาณ:' : 'Approximate Loan Amount:'} ${loanAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })} <br>
+        ${isThai ? 'ดอกเบี้ยทั้งหมด:' : 'Total Interest:'} ${totalInterest.toLocaleString(undefined, { maximumFractionDigits: 2 })} <br>
+        ${isThai ? 'ยอดรวมที่ต้องชำระ:' : 'Total Payment:'} ${totalPayment.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+      `;
+      //แสดงตัวอย่าง
+      document.getElementById('exampleBox').innerHTML = `
+        ${isThai 
+          ? `สูตร = EMI ÷ อัตราดอกเบี้ยต่อเดือน × [1 - (1 + r)^-n]<br>
+             = ${emi.toLocaleString()} ÷ ${monthlyRate.toFixed(6)} × [1 - (1 + ${monthlyRate.toFixed(6)})^(-${months})] = ${loanAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })}<br>
+             ยอดผ่อนรวม = ${emi.toLocaleString()} × ${months} = ${totalPayment.toLocaleString()}<br>
+             ดอกเบี้ยทั้งหมด = ${totalPayment.toLocaleString()} - ${loanAmount.toLocaleString()} = ${totalInterest.toLocaleString()}`
+          : `Formula = EMI ÷ monthly rate × [1 - (1 + r)^-n]<br>
+             = ${emi.toLocaleString()} ÷ ${monthlyRate.toFixed(6)} × [1 - (1 + ${monthlyRate.toFixed(6)})^(-${months})] = ${loanAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })}<br>
+             Total payment = ${emi.toLocaleString()} × ${months} = ${totalPayment.toLocaleString()}<br>
+             Total interest = ${totalPayment.toLocaleString()} - ${loanAmount.toLocaleString()} = ${totalInterest.toLocaleString()}`
+      }`;
+
+      document.getElementById('noteBox').innerHTML = txt.note;
+    }
+
+    // ✅ ใส่ comma ขณะพิมพ์
+    document.getElementById("emi").addEventListener("input", function () {
+      const val = this.value.replace(/,/g,'').replace(/[^\d.]/g,'');
+      const parts = val.split('.');
+      const intPart = parts[0].replace(/^0+(?!$)/, '');
+      const decPart = parts[1] || '';
+      this.value = decPart ? `${intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",")}.${decPart}` : intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",");
+    });
+    // ✅ Enter flow
+    document.getElementById("emi").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); document.getElementById("interestRate").focus(); }
+    });
+    document.getElementById("interestRate").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); document.getElementById("months").focus(); }
+    });
+    document.getElementById("months").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); calculateBorrowing(); }
+    });
+  </script>
+</body>
+</html>
