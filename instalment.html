@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="th">
+<html>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -170,6 +169,11 @@
       // ✅ ตรวจสอบค่าที่กรอก
       if (isNaN(price) || isNaN(rate) || isNaN(months) || price <= 0 || rate < 0 || months <= 0) {
         alert(isThai ? 'กรุณากรอกข้อมูล' : 'Please enter valid inputs.');
+        return;
+      }
+      // จำกัดไม่ให้เกิน 15 หลัก
+      if (rawPrice.replace('.','').length > 15) {
+        alert(isThai ? 'ตัวเลขเกิน 15 หลักไม่ได้' : 'Numbers over 15 digits are not allowed.');
         return;
       }
 
