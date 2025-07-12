@@ -152,7 +152,10 @@
     document.getElementById('label-salvage').textContent = txt.salvage;
     document.getElementById('label-years').textContent = txt.years;
     document.getElementById('calcBtn').textContent = txt.button;
-
+    //placeholder
+    document.getElementById('assetCost').placeholder = isThai ? 'กรอกราคาทรัพย์สิน' : 'Enter asset cost';
+    document.getElementById('salvageValue').placeholder = isThai ? 'กรอกราคาซาก' : 'Enter residual value';
+    document.getElementById('usefulYears').placeholder = isThai ? 'อายุการใช้งาน' : 'Number of years';
     // ✅ ฟังก์ชันคำนวณ
     function calculateDepreciation() {
       const rawCost = document.getElementById('assetCost').value.replace(/,/g,'').trim();
