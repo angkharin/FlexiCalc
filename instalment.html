@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="image/logo.png">
+  <title>Instalment Calculator</title>
+  <style>
+    /* ✅ โซน body */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fde0dc;
+      margin: 0;
+      padding: 20px;
+    }
+
+    /* ✅ กล่องคอนเทนเนอร์ */
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+
+    /* ✅ หัวข้อหลัก */
+    h1 {
+      text-align: center;
+      color: #e51c23;
+    }
+
+    /* ✅ Label */
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    /* ✅ ช่องกรอก input */
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+
+    /* ✅ ปุ่มคำนวณ */
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background: #e51c23;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #d01716;
+    }
+
+    /* ✅ ผลลัพธ์ */
+    .result {
+      margin-top: 25px;
+      font-size: 15px;
+      color: #333;
+    }
+
+    /* ✅ ตัวอย่างการคำนวณ */
+    .example {
+      margin-top: 25px;
+      font-size: 15px;
+      color: #333;
+    }
+
+    /* ✅ ขนาดหัวข้อย่อย */
+    .result h3,
+    .example h3 {
+      font-size: 20px;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    /* ✅ หมายเหตุ */
+    .note {
+      margin-top: 25px;
+      font-size: 13px;
+      color: #777;
+      background: #f9f9f9;
+      border-left: 4px solid #ccc;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- ✅ หัวข้อหลัก -->
+    <h1 id="title">Instalment Calculator</h1>
+
+    <!-- ✅ ฟอร์มกรอก -->
+    <label id="label-price">Product Price:</label>
+    <input type="text" id="productPrice" placeholder="Enter product price">
+
+    <label id="label-rate">Annual Interest Rate (%):</label>
+    <input type="number" id="interestRate" placeholder="Interest rate">
+
+    <label id="label-months">Instalment Period (Months):</label>
+    <input type="number" id="months" placeholder="Number of months">
+
+    <!-- ✅ ปุ่มคำนวณ -->
+    <button onclick="calculateInstalment()" id="calcBtn">Calculate</button>
+
+    <!-- ✅ กล่องผลลัพธ์ -->
+    <div class="result" style="display:none;">
+      <h3 id="resultTitle"></h3>
+      <div id="resultBox"></div>
+    </div>
+
+    <!-- ✅ กล่องตัวอย่างการคำนวณ -->
+    <div class="example" style="display:none;">
+      <h3 id="exampleTitle"></h3>
+      <div id="exampleBox"></div>
+    </div>
+
+    <!-- ✅ กล่องหมายเหตุ -->
+    <div class="note" id="noteBox" style="display:none;"></div>
+  </div>
+
+  <script>
+    // ✅ ตรวจภาษา
+    const isThai = (navigator.language || '').startsWith('th');
+
+    // ✅ ข้อความภาษา
+    const txt = {
+      title: isThai ? 'เครื่องคำนวณค่างวด' : 'Instalment Calculator',
+      price: isThai ? 'ราคาสินค้า:' : 'Product Price:',
+      rate: isThai ? 'อัตราดอกเบี้ยต่อปี (%):' : 'Annual Interest Rate (%):',
+      months: isThai ? 'ระยะเวลาผ่อน (เดือน):' : 'Instalment Period (Months):',
+      button: isThai ? 'คำนวณ' : 'Calculate',
+      result: isThai ? 'ผลลัพธ์' : 'Result',
+      example: isThai ? '🔍 ตัวอย่างการคำนวณ:' : '🔍 Example Calculation:',
+      note: isThai 
+        ? '📝 เครื่องมือนี้เป็นเพียงการคำนวณประมาณการตามสูตรทั่วไปเพื่อให้ผู้ใช้เห็นค่าใช้จ่ายเบื้องต้น ตัวเลขจริงอาจแตกต่างจากเงื่อนไขของธนาคารหรือไฟแนนซ์ เช่น อัตราดอกเบี้ย โปรโมชั่น หรือค่าธรรมเนียมอื่น ๆ ผู้ใช้ควรตรวจสอบข้อมูลและเงื่อนไขจริงกับสถาบันการเงินก่อนตัดสินใจทำสัญญา'
+        : '📝 This calculator provides an approximate estimate using standard formulas for general informational purposes only. Actual payment amounts may vary depending on your bank’s or finance company’s conditions, such as interest rates, promotions, or additional fees. Please verify all details with your financial institution before signing any agreement.'
+    };
+
+    // ✅ ตั้งค่า UI ตามภาษา
+    document.title = txt.title;
+    document.getElementById('title').textContent = txt.title;
+    document.getElementById('label-price').textContent = txt.price;
+    document.getElementById('label-rate').textContent = txt.rate;
+    document.getElementById('label-months').textContent = txt.months;
+    document.getElementById('calcBtn').textContent = txt.button;
+    //placeholder
+    document.getElementById('productPrice').placeholder = isThai ? 'กรอกราคาสินค้า' : 'Enter product price';
+    document.getElementById('interestRate').placeholder = isThai ? 'อัตราดอกเบี้ย' : 'Interest rate';
+    document.getElementById('months').placeholder = isThai ? 'จำนวนเดือน' : 'Number of months';
+
+    // ✅ ฟังก์ชันคำนวณ Flat Rate
+    function calculateInstalment() {
+      const rawPrice = document.getElementById('productPrice').value.replace(/,/g,'').trim();
+      const price = parseFloat(rawPrice);
+      const rate = parseFloat(document.getElementById('interestRate').value);
+      const months = parseInt(document.getElementById('months').value);
+
+      // ✅ ตรวจสอบค่าที่กรอก
+      if (isNaN(price) || isNaN(rate) || isNaN(months) || price <= 0 || rate < 0 || months <= 0) {
+        alert(isThai ? 'กรุณากรอกข้อมูล' : 'Please enter valid inputs.');
+        return;
+      }
+
+      // ✅ Flat Rate: ดอกเบี้ยคิดเป็นปี
+      const years = months / 12;
+      const totalInterest = price * (rate / 100) * years;
+      const totalPayment = price + totalInterest;
+      const monthly = totalPayment / months;
+
+      // ✅ แสดงผลลัพธ์
+      document.querySelector('.result').style.display = 'block';
+      document.querySelector('.example').style.display = 'block';
+      document.getElementById('noteBox').style.display = 'block';
+
+      document.getElementById('resultTitle').innerHTML = txt.result;
+      document.getElementById('exampleTitle').innerHTML = txt.example;
+
+      document.getElementById('resultBox').innerHTML = `
+        ${isThai ? 'ดอกเบี้ยทั้งหมด:' : 'Total Interest:'} ${totalInterest.toLocaleString(undefined, { maximumFractionDigits: 2 })} <br>
+        ${isThai ? 'ยอดรวมที่ต้องชำระ:' : 'Total Payment:'} ${totalPayment.toLocaleString(undefined, { maximumFractionDigits: 2 })} <br>
+        ${isThai ? 'ค่างวดต่อเดือน:' : 'Monthly Instalment:'} ${monthly.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+      `;
+
+      document.getElementById('exampleBox').innerHTML = `
+        ${isThai 
+          ? `ราคาสินค้า = ${price.toLocaleString()}<br>
+             ดอกเบี้ยทั้งหมด = ${price.toLocaleString()} × ${rate}% × ${years.toFixed(2)} ปี = ${totalInterest.toLocaleString()}<br>
+             ยอดรวม = ${price.toLocaleString()} + ${totalInterest.toLocaleString()} = ${totalPayment.toLocaleString()}<br>
+             ค่างวดต่อเดือน = ${totalPayment.toLocaleString()} ÷ ${months} = ${monthly.toLocaleString(undefined, { maximumFractionDigits: 2 })}`
+          : `Product price = ${price.toLocaleString()}<br>
+             Total interest = ${price.toLocaleString()} × ${rate}% × ${years.toFixed(2)} years = ${totalInterest.toLocaleString()}<br>
+             Total payment = ${price.toLocaleString()} + ${totalInterest.toLocaleString()} = ${totalPayment.toLocaleString()}<br>
+             Monthly instalment = ${totalPayment.toLocaleString()} ÷ ${months} = ${monthly.toLocaleString(undefined, { maximumFractionDigits: 2 })}`
+      }`;
+
+      document.getElementById('noteBox').innerHTML = txt.note;
+    }
+
+    // ✅ ใส่ comma อัตโนมัติ
+    document.getElementById("productPrice").addEventListener("input", function () {
+      const val = this.value.replace(/,/g,'').replace(/[^\d.]/g,'');
+      const parts = val.split('.');
+      const intPart = parts[0].replace(/^0+(?!$)/, '');
+      const decPart = parts[1] || '';
+      this.value = decPart ? `${intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",")}.${decPart}` : intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",");
+    });
+    // ✅ Enter flow
+    document.getElementById("productPrice").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); document.getElementById("interestRate").focus(); }
+    });
+    document.getElementById("interestRate").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); document.getElementById("months").focus(); }
+    });
+    document.getElementById("months").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); calculateInstalment(); }
+    });
+  </script>
+</body>
+</html>
