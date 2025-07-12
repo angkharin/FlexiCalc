@@ -138,7 +138,7 @@
 
   function calculateTax() {
     // ✅ แสดงหัวข้อเมื่อกดคำนวณ
-    document.getElementById("resultTitle").textContent = isThai ? "ผลลัพธ์" : "Result";
+    document.getElementById("resultTitle").innerHTML = `<span style="font-size: 20px;">${isThai ? "ผลลัพธ์" : "Result"}</span>`;
     document.getElementById("resultBox").innerHTML = `
   `;
     const raw = document.getElementById("income").value.replace(/,/g, '');
