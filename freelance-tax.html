@@ -56,12 +56,24 @@
       background: #8c1d2e;
     }
 
-    .result, .note, .example {
+    .result{
+      margin-top: 20px;
+      font-size: 15px;
+      color: #333;
+    } 
+    .note{
       margin-top: 20px;
       font-size: 15px;
       color: #333;
     }
-
+    .example {
+      margin-top: 10px;
+      font-size: 15px;
+      color: #333;
+    }
+    #exmple {
+      font-size: 18px;
+    }
     .note {
       font-size: 13px;
       color: #777;
@@ -95,7 +107,10 @@
   <!-- ปุ่มคำนวณ -->
   <button onclick="calculateTax()" id="calcBtn">Calculate Tax</button>
   <!-- แสดงผลลัพธ์ -->
-  <div class="result" id="resultBox"></div>
+  <div class="result">
+    <h3 id="resultTitle"></h3>
+    <div id="resultBox"></div>
+  </div>
   <div class="example" id="exampleBox"></div>
   <div class="note" id="noteBox"></div>
   <div class="source">
@@ -106,7 +121,7 @@
 <script>
   const isThai = (navigator.language || '').startsWith("th");
 
-  // ตั้งค่าข้อความตามภาษา
+  // ตั้งค่า UI เบื้องต้น
   document.title = isThai ? "เครื่องคำนวณภาษีฟรีแลนซ์" : "Freelance Tax Calculator";
   document.getElementById("income").placeholder = isThai ? "ใส่รายได้ทั้งปี" : "Enter income for the whole year";
   document.getElementById("title").textContent = isThai ? "เครื่องคำนวณภาษีฟรีแลนซ์" : "Freelance Tax Calculator";
@@ -116,9 +131,16 @@
   document.getElementById("expenseType").options[1].textContent = isThai ? "ให้บริการ/ที่ปรึกษา (หักค่าใช้จ่าย 50%)" : "Service/consultant (50%)";
   document.getElementById("calcBtn").textContent = isThai ? "คำนวณภาษี" : "Calculate Tax";
 
+  // ✅ หัวข้อผลลัพธ์ยังไม่แสดงตอนโหลด
+  document.getElementById("resultTitle").textContent = "";
+
   const personalDeduction = 60000;
-// ฟังก์ชันภาษีฟรีแลนซ์
+
   function calculateTax() {
+    // ✅ แสดงหัวข้อเมื่อกดคำนวณ
+    document.getElementById("resultTitle").textContent = isThai ? "ผลลัพธ์" : "Result";
+    document.getElementById("resultBox").innerHTML = `
+  `;
     const raw = document.getElementById("income").value.replace(/,/g, '');
     const income = parseFloat(raw);
     const expensePercent = parseInt(document.getElementById("expenseType").value);
@@ -150,19 +172,17 @@
       { max: 5000000, rate: 0.30 },
       { max: Infinity, rate: 0.35 }
     ];
-    // ตัวแปรเก็บภาษี
     let tax = 0;
     let remaining = netIncome;
     let last = 0;
     let bracketSteps = [];
-    // คำนวณภาษีตามขั้นบันได
     for (const bracket of brackets) {
       if (remaining <= 0) break;
       const range = Math.min(bracket.max - last, remaining);
       const taxThisBracket = +(range * bracket.rate).toFixed(2);
       if (bracket.rate > 0 && range > 0) {
         bracketSteps.push(
-            isThai
+          isThai
             ? `${last.toLocaleString()} ถึง ${(last + range).toLocaleString()} = ${range.toLocaleString()} × ${Math.round(bracket.rate * 100)}% = ${taxThisBracket.toLocaleString()}`
             : `${last.toLocaleString()} to ${(last + range).toLocaleString()} = ${range.toLocaleString()} × ${Math.round(bracket.rate * 100)}% = ${taxThisBracket.toLocaleString()}`
         );
@@ -173,13 +193,14 @@
     }
 
     // ผลลัพธ์
-    resultBox.innerHTML = `
-      💰 ${isThai ? "รายได้สุทธิหลังหักค่าใช้จ่ายและลดหย่อน" : "Net taxable income"}: ${netIncome.toLocaleString()}<br>
-      🧾 ${isThai ? "ภาษีที่ต้องชำระ" : "Estimated tax"}: ${tax.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท
-    `;
+    document.getElementById ("resultBox").innerHTML = `
+    <div style="margin-bottom:6px;">💰 ${isThai ? "รายได้สุทธิหลังหักค่าใช้จ่ายและลดหย่อน" : "Net taxable income"}: ${netIncome.toLocaleString()}<br>
+    <div style="margin-bottom:18px;">🧾 ${isThai ? "ภาษีที่ต้องชำระ" : "Estimated tax"}: ${tax.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท
+  `;
+
     //ตัวอย่างการคำนวณ
-    exampleBox.innerHTML = `
-      <strong>${isThai ? "🔍 ตัวอย่างการคำนวณ:" : "🔍 Example Calculation:"}</strong><br>
+    document.getElementById ("exampleBox").innerHTML = `
+      <h3 style="margin-bottom: -10px;">${isThai ? "🔍 ตัวอย่างการคำนวณ:" : "🔍 Example Calculation:"}</h3><br>
       ${isThai ? `รายได้ทั้งหมด = ${income.toLocaleString()} บาท<br>
       หักค่าใช้จ่าย = ${income.toLocaleString()} × ${expensePercent}% = ${expense.toLocaleString()}<br>
       รายได้หลังหักค่าใช้จ่าย = ${income.toLocaleString()} − ${expense.toLocaleString()} = ${afterExpense.toLocaleString()}<br>
@@ -197,12 +218,13 @@
       รวมภาษี = ${tax.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} bath`
     }
     `;
+
     //หมายเหตุ
     document.getElementById("noteBox").innerHTML = isThai
       ? "📝 ผลลัพธ์จากเครื่องมือนี้ใช้เพื่อประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถใช้เป็นหลักฐานทางกฎหมายหรือภาษีได้ ผู้ใช้งานควรปรึกษาผู้เชี่ยวชาญหรือหน่วยงานที่เกี่ยวข้องก่อนดำเนินการทางการเงินหรือภาษี"
       : "📝 This tax calculator is intended for preliminary informational purposes only and should not be used as legal, tax, or financial advice. Users are encouraged to consult professionals or relevant authorities before making any financial or tax-related decisions.";
-    document.getElementById("noteBox").style.padding = "10px"; // เพิ่ม padding
-    }
+    document.getElementById("noteBox").style.padding = "10px";
+  }
 
   // กด Enter เพื่อคำนวณ
   document.getElementById("income").addEventListener("keydown", function (e) {
