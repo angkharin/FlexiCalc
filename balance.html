@@ -5,13 +5,15 @@
   <link rel="icon" href="image/logo.png">
   <title>Balance Sheet Calculator</title>
   <style>
+    /* ✅ สไตล์ body */
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #d0f8ce;
       margin: 0;
       padding: 20px;
     }
-    .container {
+    /* ✅ กล่องคอนเทนเนอร์ */
+    .container { 
       max-width: 600px;
       margin: auto;
       background: #fff;
@@ -19,15 +21,18 @@
       border-radius: 12px;
       box-shadow: 0 5px 10px rgba(0,0,0,0.1);
     }
+    /* ✅ หัวข้อหลัก */
     h1 {
       text-align: center;
       color: #259b24;
     }
+    /* ✅ Label */
     label {
       display: block;
       font-weight: bold;
       margin-top: 15px;
     }
+    /* ✅ ช่องกรอก */
     input {
       width: 100%;
       padding: 10px;
@@ -35,6 +40,7 @@
       margin-top: 5px;
       box-sizing: border-box;
     }
+    /* ✅ ปุ่มคำนวณ */
     button {
       margin-top: 20px;
       width: 100%;
@@ -49,11 +55,13 @@
     button:hover {
       background: #0a7e07;
     }
+    /* ✅ กล่องผลลัพธ์ */
     .result {
       margin-top: 25px;
       font-size: 15px;
       color: #333;
     }
+    /* ✅ กล่องตัวอย่าง */
     .example {
       margin-top: 25px;
       font-size: 15px;
@@ -65,6 +73,7 @@
       margin-top: 0;
       margin-bottom: 12px;
     }
+    /* ✅ กล่องหมายเหตุ */
     .note {
       margin-top: 25px;
       font-size: 13px;
@@ -147,7 +156,7 @@
       const equity = parseFloat(rawEquity);
       // ✅ ตรวจสอบข้อมูล
       if (isNaN(assets) || isNaN(liabilities) || isNaN(equity) || assets < 0 || liabilities < 0 || equity < 0) {
-        alert(isThai ? 'กรุณากรอกข้อมูลให้ถูกต้อง' : 'Please enter valid inputs.');
+        alert(isThai ? 'กรุณากรอกข้อมูล' : 'Please enter valid inputs.');
         return;
       }
       // จำกัดไม่ให้เกิน 15 หลัก

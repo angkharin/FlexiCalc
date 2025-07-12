@@ -132,7 +132,7 @@
   <script>
     // ✅ ตรวจภาษา
     const isThai = (navigator.language || '').startsWith('th');
-
+    
     const txt = {
       title: isThai ? 'การคำนวณงบกำไรขาดทุน' : 'Income Statement Calculator',
       revenue: isThai ? 'รายได้รวม:' : 'Total Revenue:',
@@ -169,7 +169,7 @@
       const expense = parseFloat(rawExpense);
       // ✅ ตรวจสอบข้อมูล
       if (isNaN(revenue) || isNaN(cogs) || isNaN(expense) || revenue < 0 || cogs < 0 || expense < 0) {
-        alert(isThai ? 'กรุณากรอกข้อมูลให้ถูกต้อง' : 'Please enter valid inputs.');
+        alert(isThai ? 'กรุณากรอกข้อมูล' : 'Please enter valid inputs.');
         return;
       }
       // จำกัดไม่ให้เกิน 15 หลัก
