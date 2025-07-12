@@ -3,7 +3,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="image/logo.png">
-  <title>ตัวแปลงอายุ</title>
+  <title>การคำนวณอายุ</title>
   <style>
     /* สไตล์รวมของ body */
     body {
@@ -83,7 +83,7 @@
 <body>
 
   <div class="container">
-    <h1 id="title">คำนวณอายุ</h1>
+    <h1 id="title">การคำนวณอายุ</h1>
     <!-- ช่องกรอกวันเกิด -->
     <label for="birthdate" id="label-birth">เลือกวันเกิดของคุณ:</label>
     <input type="date" id="birthdate">
@@ -100,7 +100,7 @@
     document.title = isThai ? "ตัวแปลงอายุ" : "Age Calculator";
 
     // ตั้งค่าข้อความต่าง ๆ ตามภาษาที่ใช้
-    document.getElementById('title').textContent = isThai ? 'คำนวณอายุ' : 'Age Calculator';
+    document.getElementById('title').textContent = isThai ? 'การคำนวณอายุ' : 'Age Calculator';
     document.getElementById('label-birth').textContent = isThai ? 'เลือกวันเกิดของคุณ:' : 'Select your birthdate:';
     document.getElementById('calcBtn').textContent = isThai ? 'แปลง' : 'Convert';
     // รับค่าที่ผู้ใช้กรอก

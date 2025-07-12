@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ส่วนลดสินค้า</title>
+  <title>การคำนวณส่วนลด</title>
   <link rel="icon" href="image/logo.png" />
   <style>
     /* สไตล์รวมของ body */
@@ -64,7 +64,7 @@
 <body>
 
 <div class="container">
-  <h1 id="title">คำนวณส่วนลด</h1>
+  <h1 id="title">การคำนวณส่วนลด</h1>
   <!-- ช่องกรอกราคาสินค้า -->
   <label id="label-price">ราคาสินค้า:</label>
   <input type="text" id="price" placeholder="กรอกราคา">
@@ -81,7 +81,7 @@
   // ตรวจสอบภาษาเบราว์เซอร์
   const isThai = (navigator.language || '').toLowerCase().startsWith('th');
   document.title = isThai ? "ส่วนลดสินค้า" : "Discount Calculator";
-  document.getElementById("title").textContent = isThai ? "คำนวณส่วนลด" : "Discount Calculator";
+  document.getElementById("title").textContent = isThai ? "การคำนวณส่วนลด" : "Discount Calculator";
   document.getElementById("label-price").textContent = isThai ? "ราคาสินค้า:" : "Original Price:";
   document.getElementById("price").placeholder = isThai ? "กรอกราคา" : "Enter price";
   document.getElementById("label-discount").textContent = isThai ? "ส่วนลด (%):" : "Discount (%):";

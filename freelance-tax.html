@@ -119,9 +119,9 @@
   const isThai = (navigator.language || '').startsWith("th");
 
   // ตั้งค่า UI เบื้องต้น
-  document.title = isThai ? "เครื่องคำนวณภาษีฟรีแลนซ์" : "Freelance Tax Calculator";
+  document.title = isThai ? "การคำนวณภาษีฟรีแลนซ์" : "Freelance Tax Calculator";
   document.getElementById("income").placeholder = isThai ? "ใส่รายได้ทั้งปี" : "Enter income for the whole year";
-  document.getElementById("title").textContent = isThai ? "เครื่องคำนวณภาษีฟรีแลนซ์" : "Freelance Tax Calculator";
+  document.getElementById("title").textContent = isThai ? "การคำนวณภาษีฟรีแลนซ์" : "Freelance Tax Calculator";
   document.getElementById("label-income").textContent = isThai ? "รายได้ทั้งปี (บาท):" : "Total annual income (THB):";
   document.getElementById("label-expense").textContent = isThai ? "เลือกประเภทค่าใช้จ่าย:" : "Expense type:";
   document.getElementById("expenseType").options[0].textContent = isThai ? "ฟรีแลนซ์ทั่วไป (หักค่าใช้จ่าย 60%)" : "General freelancer (60%)";

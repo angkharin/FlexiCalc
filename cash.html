@@ -126,7 +126,7 @@
 
     // ✅ ข้อความตามภาษา
     const txt = {
-      title: isThai ? 'เครื่องคำนวณกระแสเงินสด' : 'Cash Flow Calculator',
+      title: isThai ? 'การคำนวณกระแสเงินสด' : 'Cash Flow Calculator',
       income: isThai ? 'รายรับรวมต่อเดือน:' : 'Total Monthly Income:',
       expense: isThai ? 'รายจ่ายรวมต่อเดือน:' : 'Total Monthly Expenses:',
       months: isThai ? 'ระยะเวลา (เดือน):' : 'Period (Months):',
@@ -160,7 +160,7 @@
 
       // ✅ ตรวจสอบข้อมูล
       if (isNaN(income) || isNaN(expense) || isNaN(months) || income < 0 || expense < 0 || months <= 0) {
-        alert(isThai ? 'กรุณากรอกข้อมูลให้ถูกต้อง' : 'Please enter valid inputs.');
+        alert(isThai ? 'กรุณากรอกข้อมูล' : 'Please enter valid inputs.');
         return;
       }
       // จำกัดไม่ให้เกิน 15 หลัก

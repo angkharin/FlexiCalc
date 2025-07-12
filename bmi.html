@@ -1,7 +1,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>ตัวคำนวณดัชนีมวลกาย</title>
+  <title>การคำนวณดัชนีมวลกาย</title>
   <link rel="icon" href="image/logo.png">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
@@ -140,7 +140,7 @@
 
     // ตั้งชื่อหัวข้อ & label ตามภาษา
     document.title = isThai ? "ตัวคำนวณดัชนีมวลกาย" : "BMI Calculator";
-    document.getElementById("title").textContent = isThai ? "คำนวณ ดัชนีมวลกาย" : "BMI Calculator";
+    document.getElementById("title").textContent = isThai ? "การคำนวณ ดัชนีมวลกาย" : "BMI Calculator";
     document.getElementById("label-weight").textContent = isThai ? "น้ำหนัก (กก.):" : "Weight (kg):";
     document.getElementById("weight").placeholder = isThai ? "กรอกน้ำหนัก" : "Enter weight";
     document.getElementById("label-height").textContent = isThai ? "ส่วนสูง (ซม.):" : "Height (cm):";
@@ -250,7 +250,7 @@
         calculateBMI();
       }
     });
-
+    
     // เพิ่ม comma อัตโนมัติ
     document.getElementById("weight").addEventListener("input", function () {
       this.value = formatNumberWithCommas(this.value);
