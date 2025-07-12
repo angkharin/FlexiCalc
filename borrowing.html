@@ -207,6 +207,23 @@
       const decPart = parts[1] || '';
       this.value = decPart ? `${intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",")}.${decPart}` : intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",");
     });
+
+    document.getElementById("interestRate").addEventListener("input", function () {
+      const val = this.value.replace(/,/g,'').replace(/[^\d.]/g,'');
+      const parts = val.split('.');
+      const intPart = parts[0].replace(/^0+(?!$)/, '');
+      const decPart = parts[1] || '';
+      this.value = decPart ? `${intPart.replace(/\B(?=(\d{2})+(?!\d))/g,",")}.${decPart}` : intPart.replace(/\B(?=(\d{2})+(?!\d))/g,",");
+    });
+
+    document.getElementById("months").addEventListener("input", function () {
+      const val = this.value.replace(/,/g,'').replace(/[^\d.]/g,'');
+      const parts = val.split('.');
+      const intPart = parts[0].replace(/^0+(?!$)/, '');
+      const decPart = parts[1] || '';
+      this.value = decPart ? `${intPart.replace(/\B(?=(\d{2})+(?!\d))/g,",")}.${decPart}` : intPart.replace(/\B(?=(\d{2})+(?!\d))/g,",");
+    });
+
     // ✅ Enter flow
     document.getElementById("emi").addEventListener("keydown", function (e) {
       if (e.key === "Enter") { e.preventDefault(); document.getElementById("interestRate").focus(); }

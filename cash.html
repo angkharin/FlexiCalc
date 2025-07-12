@@ -1,0 +1,244 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="image/logo.png">
+  <title>Cash Flow Calculator</title>
+  <style>
+    /* ✅ โซน body */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #e8eaf6;
+      margin: 0;
+      padding: 20px;
+    }
+    /* ✅ กล่องคอนเทนเนอร์ */
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+    /* ✅ หัวข้อหลัก */
+    h1 {
+      text-align: center;
+      color: #3f51b5;
+    }
+    /* ✅ Label */
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    /* ✅ ช่องกรอก input */
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    /* ✅ ปุ่มคำนวณ */
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background: #3f51b5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #303f9f;
+    }
+    /* ✅ ผลลัพธ์ */
+    .result {
+      margin-top: 25px;
+      font-size: 15px;
+      color: #333;
+    }
+    /* ✅ ตัวอย่างการคำนวณ */
+    .example {
+      margin-top: 25px;
+      font-size: 15px;
+      color: #333;
+    }
+
+    .result h3,
+    .example h3 {
+      font-size: 20px;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+    /* ✅ หมายเหตุ */
+    .note {
+      margin-top: 25px;
+      font-size: 13.5px;
+      color: #777;
+      background: #f9f9f9;
+      border-left: 4px solid #ccc;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- ✅ หัวข้อหลัก -->
+    <h1 id="title">Cash Flow Calculator</h1>
+
+    <!-- ✅ ฟอร์มกรอกข้อมูล -->
+    <label id="label-income">Total Monthly Income:</label>
+    <input type="text" id="income" placeholder="Enter total monthly income">
+
+    <label id="label-expense">Total Monthly Expenses:</label>
+    <input type="text" id="expense" placeholder="Enter total monthly expenses">
+
+    <label id="label-months">Period (Months):</label>
+    <input type="number" id="months" placeholder="Number of months">
+
+    <!-- ✅ ปุ่มคำนวณ -->
+    <button onclick="calculateCashFlow()" id="calcBtn">Calculate</button>
+
+    <!-- ✅ กล่องผลลัพธ์ -->
+    <div class="result" style="display:none;">
+      <h3 id="resultTitle"></h3>
+      <div id="resultBox"></div>
+    </div>
+
+    <!-- ✅ กล่องตัวอย่างการคำนวณ -->
+    <div class="example" style="display:none;">
+      <h3 id="exampleTitle"></h3>
+      <div id="exampleBox"></div>
+    </div>
+
+    <!-- ✅ กล่องหมายเหตุ -->
+    <div class="note" id="noteBox" style="display:none;"></div>
+  </div>
+
+  <script>
+    // ✅ ตรวจภาษาอัตโนมัติ
+    const isThai = (navigator.language || '').startsWith('th');
+
+    // ✅ ข้อความตามภาษา
+    const txt = {
+      title: isThai ? 'เครื่องคำนวณกระแสเงินสด' : 'Cash Flow Calculator',
+      income: isThai ? 'รายรับรวมต่อเดือน:' : 'Total Monthly Income:',
+      expense: isThai ? 'รายจ่ายรวมต่อเดือน:' : 'Total Monthly Expenses:',
+      months: isThai ? 'ระยะเวลา (เดือน):' : 'Period (Months):',
+      button: isThai ? 'คำนวณ' : 'Calculate',
+      result: isThai ? 'ผลลัพธ์' : 'Result',
+      example: isThai ? '🔍 ตัวอย่างการคำนวณ:' : '🔍 Example Calculation:',
+      note: isThai 
+        ? '📝 เครื่องมือนี้ใช้เพื่อประมาณการกระแสเงินสดเบื้องต้นเท่านั้น ตัวเลขที่ได้อาจแตกต่างจากสถานการณ์จริง ผู้ใช้ควรตรวจสอบข้อมูลรายรับและรายจ่ายจริง และปรึกษาผู้เชี่ยวชาญทางการเงินหรือบัญชี หากต้องการใช้ข้อมูลนี้เพื่อการวางแผนธุรกิจ การลงทุน หรือการยื่นกู้'
+        : '📝 This tool provides only an approximate cash flow estimate for general planning. Actual figures may vary depending on your real income and expenses. Please verify your actual numbers and consult a financial or accounting professional if you plan to use this information for business planning, investment, or loan applications.'
+    };
+
+    // ✅ ตั้งค่า UI
+    document.title = txt.title;
+    document.getElementById('title').textContent = txt.title;
+    document.getElementById('label-income').textContent = txt.income;
+    document.getElementById('label-expense').textContent = txt.expense;
+    document.getElementById('label-months').textContent = txt.months;
+    document.getElementById('calcBtn').textContent = txt.button;
+    //placeholder
+    document.getElementById('income').placeholder = isThai ? 'กรอกรายรับ' : 'Enter total monthly income';
+    document.getElementById('expense').placeholder = isThai ? 'กรอกรายจ่าย' : 'Enter total monthly expenses';
+    document.getElementById('months').placeholder = isThai ? 'จำนวนเดือน' : 'Number of months';
+    // ✅ ฟังก์ชันคำนวณกระแสเงินสด
+    function calculateCashFlow() {
+      const rawIncome = document.getElementById('income').value.replace(/,/g,'').trim();
+      const rawExpense = document.getElementById('expense').value.replace(/,/g,'').trim();
+      const months = parseInt(document.getElementById('months').value);
+
+      const income = parseFloat(rawIncome);
+      const expense = parseFloat(rawExpense);
+
+      // ✅ ตรวจสอบข้อมูล
+      if (isNaN(income) || isNaN(expense) || isNaN(months) || income < 0 || expense < 0 || months <= 0) {
+        alert(isThai ? 'กรุณากรอกข้อมูลให้ถูกต้อง' : 'Please enter valid inputs.');
+        return;
+      }
+      // จำกัดไม่ให้เกิน 15 หลัก
+      if (
+        rawIncome.replace('.','').length > 15 ||
+        rawExpense.toString().replace('.', '').length > 15
+    ) {
+        alert(isThai ? 'ตัวเลขเกิน 15 หลักไม่ได้' : 'Numbers over 15 digits are not allowed.');
+        return;
+      }
+
+      // ✅ คำนวณ
+      const netPerMonth = income - expense;
+      const netTotal = netPerMonth * months;
+
+      // ✅ แสดงผลลัพธ์
+      document.querySelector('.result').style.display = 'block';
+      document.querySelector('.example').style.display = 'block';
+      document.getElementById('noteBox').style.display = 'block';
+
+      document.getElementById('resultTitle').innerHTML = txt.result;
+      document.getElementById('exampleTitle').innerHTML = txt.example;
+
+      document.getElementById('resultBox').innerHTML = `
+        ${isThai ? 'กระแสเงินสดสุทธิ/เดือน:' : 'Net Cash Flow per Month:'} ${netPerMonth.toLocaleString(undefined, { maximumFractionDigits: 2 })} <br>
+        ${isThai ? 'กระแสเงินสดรวมทั้งหมด:' : 'Total Cash Flow for Period:'} ${netTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+      `;
+      //แสดงตัวอย่าง
+      document.getElementById('exampleBox').innerHTML = `
+        ${isThai 
+          ? `รายรับต่อเดือน = ${income.toLocaleString()}<br>
+             รายจ่ายต่อเดือน = ${expense.toLocaleString()}<br>
+             กระแสเงินสดสุทธิ/เดือน = ${income.toLocaleString()} - ${expense.toLocaleString()} = ${netPerMonth.toLocaleString()}<br>
+             กระแสเงินสดรวม = ${netPerMonth.toLocaleString()} × ${months} = ${netTotal.toLocaleString()}`
+          : `Monthly income = ${income.toLocaleString()}<br>
+             Monthly expenses = ${expense.toLocaleString()}<br>
+             Net cash flow per month = ${income.toLocaleString()} - ${expense.toLocaleString()} = ${netPerMonth.toLocaleString()}<br>
+             Total cash flow = ${netPerMonth.toLocaleString()} × ${months} = ${netTotal.toLocaleString()}`
+      }`;
+
+      document.getElementById('noteBox').innerHTML = txt.note;
+    }
+
+    // ✅ ใส่ comma ขณะพิมพ์
+    document.getElementById("income").addEventListener("input", function () {
+      const val = this.value.replace(/,/g,'').replace(/[^\d.]/g,'');
+      const parts = val.split('.');
+      const intPart = parts[0].replace(/^0+(?!$)/, '');
+      const decPart = parts[1] || '';
+      this.value = decPart ? `${intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",")}.${decPart}` : intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",");
+    });
+
+    document.getElementById("expense").addEventListener("input", function () {
+      const val = this.value.replace(/,/g,'').replace(/[^\d.]/g,'');
+      const parts = val.split('.');
+      const intPart = parts[0].replace(/^0+(?!$)/, '');
+      const decPart = parts[1] || '';
+      this.value = decPart ? `${intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",")}.${decPart}` : intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",");
+    });
+
+    document.getElementById("months").addEventListener("input", function () {
+      const val = this.value.replace(/,/g,'').replace(/[^\d.]/g,'');
+      const parts = val.split('.');
+      const intPart = parts[0].replace(/^0+(?!$)/, '');
+      const decPart = parts[1] || '';
+      this.value = decPart ? `${intPart.replace(/\B(?=(\d{2})+(?!\d))/g,",")}.${decPart}` : intPart.replace(/\B(?=(\d{2})+(?!\d))/g,",");
+    });
+
+    // ✅ Enter flow
+    document.getElementById("income").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); document.getElementById("expense").focus(); }
+    });
+    document.getElementById("expense").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); document.getElementById("months").focus(); }
+    });
+    document.getElementById("months").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); calculateCashFlow(); }
+    });
+  </script>
+</body>
+</html>

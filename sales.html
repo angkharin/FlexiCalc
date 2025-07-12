@@ -162,12 +162,12 @@
     const rate = parseFloat(document.getElementById("vatRate").value);
     const method = document.getElementById("method").value;
     // ตรวจสอบว่ากรอกค่าถูกต้องหรือไม่
-    if (isNaN(amount) || isNaN(rate) || amount <= 0) {
+    if (isNaN(amount) || isNaN(rate) || amount <= 0 ) {
       alert(isThai ? "กรุณากรอกจำนวนเงิน" : "Please enter amount");
       return;
     }
     // จำกัดไม่ให้เกิน 15 หลัก
-    if (raw.replace('.', '').length > 15) {
+    if (raw.replace('.', '').length > 15){
       alert(isThai ? "ไม่สามารถคำนวณตัวเลขเกิน 15 หลักได้" : "Cannot calculate numbers exceeding 15 digits.");
       return;
     }
@@ -250,7 +250,7 @@
   });
 
   // ใส่ comma ตอนพิมพ์
-  document.getElementById("amount").addEventListener("input", function () {
+  document.getElementById("amount" || vatRate).addEventListener("input", function () {
     const val = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
     const parts = val.split('.');
     const intPart = parts[0].replace(/^0+(?!$)/, '');
@@ -259,6 +259,15 @@
       ? `${intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}.${decPart}`
       : intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   });
+
+  document.getElementById("vatRate").addEventListener("input", function () {
+      const val = this.value.replace(/,/g,'').replace(/[^\d.]/g,'');
+      const parts = val.split('.');
+      const intPart = parts[0].replace(/^0+(?!$)/, '');
+      const decPart = parts[1] || '';
+      this.value = decPart ? `${intPart.replace(/\B(?=(\d{2})+(?!\d))/g, ",")}.${decPart}`
+      : intPart.replace(/\B(?=(\d{2})+(?!\d))/g, ",");
+    });
 </script>
 </body>
 </html>

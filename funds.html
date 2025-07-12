@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="th">
+<html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -208,6 +207,22 @@
 
     // ติด comma ตอนพิมพ์
     document.getElementById('invest').addEventListener('input', function(){
+      let v = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+      const p = v.split('.');
+      const ip = p[0].replace(/^0+(?!$)/, '');
+      const dp = p[1] || '';
+      this.value = dp ? `${ip.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}.${dp}` : ip.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    });
+
+    document.getElementById('rate').addEventListener('input', function(){
+      let v = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+      const p = v.split('.');
+      const ip = p[0].replace(/^0+(?!$)/, '');
+      const dp = p[1] || '';
+      this.value = dp ? `${ip.replace(/\B(?=(\d{2})+(?!\d))/g, ",")}.${dp}` : ip.replace(/\B(?=(\d{2})+(?!\d))/g, ",");
+    });
+    
+    document.getElementById('years').addEventListener('input', function(){
       let v = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
       const p = v.split('.');
       const ip = p[0].replace(/^0+(?!$)/, '');

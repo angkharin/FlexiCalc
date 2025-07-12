@@ -169,7 +169,7 @@
       const rawDown = document.getElementById('downPayment').value.trim();
       const price = parseFloat(rawPrice);
       let down = 0;
-
+      // ตรวจสอบค่าที่กรอก
       if (rawDown.includes('%')) {
         const percent = parseFloat(rawDown.replace('%','').trim());
         if (isNaN(percent) || percent < 0 || percent > 100) {
@@ -188,12 +188,12 @@
 
       const rate = parseFloat(document.getElementById('interestRate').value);
       const years = parseFloat(document.getElementById('loanYears').value);
-
+      // ตรวจสอบค่าที่กรอก
       if (isNaN(price) || isNaN(rate) || isNaN(years) || price <= 0 || rate < 0 || years <= 0) {
         alert(isThai ? 'กรุณากรอกข้อมูลให้ถูกต้อง' : 'Please enter valid inputs.');
         return;
       }
-
+      // จำกัดไม่ให้เกิน 15 หลัก
       if (rawPrice.replace('.','').length > 15) {
         alert(isThai ? 'ตัวเลขเกิน 15 หลักไม่ได้' : 'Numbers over 15 digits are not allowed.');
         return;
@@ -250,6 +250,22 @@
     });
     document.getElementById("downPayment").addEventListener("input", function () {
       if (this.value.includes('%')) return;
+      const val = this.value.replace(/,/g,'').replace(/[^\d.]/g,'');
+      const parts = val.split('.');
+      const intPart = parts[0].replace(/^0+(?!$)/, '');
+      const decPart = parts[1] || '';
+      this.value = decPart ? `${intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",")}.${decPart}` : intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",");
+    });
+
+    document.getElementById("interestRate").addEventListener("input", function () {
+      const val = this.value.replace(/,/g,'').replace(/[^\d.]/g,'');
+      const parts = val.split('.');
+      const intPart = parts[0].replace(/^0+(?!$)/, '');
+      const decPart = parts[1] || '';
+      this.value = decPart ? `${intPart.replace(/\B(?=(\d{2})+(?!\d))/g,",")}.${decPart}` : intPart.replace(/\B(?=(\d{2})+(?!\d))/g,",");
+    });
+
+    document.getElementById("loanYears").addEventListener("input", function () {
       const val = this.value.replace(/,/g,'').replace(/[^\d.]/g,'');
       const parts = val.split('.');
       const intPart = parts[0].replace(/^0+(?!$)/, '');
