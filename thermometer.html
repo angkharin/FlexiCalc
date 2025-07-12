@@ -160,7 +160,7 @@
       const inputLabel = isThai ? unitMap[unit][0] : unitMap[unit][1];
       const inputVal = value.toLocaleString(undefined, { maximumFractionDigits: 6 });
       // แสดงค่าที่กรอก
-      examples.push(`<li>${inputVal} ${inputLabel} = ${inputVal} ${inputLabel} <span style="color:gray;">(${isThai ? "หน่วยเดิม" : "same unit"})</span></li>`);
+      examples.push(`<li>${inputVal} ${inputLabel} = ${inputVal} ${inputLabel} <span style="color:gray;">(${isThai ? "หน่วยเดิม ไม่มีการแปลง" : "Same unit, no conversion"})</span></li>`);
       // แปลงหน่วยอื่นๆ
       if (unit === "C") {
         examples.push(`<li>${value} × 9 ÷ 5 + 32 = ${F.toFixed(2)} ${isThai ? unitMap.F[0] : unitMap.F[1]}</li>`);

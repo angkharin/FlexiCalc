@@ -154,7 +154,7 @@ options.forEach(opt => {
       document.getElementById("resultBox").innerHTML = result;
       
       // ตัวอย่างการคำนวณ
-      let explanation = `<strong>${isThai ? 'ตัวอย่างการคำนวณ:' : 'Example:'}</strong><ul>`;
+      let explanation = `<strong strong style="display:block; margin-top:20px; font-size:16px;">${isThai ? 'ตัวอย่างการคำนวณ:' : 'Example:'}</strong><ul>`;
       explanation += `<li>${isThai ? 'นำเลข' : 'Convert'} <strong>${input}</strong> ${isThai ? 'จาก' : 'from'} ${baseLabel[fromBase]} ${isThai ? 'ไปยังเลขฐานอื่นโดยใช้ parseInt และ toString' : 'to other bases using parseInt and toString'}.</li>`;
       explanation += `<li>${isThai ? 'เลขฐานสิบ:' : 'Decimal value:'} ${decimalValue.toLocaleString()}</li>`;
       explanation += `</ul>`;

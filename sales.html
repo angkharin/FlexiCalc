@@ -54,7 +54,17 @@
     button:hover {
       background: #b71c1c;
     }
-    .result, .example, .note {
+    .result {
+      margin-top: 20px;
+      font-size: 15px;
+      color: #333;
+    }
+    .example {
+      margin-top: 20px;
+      font-size: 15px;
+      color: #333;
+    }
+    .note {
       margin-top: 20px;
       font-size: 15px;
       color: #333;
@@ -98,7 +108,10 @@
   <!-- ปุ่มคำนวณ -->
   <button onclick="calculateVAT()" id="calcBtn">Calculate</button>
   <!-- กล่องแสดงผลลัพธ์ -->
-  <div class="result" id="resultBox"></div>
+  <div class="result">
+    <h3 id="resultTitle"></h3>
+    <div id="resultBox"></div>
+  </div>
   <div class="example" id="exampleBox"></div>
   <div class="note" id="noteBox"></div>
 </div>
@@ -134,12 +147,16 @@
   document.getElementById("method").options[0].textContent = text.methodBefore;
   document.getElementById("method").options[1].textContent = text.methodAfter;
   document.getElementById("warningText").innerHTML = text.warning;
+  document.getElementById("resultTitle").textContent = "";
   // ซ่อนไว้ก่อน
   document.getElementById("noteBox").innerHTML = "";
   document.getElementById("noteBox").style.padding = "0";
 
   // ฟังก์ชันแปลงภาษีมูลค่าเพิ่ม
   function calculateVAT() {
+    document.getElementById("resultTitle").innerHTML = `<span style="font-size: 20px;">${isThai ? "ผลลัพธ์" : "Result"}</span>`;
+    document.getElementById("resultBox").innerHTML = `
+  `;
     const raw = document.getElementById("amount").value.replace(/,/g, '');
     const amount = parseFloat(raw);
     const rate = parseFloat(document.getElementById("vatRate").value);
@@ -167,6 +184,7 @@
     }
     //ผลลัพธ์
     document.getElementById("resultBox").innerHTML = `
+    <div style="margin-top:-10px;">
       💵 ${isThai ? "ราคาก่อนภาษี" : "Price before VAT"}: ${base.toLocaleString()}<br>
       🧾 ${isThai ? "VAT" : "VAT"} ${rate}%: ${vat.toLocaleString()}<br>
       📦 ${isThai ? "ราคารวมภาษี" : "Total with VAT"}: ${total.toLocaleString()}
@@ -191,7 +209,7 @@
       `;
 
     document.getElementById("exampleBox").innerHTML = `
-      <strong>${isThai ? "🔍 ตัวอย่างการคำนวณ:" : "🔍 Example Calculation:"}</strong><br>${example}
+       <strong style="font-size: 18px; display: inline-block; margin-bottom: 10px;">${isThai ? "🔍 ตัวอย่างการคำนวณ:" : "🔍 Example Calculation:"}</strong><br>${example}
     `;
 
     // แสดงหมายเหตุเมื่อคำนวณ

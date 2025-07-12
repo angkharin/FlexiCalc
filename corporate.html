@@ -54,13 +54,20 @@
     button:hover {
       background-color: #003f6b;
     }
-    .result, .example, .note {
+    .result{
+      margin-top: 20px;
+      font-size: 15px;
+    }
+    .example{
+      margin-top: 20px;
+      font-size: 15px;
+    }
+    .note {
       margin-top: 20px;
       font-size: 15px;
     }
     .note {
       background: #f9f9f9;
-      padding: 10px;
       border-left: 4px solid #ccc;
       color: #666;
       font-size: 13px;
@@ -91,7 +98,10 @@
     <!-- ปุ่มคำนวณภาษี -->
     <button onclick="calculateTax()" id="calcBtn">Calculate Tax</button>
     <!-- แสดงผลลัพธ์ -->
-    <div class="result" id="resultBox"></div>
+    <div class="result">
+    <h3 id="resultTitle"></h3>
+    <div id="resultBox"></div> 
+  </div>
     <div class="example" id="exampleBox"></div>
     <div class="note" id="noteBox"></div>
     <div class="source">
@@ -112,10 +122,14 @@
   document.getElementById("companyType").options[1].textContent = isThai ? "บริษัททั่วไป" : "General Company";
   document.getElementById("calcBtn").textContent = isThai ? "คำนวณภาษี" : "Calculate Tax";
   document.querySelector('.source a').textContent = isThai ? 'ข้อมูลจากกรมสรรพากร' : 'Source: Thai Revenue Department';
-
+  document.getElementById("resultTitle").textContent = "";
 
   // 🧮 คำนวณภาษีนิติบุคคล
   function calculateTax() {
+  // ✅ แสดงหัวข้อเมื่อกดคำนวณ
+  document.getElementById("resultTitle").innerHTML = `<span style="font-size: 20px; display: inline-block; margin-bottom:-8px;">${isThai ? "ผลลัพธ์" : "Result"}</span>`;
+  document.getElementById("resultBox").innerHTML = `
+  `;
   const raw = document.getElementById("profit").value.replace(/,/g, '');
   const profit = parseFloat(raw);
   const type = document.getElementById("companyType").value;
@@ -166,16 +180,20 @@
     // แสดงผลลัพธ์
   document.getElementById("resultBox").innerHTML =
     (isThai ? "📌 ภาษีที่ต้องชำระ:" : "📌 Tax Payable:") +
-    ` <strong>${tax.toLocaleString(undefined, { minimumFractionDigits: 2 })} บาท</strong>`;
+    ` ${tax.toLocaleString(undefined, { minimumFractionDigits: 2 })} บาท`;
   //ตัวอย่างการคำนวณ
-  document.getElementById("exampleBox").innerHTML =
-    (isThai ? "🔍 ตัวอย่างการคำนวณ:" : "🔍 Example:") + `<br>` + explanation;
+  document.getElementById("exampleBox").innerHTML = `
+  <strong style="font-size:18px; display:inline-block; margin-top:8px; margin-bottom:8px;">
+    ${isThai ? "🔍 ตัวอย่างการคำนวณ:" : "🔍 Example:"}
+  </strong><br>${explanation}
+`;
     // หมายเหตุ
     document.getElementById("noteBox").innerHTML =
       isThai
         ? "📝 ผลลัพธ์จากเครื่องมือนี้ใช้เพื่อประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถใช้เป็นหลักฐานทางกฎหมายหรือภาษีได้ ผู้ใช้งานควรปรึกษาผู้เชี่ยวชาญหรือหน่วยงานที่เกี่ยวข้องก่อนดำเนินการทางการเงินหรือภาษี"
         : "📝 This tax calculator is intended for preliminary informational purposes only and should not be used as legal, tax, or financial advice. Users are encouraged to consult professionals or relevant authorities before making any financial or tax-related decisions.";
-  }
+      document.getElementById("noteBox").style.padding = "10px"; // เพิ่ม padding
+      }
 
   // 🔢 ใส่ comma ขณะพิมพ์
   document.getElementById("profit").addEventListener("input", function () {

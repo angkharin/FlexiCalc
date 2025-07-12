@@ -154,7 +154,7 @@
     }
 
     // ผลลัพธ์
-    let resultHtml = `<h3>${isThai ? "ผลลัพธ์" : "Results"}</h3><ul>`;
+    let resultHtml = `<strong style="display:block; margin-top:20px; font-size:16px;">${isThai ? "ผลลัพธ์" : "Results"}</strong><ul>`;
     for (const key in results) {
       const label = isThai ? unitMap[key][0] : unitMap[key][1];
       const num = results[key];
@@ -176,7 +176,7 @@
         : result.toLocaleString(undefined, { maximumFractionDigits: 6 });
       // ถ้าเป็นหน่วยเดียวกันไม่ต้องคำนวณ
       if (key === unit) {
-        exampleLines.push(`<li>${value.toLocaleString()} ${label} = ${formatted} ${label} <span style="color:gray;">(${isThai ? "หน่วยเดิม" : "same unit"})</span></li>`);
+        exampleLines.push(`<li>${value.toLocaleString()} ${label} = ${formatted} ${label} <span style="color:gray;">(${isThai ? "หน่วยเดิม ไม่มีการแปลง" : "Same unit, no conversion"})</span></li>`);
       } else {
         const formula = `${value.toLocaleString()} × ${toM3[unit].toLocaleString()} ÷ ${toM3[key].toLocaleString()} = ${formatted}`;
         exampleLines.push(`<li>${formula} ${label}</li>`);
@@ -184,7 +184,7 @@
     }
     //แสดงตัวอย่างการคำนวณ
     document.getElementById("explanationBox").innerHTML = `
-      <strong>${isThai ? "ตัวอย่างการคำนวณ:" : "Example Calculations:"}</strong>
+      <strong style="display:block; margin-top:20px; font-size:16px;">${isThai ? "ตัวอย่างการคำนวณ:" : "Example Calculations:"}</strong>
       <ul>${exampleLines.join('')}</ul>
     `;
 

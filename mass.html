@@ -148,7 +148,7 @@
         results[key] = baseKg / toKg[key];
       }
       // สร้าง HTML สำหรับผลลัพธ์
-      let resultHTML = `<h3>${isThai ? "ผลลัพธ์" : "Results"}</h3><ul>`;
+      let resultHTML = `<strong style="display:block; margin-top:20px; font-size:18px;">${isThai ? "ผลลัพธ์" : "Results"}</strong><ul>`;
       for (const key in results) {
         const label = isThai ? unitMap[key][0] : unitMap[key][1];
         const val = results[key];
@@ -171,7 +171,7 @@
           : val.toLocaleString(undefined, { maximumFractionDigits: 6 });
 
         if (key === unit) {
-          example.push(`<li>${value.toLocaleString()} ${label} = ${formattedVal} ${label} <span style="color:gray;">(${isThai ? "หน่วยเดิม" : "same unit"})</span></li>`);
+          example.push(`<li>${value.toLocaleString()} ${label} = ${formattedVal} ${label} <span style="color:gray;">(${isThai ? "หน่วยเดิม ไม่มีการแปลง" : "Same unit, no conversion"})</span></li>`);
         } else {
           const formula = `${value.toLocaleString()} × ${toKg[unit].toLocaleString()} ÷ ${toKg[key].toLocaleString()} = ${formattedVal} ${label}`;
           example.push(`<li>${formula}</li>`);
@@ -179,8 +179,8 @@
       }
       //แสดงตัวอย่างการคำนวณ
       document.getElementById("explanationBox").innerHTML = `
-        <strong>${isThai ? 'ตัวอย่างการคำนวณ:' : 'Calculation Examples:'}</strong>
-        <ul style="font-size:14px;">${example.join('')}</ul>
+        <strong style="display:block; margin-top:20px; font-size:18px;">${isThai ? 'ตัวอย่างการคำนวณ:' : 'Calculation Examples:'}</strong>
+        <ul style="font-size:18px;">${example.join('')}</ul>
       `;
 
       // หมายเหตุ
@@ -191,8 +191,7 @@
         }
       `;
       document.getElementById("noteBox").style.padding = "10px"; // เพิ่ม padding
-    }
-
+    } 
     // ใส่ comma ขณะพิมพ์
     document.getElementById("massValue").addEventListener("input", function () {
       let raw = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');

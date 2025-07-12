@@ -55,7 +55,17 @@
     button:hover {
       background: #1b5e20;
     }
-    .result, .example, .note {
+    .result {
+      margin-top: 20px;
+      font-size: 15px;
+      color: #333;
+    }
+    .example {
+      margin-top: 20px;
+      font-size: 15px;
+      color: #333;
+    }
+    .note {
       margin-top: 20px;
       font-size: 15px;
       color: #333;
@@ -83,7 +93,10 @@
     <!-- ปุ่มคำนวณ -->
     <button onclick="calculateFunds()" id="calcBtn">Calculate</button>
     <!-- แสดงผลลัพธ์ -->
-    <div class="result" id="resultBox"></div>
+    <div class="result">
+    <h3 id="resultTitle"></h3>
+    <div id="resultBox"></div>
+  </div>
     <div class="example" id="exampleBox"></div>
     <div class="note" id="noteBox"></div>
   </div>
@@ -117,9 +130,13 @@
     document.getElementById('years').placeholder = isThai ? 'จำนวนปี' : 'Enter number of years';
     document.getElementById('noteBox').textContent = '';
     document.getElementById('noteBox').style.padding = '0';
+    document.getElementById("resultTitle").textContent = "";
 
     // ฟังก์ชั่นคำนวณเงินกองทุนด้วยสูตรดอกเบี้ยทบต้น
     function calculateFunds() {
+      document.getElementById("resultTitle").innerHTML = `<span style="font-size: 20px;">${isThai ? "ผลลัพธ์" : "Result"}</span>`;
+      document.getElementById("resultBox").innerHTML = `
+      `;
       let raw = document.getElementById('invest').value.replace(/,/g, '').trim();
       const invest = parseFloat(raw);
       const rate = parseFloat(document.getElementById('rate').value);
@@ -143,18 +160,50 @@
 
       // แสดงผล
       document.getElementById('resultBox').innerHTML = `
-        ${isThai ? 'ยอดสุดท้าย: ' : 'Final Amount: '}<b>${finalAmount.toLocaleString(undefined, {maximumFractionDigits: 2})} ฿</b><br>
-        ${isThai ? 'กำไรจากดอกเบี้ย: ' : 'Interest Earned: '}<b>${profit.toLocaleString(undefined, {maximumFractionDigits: 2})} ฿</b>
+      <div style="margin-top:-12px;">
+        ${isThai ? 'ยอดสุดท้าย: ' : 'Final Amount: '}${finalAmount.toLocaleString(undefined, {maximumFractionDigits: 2})}<br>
+        ${isThai ? 'กำไรจากดอกเบี้ย: ' : 'Interest Earned: '}${profit.toLocaleString(undefined, {maximumFractionDigits: 2})} 
       `;
 
       // ตัวอย่างการคำนวณ
-      document.getElementById('exampleBox').innerHTML = `<strong>${isThai ? '🔍 ตัวอย่างคำนวณ:' : '🔍 Example calculation:'}</strong><br>
-        ${isThai
-          ? `${invest.toLocaleString()} × (1 + ${rate}% )^${years} = ${finalAmount.toLocaleString(undefined, {maximumFractionDigits: 2})}`
-          : `${invest.toLocaleString()} × (1 + ${rate}% )^${years} = ${finalAmount.toLocaleString(undefined, {maximumFractionDigits: 2})}`
-        }`;
-        document.getElementById('noteBox').textContent = txt.note;
-        document.getElementById('noteBox').style.padding = '10px';
+      document.getElementById('exampleBox').innerHTML = `
+  <strong style="font-size: 18px; display: inline-block; margin-bottom: 10px ;">
+    ${isThai ? '🔍 ตัวอย่างคำนวณ:' : '🔍 Example calculation:'}
+  </strong><br>
+  ${isThai 
+    ? `
+    สูตร: A = P × (1 + r)^n <br>
+    โดยที่:<br>
+    - A = ยอดสุดท้าย (Final Amount)<br>
+    - P = เงินลงทุนตั้งต้น = ${invest.toLocaleString()}<br>
+    - r = อัตราดอกเบี้ยต่อปี = ${rate}% = ${(rate/100).toFixed(2)}<br>
+    - n = จำนวนปี = ${years}<br>
+    <strong style="font-size: 18px; display: inline-block; margin-top: 20px; margin-bottom: 8px;">วิธีคิด</strong><br>
+    1 + ${rate/100} = ${(1 + rate/100).toFixed(2)}<br>
+    ${(1 + rate/100).toFixed(2)} ^ ${years} = ${Math.pow(1 + rate/100, years).toFixed(6)}<br>
+    ยอดสุดท้าย = ${invest.toLocaleString()} × ${Math.pow(1 + rate/100, years).toFixed(6)} = ${finalAmount.toLocaleString(undefined, {maximumFractionDigits: 2})}<br>
+    กำไรจากดอกเบี้ย = ${finalAmount.toLocaleString(undefined, {maximumFractionDigits: 2})} − ${invest.toLocaleString()} = ${profit.toLocaleString(undefined, {maximumFractionDigits: 2})}
+    `
+    :
+    `
+    Formula: A = P × (1 + r)^n <br>
+    Where:<br>
+    - A = Final Amount<br>
+    - P = Principal = ${invest.toLocaleString()}<br>
+    - r = Annual interest rate = ${rate}% = ${(rate/100).toFixed(2)}<br>
+    - n = Years = ${years}<br>
+    <strong style="font-size: 18px; display: inline-block; margin-top: 8px; margin-bottom: 8px;">
+      Way of thinking
+    </strong>
+    1 + ${rate/100} = ${(1 + rate/100).toFixed(2)}<br>
+    ${(1 + rate/100).toFixed(2)} ^ ${years} = ${Math.pow(1 + rate/100, years).toFixed(6)}<br>
+    Final Amount = ${invest.toLocaleString()} × ${Math.pow(1 + rate/100, years).toFixed(6)} = ${finalAmount.toLocaleString(undefined, {maximumFractionDigits: 2})}<br>
+    Interest Earned = ${finalAmount.toLocaleString(undefined, {maximumFractionDigits: 2})} − ${invest.toLocaleString()} = ${profit.toLocaleString(undefined, {maximumFractionDigits: 2})}
+    `
+  }
+  `;
+      document.getElementById('noteBox').textContent = txt.note;
+      document.getElementById('noteBox').style.padding = '10px';
     }
 
     // ติด comma ตอนพิมพ์

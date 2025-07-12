@@ -52,7 +52,7 @@
       cursor: pointer;
     }
     button:hover {
-      background-color: #ff7043;
+      background-color: #d84315;
     }
     .result {
       margin-top: 20px;
@@ -162,7 +162,7 @@
         results[key] = base / toMps[key];
       }
       // แสดงผลลัพธ์
-      let output = `<h3>${isThai ? "ผลลัพธ์" : "Results"}</h3><ul style="text-align:left;">`;
+      let output = `<strong style="display:block; margin-top:20px; font-size:16px;">${isThai ? "ผลลัพธ์" : "Results"}</strong><ul style="text-align:left;">`;
       for (const key in results) {
         const label = isThai ? unitMap[key][0] : unitMap[key][1];
         const val = results[key];
@@ -181,17 +181,17 @@
         const formatted = (Math.abs(resultValue) >= 1e12 || Math.abs(resultValue) < 1e-6)
           ? resultValue.toExponential(8).replace('e+', 'E+').replace('e', 'E')
           : resultValue.toLocaleString(undefined, { maximumFractionDigits: 6 });
-
+ 
         if (key === unit) {
-          examples.push(`<li>${value.toLocaleString()} ${label} = ${formatted} ${label} <span style="color:#999;">(${isThai ? "หน่วยเดิม" : "same unit"})</span></li>`);
+          examples.push(`<li>${value.toLocaleString()} ${label} = ${formatted} ${label} <span style="color:#999;">(${isThai ? "หน่วยเดิม ไม่มีการแปลง" : "Same unit, no conversion"})</span></li>`);
         } else {
           examples.push(`<li>${value.toLocaleString()} × ${toMps[unit].toLocaleString()} ÷ ${toMps[key].toLocaleString()} = ${formatted} ${label}</li>`);
         }
       }
       //แสดงตัวอย่างการคำนวณ
       document.getElementById("explanationBox").innerHTML = `
-        <strong style="display:block; margin-top:20px;">${isThai ? "ตัวอย่างการคำนวณ:" : "Example Calculations:"}</strong>
-        <ul style="font-size:14px;">${examples.join("")}</ul>
+        <strong style="display:block; margin-top:20px; "font-size:16px;">${isThai ? "ตัวอย่างการคำนวณ:" : "Example Calculations:"}</strong>
+        <ul style="font-size:16px;">${examples.join("")}</ul>
       `;
       // หมายเหตุ
       document.getElementById("noteBox").innerHTML = isThai

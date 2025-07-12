@@ -172,7 +172,7 @@
       for (const key in toBytes) {
         const label = isThai ? unitMap[key][0] : unitMap[key][1];
         if (key === unit) {
-          examples.push(`<li>${value.toLocaleString()} ${label} = ${value.toLocaleString()} ${label} <span style="color:gray;">(${isThai ? "หน่วยเดิม" : "same unit"})</span></li>`);
+          examples.push(`<li>${value.toLocaleString()} ${label} = ${value.toLocaleString()} ${label} <span style="color:gray;">(${isThai ? "หน่วยเดิม ไม่มีการแปลง" : "Same unit, no conversion"})</span></li>`);
         } else {
           const resultValue = results[key];
           const formattedResult = (Math.abs(resultValue) >= 1e12 || Math.abs(resultValue) < 1e-6)
@@ -186,7 +186,7 @@
       // หมายเหตุ
       document.getElementById("explanationBox").innerHTML = `
       <strong style="display:block; margin-top:20px;">${isThai ? 'ตัวอย่างการคำนวณ:' : 'Calculation Examples:'}</strong>
-      <ul style="font-size:14px;">${examples.join('')}</ul>
+      <ul style="font-size:18px;">${examples.join('')}</ul>
       <div style="margin-top: 20px; font-size: 12px; color: gray; background:#f9f9f9; 
       padding:10px; 
       border-left:4px solid #ccc;">

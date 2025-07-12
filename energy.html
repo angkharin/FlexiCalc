@@ -94,7 +94,7 @@
     note: isThai
       ? "ค่าคำนวณนี้อิงจากสูตรมาตรฐานทั่วไป อาจมีค่าคลาดเคลื่อนเล็กน้อยจากการปัดเศษหรือตัดเศษ ใช้เพื่อเป็นข้อมูลประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถนำมาใช้เป็นหลักฐานทางกฎหมายหรือทางการเงินได้"
       : "This result is based on standard general formulas and may contain slight rounding or truncation errors.<br>It is intended for preliminary informational purposes only and should not be used as legal or financial evidence.",
-    example: isThai ? "🔍 ตัวอย่างการคำนวณ:" : "🔍 Example Calculation:"
+    example: isThai ? " ตัวอย่างการคำนวณ:" : " Example Calculation:"
   };
 
   // ✅ กำหนดหน่วยพลังงานและพลังงาน
@@ -169,7 +169,7 @@
     // แปลงค่าพลังงาน
     const unit = select.value;
     const joule = value * units[unit];
-    let out = `<h3>${isThai ? "ผลลัพธ์" : "Result"}</h3><ul>`;
+    let out = `<strong style="font-size: 18px; display: inline-block;">${isThai ? "ผลลัพธ์" : "Result"}</strong><ul>`;
     Object.keys(units).forEach(k => {
       out += `<li>${(joule/units[k]).toLocaleString(undefined, {maximumFractionDigits:12})} ${unitNames[k]}</li>`;
     });
@@ -181,8 +181,8 @@
     document.getElementById('noteBox').style.padding = '10px';
 
     // ✅ แสดงตัวอย่างการคำนวณ
-    let ex = `<strong>${txt.example}</strong><ul style="text-align:left;">`;
-    ex += `<li>${value.toLocaleString()} ${unitNames[unit]} (${isThai ? "หน่วยเดิม" : "same unit"})</li>`;
+    let ex = `<strong style="font-size: 18px; display: inline-block;">${txt.example}</strong><ul style="text-align:left;">`;
+    ex += `<li>${value.toLocaleString()} ${unitNames[unit]} <span style="color:#777;">(${isThai ? "หน่วยเดิม ไม่มีการแปลง" : "Same unit, no conversion"})</li>`;
     Object.keys(units).forEach(k => {
       if (k !== unit) {
         const formula = `= ${value} × ${units[unit].toLocaleString()} ÷ ${units[k].toLocaleString()} = ${(joule/units[k]).toLocaleString(undefined,{maximumFractionDigits:12})}`;

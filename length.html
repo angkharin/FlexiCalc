@@ -156,7 +156,7 @@
         results[key] = base / toMeter[key];
       }
       // แสดงผลลัพธ์
-      let output = `<h3>${isThai ? "ผลลัพธ์" : "Results"}</h3><ul>`;
+      let output = `<strong style="display:block; margin-top:20px; font-size:18px;">${isThai ? "ผลลัพธ์" : "Results"}</strong><ul>`;
       for (const key in results) {
         const label = isThai ? unitMap[key][0] : unitMap[key][1];
         const res = results[key];
@@ -178,7 +178,7 @@
           : resultValue.toLocaleString(undefined, { maximumFractionDigits: 6 });
 
         if (key === unit) {
-          examples.push(`<li>${value.toLocaleString()} ${label} = ${formattedResult} ${label} <span style="color:#888;">(${isThai ? "หน่วยเดิม" : "same unit"})</span></li>`);
+          examples.push(`<li>${value.toLocaleString()} ${label} = ${formattedResult} ${label} <span style="color:#888;">(${isThai ? "หน่วยเดิม ไม่มีการแปลง" : "Same unit, no conversion"})</span></li>`);
         } else {
           const formula = `${value.toLocaleString()} × ${toMeter[unit]} ÷ ${toMeter[key]} = ${formattedResult}`;
           examples.push(`<li>${formula} ${label}</li>`);
@@ -186,8 +186,8 @@
       }
       //แสดงตัวอย่างการคำนวณ
       document.getElementById("exampleBox").innerHTML = `
-        <strong style="display:block; margin-top:20px;">${isThai ? "ตัวอย่างการคำนวณ:" : "Calculation Examples:"}</strong>
-        <ul style="font-size:14px;">${examples.join("")}</ul>
+        <strong style="display:block; margin-top:20px; font-size:18px;">${isThai ? "ตัวอย่างการคำนวณ:" : "Calculation Examples:"}</strong>
+        <ul style="font-size:18px;">${examples.join("")}</ul>
       `;
 
       // หมายเหตุ

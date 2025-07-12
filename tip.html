@@ -185,14 +185,14 @@
     document.getElementById("resultTitle").textContent = text.result;
 
     document.getElementById("resultBox").innerHTML = `
-    <div style="margin-bottom:-45px;">${text.tipAmount}: ${tipAmount.toLocaleString()}</div>
-    <div style="margin-bottom:18px;">${text.total}: ${total.toLocaleString()}</div>
+    <div style="margin-top:-15px;">${text.tipAmount}: ${tipAmount.toLocaleString()}</div>
+    <div style="margin-bottom-2px;">${text.total}: ${total.toLocaleString()}</div>
     <div>${text.perPerson}: ${perPerson.toLocaleString()}</div>
     `;
 
     // ✅ แสดงตัวอย่างการคำนวณ
     document.getElementById("exampleBox").innerHTML = `
-      <strong>${text.exampleTitle}</strong><br>
+      <strong style="font-size: 18px; display: inline-block; margin-bottom: 8px;">${text.exampleTitle}</strong><br>
       ${amount.toLocaleString()} × ${tip}% = ${tipAmount.toLocaleString()}<br>
       ${amount.toLocaleString()} + ${tipAmount.toLocaleString()} = ${total.toLocaleString()}<br>
       ${total.toLocaleString()} ÷ ${people} = ${perPerson.toLocaleString()}

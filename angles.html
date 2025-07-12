@@ -55,13 +55,22 @@
     button:hover { 
     background:#0d47a1; 
    }
-    .result, .example, .note { 
+    .result{
     margin-top:20px; 
     font-size:15px; 
     color:#333; 
+    }
+    .example {
+    margin-top:20px; 
+    font-size:15px; 
+    color:#333
+    }
+    .note { 
+    margin-top:20px; 
+    color:#333; 
    }
     .note { 
-    font-size:11px; 
+    font-size:11.5px; 
     color:#777; 
     background:#f9f9f9; 
     border-left:4px solid #ccc; 
@@ -178,7 +187,7 @@ function convertAngle() {
     };
 
     // แสดงผลลัพธ์
-    let out = `<h3>${isThai ? 'ผลลัพธ์' : 'Result'}</h3><ul>`;
+    let out = `<strong style="font-size: 20px;">${isThai ? 'ผลลัพธ์' : 'Result'}</strong><ul>`;
     for (const k in unitNames) {
       if (conv.deg[k] !== undefined) {
         out += `<li>${conv.deg[k].toLocaleString(undefined,{maximumFractionDigits:12})} ${unitNames[k]}</li>`;
@@ -191,8 +200,8 @@ function convertAngle() {
     ;
 
     // สร้างตัวอย่าง
-    let ex = `<strong>${txt.example}</strong><ul>`;
-    ex += `<li>${value} ${unitNames.deg} (${isThai ? 'หน่วยเดิม' : 'same unit'})</li>`;
+    let ex = `<strong style="font-size: 18px; display: inline-block;">${txt.example}</strong><ul>`;
+    ex += `<li>${value} ${unitNames.deg} <span style="color:#777;">(${isThai ? 'หน่วยเดิม' : 'same unit'})</li>`;
     ex += `<li>เรเดียน = ${value} × π/180 = ${conv.deg.rad.toPrecision(12)}</li>`;
     ex += `<li>แกร็ด = ${value} × 10/9 = ${conv.deg.grad.toPrecision(12)}</li>`;
     ex += `<li>มิลิเรเดียน (นาโต) = ${value} ÷ 0.05625 = ${(value / 0.05625).toPrecision(12)}</li>`;

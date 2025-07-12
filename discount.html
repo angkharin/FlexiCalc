@@ -121,12 +121,12 @@
     const finalPrice = price - discountAmount;
     // แสดงผลลัพธ์
     const resultText = `
-      <strong>${isThai ? "ผลลัพธ์" : "Result"}</strong><br>
+      <strong style="display:block; margin-bottom:-15px; font-size:16px;">${isThai ? "ผลลัพธ์" : "Result"}</strong><br>
       ${isThai ? "ราคาสินค้า" : "Original price"}: ${price.toLocaleString()}<br>
       ${isThai ? "ส่วนลด" : "Discount"} ${discount.toLocaleString()}% = ${discountAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })}<br>
       ${isThai ? "ราคาสุทธิ" : "Final price"}: <strong>${finalPrice.toLocaleString(undefined, { maximumFractionDigits: 2 })}</strong>
       <br><br>
-      <strong>${isThai ? "ตัวอย่างการคำนวณ:" : "Calculation Example:"}</strong><br>
+      <strong style="display:block; margin-bottom:-15px; font-size:16px;">${isThai ? "ตัวอย่างการคำนวณ:" : "Calculation Example:"}</strong><br>
       ${price.toLocaleString()} × ${discount}% ÷ 100 = ${discountAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })}<br>
       ${price.toLocaleString()} − ${discountAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })} = ${finalPrice.toLocaleString(undefined, { maximumFractionDigits: 2 })}
     `;

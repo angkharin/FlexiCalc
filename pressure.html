@@ -195,7 +195,7 @@
   }
 
   // ✅ แสดงผลลัพธ์
-  let out = `<h3>${isThai ? 'ผลลัพธ์' : 'Result'}</h3><ul>`;
+  let out = `<strong style="font-size: 20px;">${isThai ? 'ผลลัพธ์' : 'Result'}</strong><ul>`;
   for (const k in results) {
     out += `<li>${results[k].toLocaleString(undefined, {maximumFractionDigits:6})} ${names[k]}</li>`;
   }
@@ -205,7 +205,7 @@
   document.getElementById('noteBox').style.padding = '10px';
 
   // ✅ สร้างตัวอย่างการคำนวณ
-  let ex = `<strong>${isThai ? '🔍 ตัวอย่างการคำนวณ:' : '🔍 Example Calculation:'}</strong><ul style="text-align:left;">`;
+  let ex = `<strong style="font-size: 18px;">${isThai ? ' ตัวอย่างการคำนวณ:' : ' Example Calculation:'}</strong><ul style="text-align:left;">`;
   ex += `<li>${value.toLocaleString()} ${names[unit]} <span style="color:#999;">(${isThai ? 'หน่วยเดิม ไม่มีการแปลง' : 'Same unit, no conversion'})</span></li>`;
   for (const k in results) {
     if (k !== unit) {

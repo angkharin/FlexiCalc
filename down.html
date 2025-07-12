@@ -1,0 +1,275 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="image/logo.png">
+  <title>Down Payment Calculator</title>
+  <style>
+    /* ✅ ส่วนรวมของ body */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #dcedc8;
+      margin: 0;
+      padding: 20px;
+    }
+
+    /* ✅ กล่องคอนเทนเนอร์ */
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+
+    /* ✅ หัวข้อหลัก */
+    h1 {
+      text-align: center;
+      color: #7cb342;
+    }
+
+    /* ✅ ป้าย label */
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    /* ✅ ช่องกรอก */
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+
+    /* ✅ ปุ่มคำนวณ */
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background: #689f38;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #558b2f;
+    }
+
+    /* ✅ กล่องผลลัพธ์ */
+    .result {
+      margin-top: 25px;
+      font-size: 15px;
+      color: #333;
+    }
+
+    /* ✅ กล่องตัวอย่างการคำนวณ */
+    .example {
+      margin-top: 25px;
+      font-size: 15px;
+      color: #333;
+    }
+
+    /* ✅ หัวข้อย่อย ผลลัพธ์ & ตัวอย่าง */
+    .result h3,
+    .example h3 {
+      font-size: 20px;      /* ขนาดหัวข้อ */
+      margin-top: 0;         /* ระยะห่างบน */
+      margin-bottom: 10px;   /* ระยะห่างล่าง */
+    }
+
+    /* ✅ หมายเหตุ */
+    .note {
+      margin-top: 25px;
+      font-size: 13px;
+      color: #777;
+      background: #f9f9f9;
+      border-left: 4px solid #ccc;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="title">Down Payment Calculator</h1>
+
+    <!-- ✅ ฟอร์มกรอกข้อมูล -->
+    <label id="label-price">Car Price:</label>
+    <input type="text" id="carPrice" placeholder="Enter car price" />
+
+    <label id="label-down">Down Payment (% or amount):</label>
+    <input type="text" id="downPayment" placeholder="Enter down payment percent or amount" />
+
+    <label id="label-rate">Interest Rate (% per year):</label>
+    <input type="number" id="interestRate" placeholder="Interest rate" />
+
+    <label id="label-years">Loan Term (years):</label>
+    <input type="number" id="loanYears" placeholder="Number of years" />
+
+    <button onclick="calculateLoan()" id="calcBtn">Calculate</button>
+
+    <!-- ✅ ผลลัพธ์ -->
+    <div class="result" style="display:none;">
+      <h3 id="resultTitle"></h3>
+      <div id="resultBox"></div>
+    </div>
+
+    <!-- ✅ ตัวอย่างการคำนวณ -->
+    <div class="example" style="display:none;">
+      <h3 id="exampleTitle"></h3>
+      <div id="exampleBox"></div>
+    </div>
+
+    <!-- ✅ หมายเหตุ -->
+    <div class="note" id="noteBox" style="display:none;"></div>
+  </div>
+
+  <script>
+    const isThai = (navigator.language || '').toLowerCase().startsWith('th');
+
+    // ✅ ข้อความตามภาษา
+    const txt = {
+      title: isThai ? 'เครื่องคำนวณเงินดาวน์' : 'Down Payment Calculator',
+      price: isThai ? 'ราคารถ:' : 'Car Price:',
+      down: isThai ? 'เงินดาวน์ (% หรือจำนวนเงิน):' : 'Down Payment (% or amount):',
+      rate: isThai ? 'อัตราดอกเบี้ย (% ต่อปี):' : 'Interest Rate (% per year):',
+      years: isThai ? 'ระยะเวลาผ่อน (ปี):' : 'Loan Term (years):',
+      button: isThai ? 'คำนวณ' : 'Calculate',
+      result: isThai ? 'ผลลัพธ์' : 'Result',
+      example: isThai ? '🔍 ตัวอย่างการคำนวณ:' : '🔍 Example Calculation:',
+      note: isThai 
+        ? '📝 ค่าคำนวณนี้ใช้เพื่อประกอบการตัดสินใจเบื้องต้นเท่านั้น ไม่สามารถใช้เป็นหลักฐานทางกฎหมายหรือทางการเงินได้'
+        : '📝 This calculation is for informational purposes only and should not be used as legal or financial evidence.'
+    };
+
+    // ✅ ตั้งค่า UI
+    document.title = txt.title;
+    document.getElementById('title').textContent = txt.title;
+    document.getElementById('label-price').textContent = txt.price;
+    document.getElementById('label-down').textContent = txt.down;
+    document.getElementById('label-rate').textContent = txt.rate;
+    document.getElementById('label-years').textContent = txt.years;
+    document.getElementById('calcBtn').textContent = txt.button;
+
+    // ✅ Placeholder
+    document.getElementById('carPrice').placeholder = isThai ? 'กรอกราคารถ' : 'Enter car price';
+    document.getElementById('downPayment').placeholder = isThai ? 'กรอกเปอร์เซ็นต์หรือจำนวนเงิน' : 'Enter down payment percent or amount';
+    document.getElementById('interestRate').placeholder = isThai ? 'อัตราดอกเบี้ย' : 'Interest rate';
+    document.getElementById('loanYears').placeholder = isThai ? 'จำนวนปี' : 'Number of years';
+
+    // ✅ ฟังก์ชันคำนวณ
+    function calculateLoan() {
+      const rawPrice = document.getElementById('carPrice').value.replace(/,/g,'').trim();
+      const rawDown = document.getElementById('downPayment').value.trim();
+      const price = parseFloat(rawPrice);
+      let down = 0;
+
+      if (rawDown.includes('%')) {
+        const percent = parseFloat(rawDown.replace('%','').trim());
+        if (isNaN(percent) || percent < 0 || percent > 100) {
+          alert(isThai ? 'เปอร์เซ็นต์เงินดาวน์ไม่ถูกต้อง' : 'Invalid down payment percentage');
+          return;
+        }
+        down = price * (percent / 100);
+      } else {
+        const downNumber = parseFloat(rawDown.replace(/,/g,''));
+        if (isNaN(downNumber) || downNumber < 0) {
+          alert(isThai ? 'กรุณากรอกเงินดาวน์ให้ถูกต้อง' : 'Invalid down payment value');
+          return;
+        }
+        down = downNumber;
+      }
+
+      const rate = parseFloat(document.getElementById('interestRate').value);
+      const years = parseFloat(document.getElementById('loanYears').value);
+
+      if (isNaN(price) || isNaN(rate) || isNaN(years) || price <= 0 || rate < 0 || years <= 0) {
+        alert(isThai ? 'กรุณากรอกข้อมูลให้ถูกต้อง' : 'Please enter valid inputs.');
+        return;
+      }
+
+      if (rawPrice.replace('.','').length > 15) {
+        alert(isThai ? 'ตัวเลขเกิน 15 หลักไม่ได้' : 'Numbers over 15 digits are not allowed.');
+        return;
+      }
+
+      const finance = price - down;
+      const interestPerYear = finance * (rate / 100);
+      const totalInterest = interestPerYear * years;
+      const totalPayment = finance + totalInterest;
+      const monthly = totalPayment / (years * 12);
+
+      // ✅ ตั้งหัวข้อ
+      document.getElementById('resultTitle').innerHTML = `<h3>${txt.result}</h3>`;
+      document.getElementById('exampleTitle').innerHTML = `<h3>${txt.example}</h3>`;
+
+      // ✅ แสดงกล่อง
+      document.querySelector('.result').style.display = 'block';
+      document.querySelector('.example').style.display = 'block';
+      document.getElementById('noteBox').style.display = 'block';
+
+      // ✅ ใส่ผลลัพธ์
+      document.getElementById('resultBox').innerHTML = `
+        ${isThai ? 'ยอดจัดไฟแนนซ์:' : 'Finance Amount:'} ${finance.toLocaleString(undefined,{maximumFractionDigits:2})} <br>
+        ${isThai ? 'ดอกเบี้ยทั้งหมด:' : 'Total Interest:'} ${totalInterest.toLocaleString(undefined,{maximumFractionDigits:2})} <br>
+        ${isThai ? 'ยอดรวมที่ต้องจ่าย:' : 'Total Payment:'} ${totalPayment.toLocaleString(undefined,{maximumFractionDigits:2})} <br>
+        ${isThai ? 'ค่างวดต่อเดือน:' : 'Monthly Payment:'} ${monthly.toLocaleString(undefined,{maximumFractionDigits:2})}
+      `;
+
+      document.getElementById('exampleBox').innerHTML = `
+        ${isThai 
+          ? `ราคารถ - เงินดาวน์ = ${price.toLocaleString()} - ${down.toLocaleString()} = ${finance.toLocaleString()}<br>
+             ดอกเบี้ยต่อปี = ${finance.toLocaleString()} × ${rate}% = ${interestPerYear.toLocaleString()}<br>
+             ดอกเบี้ยทั้งหมด = ${interestPerYear.toLocaleString()} × ${years} = ${totalInterest.toLocaleString()}<br>
+             ยอดรวมที่ต้องจ่าย = ${finance.toLocaleString()} + ${totalInterest.toLocaleString()} = ${totalPayment.toLocaleString()}<br>
+             ค่างวดต่อเดือน = ${totalPayment.toLocaleString()} ÷ ${years*12} = ${monthly.toLocaleString(undefined,{maximumFractionDigits:2})}`
+          : `Car price - Down payment = ${price.toLocaleString()} - ${down.toLocaleString()} = ${finance.toLocaleString()}<br>
+             Annual interest = ${finance.toLocaleString()} × ${rate}% = ${interestPerYear.toLocaleString()}<br>
+             Total interest = ${interestPerYear.toLocaleString()} × ${years} = ${totalInterest.toLocaleString()}<br>
+             Total payment = ${finance.toLocaleString()} + ${totalInterest.toLocaleString()} = ${totalPayment.toLocaleString()}<br>
+             Monthly = ${totalPayment.toLocaleString()} ÷ ${years*12} = ${monthly.toLocaleString(undefined,{maximumFractionDigits:2})}`
+      }`;
+
+      document.getElementById('noteBox').innerHTML = txt.note;
+      document.getElementById('noteBox').style.padding = '10px';
+    }
+
+    // ✅ ใส่ comma อัตโนมัติ
+    document.getElementById("carPrice").addEventListener("input", function () {
+      const val = this.value.replace(/,/g,'').replace(/[^\d.]/g,'');
+      const parts = val.split('.');
+      const intPart = parts[0].replace(/^0+(?!$)/, '');
+      const decPart = parts[1] || '';
+      this.value = decPart ? `${intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",")}.${decPart}` : intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",");
+    });
+    document.getElementById("downPayment").addEventListener("input", function () {
+      if (this.value.includes('%')) return;
+      const val = this.value.replace(/,/g,'').replace(/[^\d.]/g,'');
+      const parts = val.split('.');
+      const intPart = parts[0].replace(/^0+(?!$)/, '');
+      const decPart = parts[1] || '';
+      this.value = decPart ? `${intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",")}.${decPart}` : intPart.replace(/\B(?=(\d{3})+(?!\d))/g,",");
+    });
+
+    // ✅ Enter flow
+    document.getElementById("carPrice").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); document.getElementById("downPayment").focus(); }
+    });
+    document.getElementById("downPayment").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); document.getElementById("interestRate").focus(); }
+    });
+    document.getElementById("interestRate").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); document.getElementById("loanYears").focus(); }
+    });
+    document.getElementById("loanYears").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); calculateLoan(); }
+    });
+  </script>
+</body>
+</html>

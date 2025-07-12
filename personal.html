@@ -24,7 +24,7 @@
     /* หัวข้อ */
     h1 {
       text-align: center;
-      color: #ff8a65;
+      color: #ff5722;
     }
     /* ป้าย label */
     label {
@@ -44,7 +44,7 @@
     button {
       margin-top: 20px;
       width: 100%;
-      background-color: #ff8a65;
+      background-color: #ff5722;
       color: white;
       border: none;
       padding: 10px;
@@ -53,9 +53,19 @@
       border-radius: 6px;
     }
     button:hover {
-      background: #ff7043;
+      background: #f4511e;
     }
-    .result, .example, .note {
+    .result{
+      margin-top: 20px;
+      font-size: 15px;
+      color: #333;
+    }
+    .example {
+      margin-top: 20px;
+      font-size: 15px;
+      color: #333;
+    }
+    .note {
       margin-top: 20px;
       font-size: 15px;
       color: #333;
@@ -93,7 +103,10 @@
     <!-- ปุ่มคำนวณ -->
     <button onclick="calculateTax()" id="calcBtn">Calculate Tax</button>
     <!-- แสดงผลลัพธ์ -->
-    <div class="result" id="resultBox"></div>
+    <div class="result">
+    <h3 id="resultTitle"></h3>
+    <div id="resultBox"></div> 
+  </div>
     <div class="example" id="exampleBox"></div>
     <div class="note" id="noteBox"></div>
 
@@ -129,6 +142,9 @@
     const deductionMarried = 120000;
     // ฟังก์ชันภาษีบุคคลธรรมดา
     function calculateTax() {
+      document.getElementById("resultTitle").innerHTML = `<span style="font-size: 20px;">${isThai ? "ผลลัพธ์" : "Result"}</span>`;
+      document.getElementById("resultBox").innerHTML = `
+    `;
       const raw = document.getElementById('income').value.replace(/,/g,'');
       const income = parseFloat(raw);
       const status = document.getElementById('statusSelect').value;
@@ -183,12 +199,13 @@
         last = b.max;
       }
       //ผลลัพธ์
-      resultBox.innerHTML = `
+      document.getElementById ("resultBox").innerHTML = `
+      <div style="margin-top:-10px;">
         💰 ${isThai ? 'รายได้สุทธิหลังหักลดหย่อน' : 'Net taxable income'}: ${netIncome.toLocaleString()}<br>
         🧾 ${isThai ? 'ภาษีที่ต้องชำระ' : 'Estimated tax'}: ${tax.toLocaleString(undefined, {minimumFractionDigits:2})} บาท
       `;
       //ตัวอย่างการคำนวณ
-      exampleBox.innerHTML = `<strong>${isThai ? '🔍 ตัวอย่างการคำนวณ:' : '🔍 Example Calculation:'}</strong><br>` +
+      exampleBox.innerHTML = `<strong style="font-size: 18px; display: inline-block; margin-bottom: 10px;">${isThai ? '🔍 ตัวอย่างการคำนวณ:' : '🔍 Example Calculation:'}</strong><br>` +
         (isThai
           ? `รายได้ทั้งหมด = ${income.toLocaleString()} บาท<br>
             หักลดหย่อนส่วนตัว = ${personal.toLocaleString()} บาท<br>

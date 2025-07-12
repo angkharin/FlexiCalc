@@ -177,14 +177,14 @@ function calculatePlan() {
   const days = Math.ceil((totalMinutes / 60) / dailyHours);
   // แสดงผลลัพธ์
   const result = `
-    ${txt.result}<br>
+    <strong style="font-size: 18px; display: inline-block; margin-bottom: 10px;">${txt.result}</strong><br>
     ${isThai ? "📺 เรื่อง:" : "📺 Title:"} ${title}<br>
     ${isThai ? "🕒 ใช้เวลาทั้งหมด:" : "🕒 Total watch time:"} ${hours.toLocaleString()} ${isThai ? "ชั่วโมง" : "hours"} ${minutes} ${isThai ? "นาที" : "minutes"}<br>
     ${isThai ? "📅 หากดูวันละ" : "📅 If you watch"} ${dailyHours.toLocaleString()} ${isThai ? "ชั่วโมงต่อวัน จะใช้เวลา" : "hours per day, it will take about"} ~${days.toLocaleString()} ${isThai ? "วัน" : "days"}
   `;
   // แสดงตัวอย่างการคำนวณ
   const example = `
-    <strong>${txt.example}</strong><br>
+    <strong style="font-size: 18px; display: inline-block; margin-bottom: 10px;">${txt.example}</strong><br>
     ${episodes.toLocaleString()} × ${duration.toLocaleString()} ${isThai ? (durationUnit === 'hours' ? "ชั่วโมง" : "นาที") : durationUnit} = ${totalMinutes.toLocaleString()} นาที<br>
     ${totalMinutes.toLocaleString()} ÷ 60 = ${hours.toLocaleString()} ${isThai ? "ชั่วโมง" : "hours"} ${minutes.toLocaleString()} ${isThai ? "นาที" : "minutes"}<br>
     (${hours.toLocaleString()} ÷ ${dailyHours.toLocaleString()}) ≈ ${days.toLocaleString()} ${isThai ? "วัน" : "days"}
