@@ -1,3 +1,4 @@
+/*สไตร์ body*/
 body {
   display: flex;
   justify-content: center;
@@ -10,7 +11,7 @@ body {
   margin: 0;
 }
 
-
+/*index SciPannel*/
 .calculator {
   display: grid;
   background:var(--calc-bg, #b2ebf2);
@@ -21,6 +22,7 @@ body {
   padding: 20px;
   box-sizing: border-box;
 }
+/*Scipannel2*/
 .calculator2 {
   display: grid;
   background:var(--calc2-bg, #b2ebf2);
@@ -680,13 +682,12 @@ body.sidebar-hidden {
   position: fixed;
   top: 0;
   right: 0;
-  width: 220px;
+  width: 350px;
   height: 100vh;
   background: var(--bg-color,#e0f7fa);
   box-shadow: -2px 0 8px rgba(0,0,0,0.1);
   padding: 60px 15px 15px;
   z-index: 9998;
-  overflow-y: auto;
   transition: transform 0.3s ease-in-out;
   transform: translateX(0);
 }
@@ -734,7 +735,7 @@ body.sidebar-hidden {
 }
 .custom-theme-panel label {
   font-weight: bold;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-color, #333);
   transition: color 0.3s ease;
   padding-left: 2px;

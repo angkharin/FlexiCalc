@@ -969,7 +969,7 @@ function toggleCustomTheme() {
 
   const isHidden = panel.classList.contains('hidden');
   toggleBtn.innerText = isHidden ? '❮' : '❯';
-  toggleBtn.style.right = isHidden ? '0px' : '220px';
+  toggleBtn.style.right = isHidden ? '0px' : '350px';
 }
 
 
