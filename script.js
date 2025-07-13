@@ -857,6 +857,11 @@ window.addEventListener('DOMContentLoaded', () => {
   toggleBtn.style.left = '0px';
   localStorage.setItem('sidebarHidden', '1');
 
+  // ✅ เพิ่ม: ถ้าไม่มีค่า sidebarHidden → ตั้งให้มี
+  if (!localStorage.getItem('sidebarHidden')) {
+    localStorage.setItem('sidebarHidden', '1');
+  }
+
   // --- แปล custom theme panel ---
   const translations = {
     'bg-color': isThai ? 'พื้นหลัง' : 'Background',
@@ -864,7 +869,7 @@ window.addEventListener('DOMContentLoaded', () => {
     'number-hover': isThai ? 'เลขโฮเวอร์' : 'Number Hover',
     'btn-color': isThai ? 'ปุ่มเลขคณิต' : 'Button',
     'btn-hover': isThai ? 'เลขคณิตโฮเวอร์' : 'Button Hover',
-    'btn2-color': isThai ? 'ปุ่มลบ': 'Clear Button',
+    'btn2-color': isThai ? 'ปุ่มลบ' : 'Clear Button',
     'btn2-hover': isThai ? 'ลบโฮเวอร์' : 'Clear Hover',
     'sci-color': isThai ? 'ปุ่มวิทย์1' : 'sci1 Button',
     'sci-hover': isThai ? 'วิทย์1โฮเวอร์' : 'sci1 Hover',
@@ -902,7 +907,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const menuTranslations = {
     'menu-unit': isThai ? 'ตัวแปลงหน่วย' : 'Unit Converter',
     'menu-researcher': isThai ? 'ประวัติผู้วิจัย' : 'About Researcher',
-    'menu-questionnaire' : isThai ? 'แบบสอบถาม' : 'Questionnaire'
+    'menu-questionnaire': isThai ? 'แบบสอบถาม' : 'Questionnaire'
   };
 
   for (const id in menuTranslations) {
@@ -910,6 +915,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (el) el.innerText = menuTranslations[id];
   }
 });
+
 
 
 
