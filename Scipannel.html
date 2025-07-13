@@ -147,6 +147,22 @@
   </div>
 
 <script src="script.js"></script>
+<script>
+  // ✅ ถ้าโหลดหน้าเอง (ไม่ใช่ไปจาก index)
+  if (performance.navigation.type === 1) {
+    // รีเฟรชหรือโหลดใหม่ → ล้าง history
+    localStorage.removeItem('calc_history');
+  }
+
+  historyLines = [""]; // เริ่มใหม่
+
+  const saved = localStorage.getItem('calc_history');
+  if (saved) {
+    historyLines = JSON.parse(saved);
+  }
+
+  updateDisplay();
+</script>
 
 </body>
 </html>

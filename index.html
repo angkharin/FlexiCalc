@@ -28,7 +28,19 @@
 </head>
 <body>
   <img src="image/logo.png">
+  <script src="script.js"></script>
   <script>
+    if (performance.navigation.type === 1) {
+      window.location.href = "index.html";
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('calc_history');
+      if (saved) {
+        historyLines = JSON.parse(saved);
+        updateDisplay();
+      }
+    });
+    localStorage.removeItem('calc_history');
   setTimeout(() => {
     window.location.href = "main.html";
   }, 2000); // 2 วินาที

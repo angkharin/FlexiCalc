@@ -5,6 +5,7 @@
   <title>FlexiCalc</title>
   <link rel="icon" href="image/logo.png">
   <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
   <script>
 function openSciPanel() {
   window.location.href = "Scipannel.html";
@@ -12,7 +13,11 @@ function openSciPanel() {
 if (performance.navigation.type === 1) {
     window.location.href = "index.html";
   }
-
+const saved = localStorage.getItem('calc_history');
+if (saved) {
+  historyLines = JSON.parse(saved);
+  updateDisplay();
+}
 </script>
 </head>
 <body>
@@ -103,8 +108,5 @@ if (performance.navigation.type === 1) {
 
     </div>
   </div>
-
-  <script src="script.js"></script>
-  
 </body>
 </html>

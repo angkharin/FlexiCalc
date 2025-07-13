@@ -829,6 +829,7 @@ window.onload = function () {
   // (โค้ดโหลดหน้าจอของคุณเดิมก็ตามมาครับ)
 };
 
+
 // ฟังก์ชันสำหรับเปลี่ยนธีม
 window.addEventListener('DOMContentLoaded', () => {
   // --- โหลดธีมล่าสุด ---
@@ -838,6 +839,17 @@ window.addEventListener('DOMContentLoaded', () => {
   // --- ตรวจภาษา ---
   const lang = navigator.language || 'en';
   const isThai = lang.startsWith('th');
+
+  // --- โหลดเลขเดิม ถ้ามี ---
+  const savedHistory = localStorage.getItem('calc_history');
+  if (savedHistory) {
+    try {
+      historyLines = JSON.parse(savedHistory);
+      updateDisplay();
+    } catch (e) {
+      historyLines = [""];
+    }
+  }
 
   // --- แปลข้อความ sidebar ---
   document.getElementById('theme-header').innerText = isThai ? 'ธีม' : 'Theme';
