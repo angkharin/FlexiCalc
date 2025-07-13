@@ -831,14 +831,15 @@ window.onload = function () {
 
 // ฟังก์ชันสำหรับเปลี่ยนธีม
 window.addEventListener('DOMContentLoaded', () => {
-  // --- ตั้งธีมเริ่มต้น ---
-  setTheme('original');
+  // --- โหลดธีมล่าสุด ---
+  const theme = localStorage.getItem('theme') || 'original';
+  setTheme(theme);
 
   // --- ตรวจภาษา ---
   const lang = navigator.language || 'en';
   const isThai = lang.startsWith('th');
 
-  // --- แปลข้อความฝั่งซ้าย (Theme Sidebar) ---
+  // --- แปลข้อความ sidebar ---
   document.getElementById('theme-header').innerText = isThai ? 'ธีม' : 'Theme';
   document.getElementById('theme-original').innerText = isThai ? '🎨 ดั้งเดิม' : '🎨 Original';
   document.getElementById('theme-warm').innerText = isThai ? '🔥 โทนร้อน' : '🔥 Warm';
@@ -846,7 +847,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('theme-love').innerText = isThai ? '🩷 ความรัก' : '🩷 Love';
   document.getElementById('theme-natural').innerText = isThai ? '🍀 ธรรมชาติ' : '🍀 Natural';
 
-  // --- ซ่อน sidebar ซ้าย เสมอ ---
+  // --- FORCE ปิด sidebar ทุกครั้งที่โหลด ---
   const sidebar = document.querySelector('.sidebar');
   const toggleBtn = document.getElementById('sidebarToggle');
   const body = document.body;
@@ -855,12 +856,8 @@ window.addEventListener('DOMContentLoaded', () => {
   body.classList.add('sidebar-hidden');
   toggleBtn.innerText = '❯';
   toggleBtn.style.left = '0px';
+  
   localStorage.setItem('sidebarHidden', '1');
-
-  // ✅ เพิ่ม: ถ้าไม่มีค่า sidebarHidden → ตั้งให้มี
-  if (!localStorage.getItem('sidebarHidden')) {
-    localStorage.setItem('sidebarHidden', '1');
-  }
 
   // --- แปล custom theme panel ---
   const translations = {
@@ -931,8 +928,10 @@ function toggleSidebar() {
   toggleBtn.innerText = isHidden ? '❯' : '❮';
   toggleBtn.style.left = isHidden ? '0px' : '140px';
 
+  // เก็บค่าใหม่
   localStorage.setItem('sidebarHidden', isHidden ? '1' : '0');
 }
+
 
 function toggleCustomTheme() {
   const panel = document.getElementById('customThemePanel');

@@ -5,6 +5,15 @@
   <title>FlexiCalc</title>
   <link rel="icon" href="image/logo.png">
   <link rel="stylesheet" href="style.css">
+  <script>
+function openSciPanel() {
+  window.location.href = "Scipannel.html";
+}
+if (performance.navigation.type === 1) {
+    window.location.href = "index.html";
+  }
+
+</script>
 </head>
 <body>
   <button id="sidebarToggle" onclick="toggleSidebar()">❮</button>
@@ -96,14 +105,6 @@
   </div>
 
   <script src="script.js"></script>
-  <script>
-function openSciPanel() {
-  window.location.href = "Scipannel.html";
-}
-if (performance.navigation.type === 1) {
-    window.location.href = "index.html";
-  }
-
-</script>
+  
 </body>
 </html>
