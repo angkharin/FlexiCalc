@@ -2,23 +2,234 @@ const display = document.getElementById("display-text");
 let historyLines = [""]; 
 
 function updateDisplay() {
+  // แปลง historyLines ให้สวยงาม: * ➜ × , / ➜ ÷
   const formatted = historyLines.map(line =>
     `<div>${line.replace(/\*/g, '×').replace(/\//g, '÷')}</div>`
   ).join('');
 
+  // ใส่ค่าลง display หลัก
   const displayText = document.getElementById("display-text");
-  displayText.innerHTML = formatted;
+  if (displayText) {
+    displayText.innerHTML = formatted;
+  }
 
-  // ✅ เก็บลง localStorage ทุกครั้งที่ display อัปเดต
+  // ✅ เก็บลง localStorage ทุกครั้ง
   localStorage.setItem('calc_history', JSON.stringify(historyLines));
 
+  // ✅ ถ้ามี display2 (โหมดวิทย์) → scrollTop = 0
   const displayBox = document.getElementById("display2");
-  setTimeout(() => {
-    displayBox.scrollTop = 0;
-  }, 0);
+  if (displayBox) {
+    setTimeout(() => {
+      displayBox.scrollTop = 0;
+    }, 0);
+  }
 }
 
+function toAngle(value) {
+  return angleMode === 'deg' ? value * (Math.PI / 180) : value;
+}
 
+function toDegrees(value) {
+  return angleMode === 'deg' ? value * (180 / Math.PI) : value;
+}
+
+function factorial(n) {
+  if (n < 0 || !Number.isInteger(n)) throw new Error("Invalid input for factorial");
+  if (n === 0 || n === 1) return 1;
+  let result = 1;
+  for (let i = 2; i <= n; i++) result *= i;
+  return result;
+}
+
+function evaluateLeftToRightPowers(expr) {
+  const pattern = /(\d+(?:\.\d+)?)(\^\([^)]+\))+/
+
+  while (pattern.test(expr)) {
+    expr = expr.replace(pattern, (match) => {
+      // ดึง base และ exponents
+      const baseMatch = match.match(/^(\d+(?:\.\d+)?)/);
+      let base = parseFloat(baseMatch[1]);
+
+      // ดึง exponent แต่ละตัวในลำดับ
+      const exponentMatches = [...match.matchAll(/\^\(([^()]+)\)/g)];
+      for (const exp of exponentMatches) {
+        base = Math.pow(base, parseFloat(exp[1]));
+      }
+
+      return base.toString();
+    });
+  }
+
+  return expr;
+}
+
+function roundToFixed(num, digits = 10) {
+  const factor = Math.pow(10, digits);
+  return Math.round((num + Number.EPSILON) * factor) / factor;
+}
+
+function calculate() {
+  try {
+    let expression = historyLines.join('').replace(/,/g, '');
+
+    // ✅ factorial รองรับ ! และ !!
+    expression = expression.replace(/(\d+)(!+)/g, (_, num, bangs) => {
+      if (bangs.length > 2) {
+        return `INVALID_FACTORIAL(${num})`;
+      }
+      let result = num;
+      for (let i = 0; i < bangs.length; i++) {
+        result = `factorial(${result})`;
+      }
+      return result;
+    });
+
+    if (expression.includes('INVALID_FACTORIAL')) {
+      const lang = navigator.language || 'en';
+      alert(lang.startsWith('th')
+        ? 'ไม่สามารถแสดงผลลัพธ์ที่ไม่ได้ระบุ'
+        : "Can't show undefined result.");
+      return;
+    }
+
+    // ✅ แทน √ ก่อน เพื่อให้ e^(...√...) ทำงานได้
+    expression = expression.replace(/√\(/g, 'Math.sqrt(');
+
+    // ✅ แก้บั๊ก e^(...) ที่มีวงเล็บซ้อน → ใช้ while-loop
+    while (expression.includes('e^(')) {
+      // ใส่วงเล็บครบก่อน
+      const open = (expression.match(/\(/g) || []).length;
+      const close = (expression.match(/\)/g) || []).length;
+      if (open > close) {
+        expression += ')'.repeat(open - close);
+      }
+      // แทน e^(...) ➜ Math.exp(...)
+      expression = expression.replace(/e\^\(/g, 'Math.exp(');
+    }
+
+    // ✅ e^เลขเดี่ยว → Math.exp(เลข)
+    expression = expression.replace(/e\^([\d.]+)/g, 'Math.exp($1)');
+
+    // ✅ แทนค่าฟังก์ชันคณิต
+    expression = expression
+      .replace(/(?<![a-zA-Z])e(?![a-zA-Z])/g, 'Math.E')
+      .replace(/π/g, 'Math.PI')
+      .replace(/ln\(/g, 'Math.log(')
+      .replace(/log\(/g, 'Math.log10(')
+      .replace(/abs\(/g, 'Math.abs(')
+      .replace(/cbrt\(/g, 'Math.cbrt(')
+      .replace(/asin\(/g, 'Math.asin(')
+      .replace(/acos\(/g, 'Math.acos(')
+      .replace(/atan\(/g, 'Math.atan(')
+      .replace(/sinh\(/g, 'Math.sinh(')
+      .replace(/cosh\(/g, 'Math.cosh(')
+      .replace(/tanh\(/g, 'Math.tanh(')
+      .replace(/asinh\(/g, 'Math.asinh(')
+      .replace(/acosh\(/g, 'Math.acosh(')
+      .replace(/atanh\(/g, 'Math.atanh(')
+      .replace(/sin\(/g, 'Math.sin(toAngle(')
+      .replace(/cos\(/g, 'Math.cos(toAngle(')
+      .replace(/tan\(/g, 'Math.tan(toAngle(')
+      .replace(/−/g, '-')
+      .replace(/×/g, '*')
+      .replace(/÷/g, '/')
+      .replace(/1÷([\d.]+)/g, '1/($1)')
+      .replace(/(\d)\(/g, '$1*(')
+      .replace(/2\^\(/g, 'Math.pow(2,');
+
+    // ✅ เปอร์เซ็นต์
+    expression = expression.replace(/([\d.]+)\s*([+\-])\s*([\d.]+)%/g, (_, base, op, percent) =>
+      `(${base} ${op} ((${percent} * ${base}) / 100))`
+    );
+    expression = expression.replace(/([\d.]+)%\s*([+\-])\s*([\d.]+)%/g, (_, base, op, percent) => {
+      const baseVal = `(${base}/100)`;
+      const percentVal = `(${percent}/100)*${baseVal}`;
+      return `${baseVal} ${op} ${percentVal}`;
+    });
+    expression = expression.replace(/([*/+\-])\(([\d.]+)%\)/g, '$1(($2/100))');
+    expression = expression.replace(/\(([\d.]+)%\)/g, '(($1/100))');
+    expression = expression.replace(/([\d.,]+)%/g, (_, num) => {
+      const clean = num.replace(/,/g, '');
+      return `(${clean}/100)`;
+    });
+
+    // ✅ ล้างช่องว่าง + ปิดวงเล็บอัตโนมัติ
+    expression = expression.replace(/\s+/g, '');
+    const open2 = (expression.match(/\(/g) || []).length;
+    const close2 = (expression.match(/\)/g) || []).length;
+    if (open2 > close2) {
+      expression += ')'.repeat(open2 - close2);
+    }
+
+    // ✅ ตรวจหารด้วยศูนย์
+    if (/\/0(?!\d)/.test(expression)) {
+      const lang = navigator.language || 'en';
+      alert(lang.startsWith('th') ? 'ไม่สามารถหารด้วยศูนย์ได้' : "Can't divide by zero.");
+      return;
+    }
+
+    // ✅ ตรวจหาฟังก์ชันว่าง
+    if (
+      /\bMath\.(sqrt|log|log10|abs|sin|cos|tan|sinh|cosh|tanh|cbrt|asin|acos|atan|asinh|acosh|atanh|exp)\(\)/.test(expression)
+      || /Math\.pow\(2,\)/.test(expression)
+    ) {
+      const lang = navigator.language || 'en';
+      alert(lang.startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
+      return;
+    }
+
+    // ✅ ประมวลผลยกกำลังซ้ายไปขวา
+    expression = evaluateLeftToRightPowers(expression);
+
+    // ✅ คำนวณจริง
+    let result = Function('toAngle', 'toDegrees', 'factorial', `return ${expression}`)(
+      toAngle, toDegrees, factorial
+    );
+
+    if (!isFinite(result)) {
+      const lang = navigator.language || 'en';
+      alert(lang.startsWith('th')
+        ? 'การคำนวณนี้เกินช่วงผลลัพธ์ที่แสดงได้'
+        : 'Calculation outside of accepted range.');
+      return;
+    }
+
+    // ✅ inverse trig → กลับองศา
+    if (angleMode === 'deg' && /Math\.a(sin|cos|tan)\(/.test(expression)) {
+      result = toDegrees(result);
+    }
+
+    // ✅ ปัดทศนิยม
+    let rounded;
+    if (expression.includes('/100')) {
+      if (result > 1_000_000_000_000) {
+        const decimalStr = result.toString().split('.')[1] || '0';
+        const secondDecimalDigit = parseInt(decimalStr.charAt(1) || '0');
+        rounded = secondDecimalDigit >= 5
+          ? Math.ceil(result * 10) / 10
+          : Math.floor(result * 10) / 10;
+      } else {
+        rounded = roundToFixed(result, 10);
+      }
+    } else {
+      rounded = roundToFixed(result, 10);
+    }
+
+    // ✅ รูปแบบผลลัพธ์
+    const formatted = (Math.abs(result) >= 1e15 || Math.abs(result) < 1e-6)
+      ? result.toExponential(8).replace('e+', 'E+').replace('e', 'E')
+      : rounded.toLocaleString(undefined, {
+          maximumFractionDigits: 10,
+          useGrouping: true
+        });
+
+    historyLines = [formatted];
+    updateDisplay();
+  } catch (error) {
+    const lang = navigator.language || 'en';
+    alert(lang.startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
+  }
+}
 
 function appendNumber(number) {
   hasInsertedNumber = true;
@@ -26,11 +237,17 @@ function appendNumber(number) {
   let lastLine = historyLines[historyLines.length - 1] || '';
   const lastChar = lastLine.slice(-1);
 
-  // ✅ ถ้าลงท้ายด้วย % → ใส่ × ก่อนใส่เลขใหม่
+  // ✅ ถ้าตัวสุดท้ายเป็น % → ใส่ × ก่อนเลขใหม่
   if (lastChar === '%') {
     lastLine += '×';
   }
 
+  // ✅ ถ้าตัวสุดท้ายเป็น π หรือ e → ใส่ × ก่อนเลขใหม่
+  if (lastChar === 'π' || lastChar === 'e') {
+    lastLine += '×';
+  }
+
+  // ✅ ต่อจากนี้เหมือนเดิม
   const match = lastLine.match(/(\d{1,3}(?:,\d{3})*|\d*\.\d*|\d+)$/);
   const lastNumber = match ? match[0] : '';
   const cleanNumber = lastNumber.replace(/,/g, '');
@@ -69,6 +286,7 @@ function appendNumber(number) {
   historyLines[historyLines.length - 1] = lastLine;
   updateDisplay();
 }
+
 
 function formatWithComma(str) {
   if (str.includes('.')) {
@@ -283,208 +501,6 @@ function truncateDecimal(num, digits = 10) {
 
   const truncated = parts[0] + "." + parts[1].substring(0, digits);
   return parseFloat(truncated);
-}
-
-
-function roundToFixed(num, digits = 10) {
-  const factor = Math.pow(10, digits);
-  return Math.round((num + Number.EPSILON) * factor) / factor;
-}
-
-
-function calculate() {
-  try {
-    let expression = historyLines.join('').replace(/,/g, '');
-
-    // ✅ factorial แบบรองรับ 1 และ 2 ตัว !!
-    expression = expression.replace(/(\d+)(!+)/g, (_, num, bangs) => {
-      if (bangs.length > 2) { 
-        return `INVALID_FACTORIAL(${num})`;
-      }
-      let result = num;
-      for (let i = 0; i < bangs.length; i++) {
-        result = `factorial(${result})`;
-      }
-      return result;
-    });
-
-    if (expression.includes('INVALID_FACTORIAL')) {
-      const lang = navigator.language || 'en';
-      alert(lang.startsWith('th')
-        ? 'ไม่สามารถแสดงผลลัพธ์ที่ไม่ได้ระบุ'
-        : "Can't show undefined result.");
-      return;
-    }
-
-    // ✅ แทน √ ก่อน เพื่อให้ e^(...√...) ทำงานได้
-    expression = expression.replace(/√\(/g, 'Math.sqrt(');
-
-    // ✅ e^x และ e^(...) ทุกแบบ
-    expression = expression.replace(/e\^\(([^()]*)\)/g, 'Math.exp($1)');
-    expression = expression.replace(/e\^([\d.]+)/g, 'Math.exp($1)');
-    expression = expression.replace(/e\^\(([^()]*)$/g, 'Math.exp($1)');
-
-    // ✅ แทนค่าฟังก์ชันคณิต
-    expression = expression
-      .replace(/(?<![a-zA-Z])e(?![a-zA-Z])/g, 'Math.E')
-      .replace(/π/g, 'Math.PI')
-      .replace(/ln\(/g, 'Math.log(')
-      .replace(/log\(/g, 'Math.log10(')
-      .replace(/abs\(/g, 'Math.abs(')
-      .replace(/cbrt\(/g, 'Math.cbrt(')
-      .replace(/asin\(/g, 'Math.asin(')
-      .replace(/acos\(/g, 'Math.acos(')
-      .replace(/atan\(/g, 'Math.atan(')
-      .replace(/sinh\(/g, 'Math.sinh(')
-      .replace(/cosh\(/g, 'Math.cosh(')
-      .replace(/tanh\(/g, 'Math.tanh(')
-      .replace(/asinh\(/g, 'Math.asinh(')
-      .replace(/acosh\(/g, 'Math.acosh(')
-      .replace(/atanh\(/g, 'Math.atanh(')
-      .replace(/sin\(/g, 'Math.sin(toAngle(')
-      .replace(/cos\(/g, 'Math.cos(toAngle(')
-      .replace(/tan\(/g, 'Math.tan(toAngle(')
-      .replace(/−/g, '-')
-      .replace(/×/g, '*')
-      .replace(/÷/g, '/')
-      .replace(/1÷([\d.]+)/g, '1/($1)')
-      .replace(/(\d)\(/g, '$1*(')
-      .replace(/2\^\(/g, 'Math.pow(2,');
-
-    // ✅ เปอร์เซ็นต์
-    expression = expression.replace(/([\d.]+)\s*([+\-])\s*([\d.]+)%/g, (_, base, op, percent) =>
-      `(${base} ${op} ((${percent} * ${base}) / 100))`
-    );
-    expression = expression.replace(/([\d.]+)%\s*([+\-])\s*([\d.]+)%/g, (_, base, op, percent) => {
-      const baseVal = `(${base}/100)`;
-      const percentVal = `(${percent}/100)*${baseVal}`;
-      return `${baseVal} ${op} ${percentVal}`;
-    });
-    expression = expression.replace(/([*/+\-])\(([\d.]+)%\)/g, '$1(($2/100))');
-    expression = expression.replace(/\(([\d.]+)%\)/g, '(($1/100))');
-    expression = expression.replace(/([\d.,]+)%/g, (_, num) => {
-      const clean = num.replace(/,/g, '');
-      return `(${clean}/100)`;
-    });
-
-    // ✅ ล้าง space และปิดวงเล็บอัตโนมัติ
-    expression = expression.replace(/\s+/g, '');
-    const open = (expression.match(/\(/g) || []).length;
-    const close = (expression.match(/\)/g) || []).length;
-    if (open > close) {
-      expression += ')'.repeat(open - close);
-    }
-
-    // ✅ ตรวจหารด้วยศูนย์
-    if (/\/0(?!\d)/.test(expression)) {
-      const lang = navigator.language || 'en';
-      alert(lang.startsWith('th') ? 'ไม่สามารถหารด้วยศูนย์ได้' : "Can't divide by zero.");
-      return;
-    }
-
-    // ✅ ตรวจหาฟังก์ชันว่าง
-    if (
-      /\bMath\.(sqrt|log|log10|abs|sin|cos|tan|sinh|cosh|tanh|cbrt|asin|acos|atan|asinh|acosh|atanh|exp)\(\)/.test(expression)
-      || /Math\.pow\(2,\s*\)/.test(expression)
-    ) {
-      const lang = navigator.language || 'en';
-      alert(lang.startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
-      return;
-    }
-
-    // ✅ ประมวลผลยกกำลังซ้ายไปขวา
-    expression = evaluateLeftToRightPowers(expression);
-
-    // ✅ คำนวณ
-    let result = Function('toAngle', 'toDegrees', 'factorial', `return ${expression}`)(
-      toAngle, toDegrees, factorial
-    );
-
-    if (!isFinite(result)) {
-      const lang = navigator.language || 'en';
-      alert(lang.startsWith('th')
-        ? 'การคำนวณนี้เกินช่วงผลลัพธ์ที่แสดงได้'
-        : 'Calculation outside of accepted range.');
-      return;
-    }
-
-    // ✅ inverse trig ให้กลับเป็นองศา
-    if (angleMode === 'deg' && /Math\.a(sin|cos|tan)\(/.test(expression)) {
-      result = toDegrees(result);
-    }
-
-    // ✅ ปัดผลลัพธ์ให้แม่นยำ
-    let rounded;
-
-    if (expression.includes('/100')) {
-      if (result > 1_000_000_000_000) {
-        const decimalStr = result.toString().split('.')[1] || '0';
-        const secondDecimalDigit = parseInt(decimalStr.charAt(1) || '0');
-
-        rounded = secondDecimalDigit >= 5
-          ? Math.ceil(result * 10) / 10
-          : Math.floor(result * 10) / 10;
-      } else {
-        rounded = roundToFixed(result, 10);
-      }
-    } else {
-      rounded = roundToFixed(result, 10);
-    }
-
-    const formatted = (Math.abs(result) >= 1e15 || Math.abs(result) < 1e-6)
-        ? result.toExponential(8).replace('e+', 'E+').replace('e', 'E')
-        : rounded.toLocaleString(undefined, {
-          maximumFractionDigits: 10,
-          useGrouping: true
-        });
-
-
-    historyLines = [formatted];
-    updateDisplay();
-  } catch (error) {
-    const lang = navigator.language || 'en';
-    alert(lang.startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
-  }
-}
-
-// ฟังก์ชันเสริมที่จำเป็น
-function toAngle(degOrRad) {
-  return angleMode === 'deg' ? degOrRad * (Math.PI / 180) : degOrRad;
-}
-
-
-function toDegrees(rad) {
-  return angleMode === 'deg' ? rad * (180 / Math.PI) : rad;
-}
-
-function factorial(n) {
-  if (n < 0 || !Number.isInteger(n)) throw new Error("Invalid input for factorial");
-  if (n === 0 || n === 1) return 1;
-  let result = 1;
-  for (let i = 2; i <= n; i++) result *= i;
-  return result;
-}
-
-function evaluateLeftToRightPowers(expr) {
-  const pattern = /(\d+(?:\.\d+)?)(\^\([^)]+\))+/
-
-  while (pattern.test(expr)) {
-    expr = expr.replace(pattern, (match) => {
-      // ดึง base และ exponents
-      const baseMatch = match.match(/^(\d+(?:\.\d+)?)/);
-      let base = parseFloat(baseMatch[1]);
-
-      // ดึง exponent แต่ละตัวในลำดับ
-      const exponentMatches = [...match.matchAll(/\^\(([^()]+)\)/g)];
-      for (const exp of exponentMatches) {
-        base = Math.pow(base, parseFloat(exp[1]));
-      }
-
-      return base.toString();
-    });
-  }
-
-  return expr;
 }
 
 function toggleMenu() {
