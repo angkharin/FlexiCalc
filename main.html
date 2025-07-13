@@ -1,0 +1,106 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FlexiCalc</title>
+  <link rel="icon" href="image/logo.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button id="sidebarToggle" onclick="toggleSidebar()">❮</button>
+  <div class="sidebar">
+    <div id="theme-header" class="theme-header">Theme</div>
+    <div class="theme-option" id="theme-original" onclick="setTheme('original')">🎨 Original</div>
+    <div class="theme-option" id="theme-warm" onclick="setTheme('warm')">🔥 Warm</div>
+    <div class="theme-option" id="theme-cool" onclick="setTheme('cool')">❄️ Cool</div>
+    <div class="theme-option" id="theme-love" onclick="setTheme('love')">🩷 Love</div>
+    <div class="theme-option" id="theme-natural" onclick="setTheme('natural')">🍀 Natural</div>
+  </div>
+  <button id="customThemeToggle" onclick="toggleCustomTheme()">❮</button>
+
+<div class="custom-theme-panel hidden" id="customThemePanel">
+  <div class="theme-header" id="custom-theme-header">✏️​ Custom Theme</div>
+  <div class="custom-picker">
+    <label for="bg-color">พื้นหลัง: <input type="color" id="bg-color"></label><br>
+    <label for="bg-color">ปุ่มเลข: <input type="color" id="number-color"></label><br>
+    <label for="bg-color">เลขโฮเวอร์: <input type="color" id="number-hover"></label><br>
+    <label for="bg-color">ปุ่มเลขคณิต: <input type="color" id="btn-color"></label><br>    
+    <label for="bg-color">เลขคณิตโฮเวอร์: <input type="color" id="btn-hover"></label><br>
+    <label for="bg-color">ปุ่มลบ: <input type="color" id="btn2-color"></label><br>
+    <label for="bg-color">ลบโฮเวอร์: <input type="color" id="btn2-hover"></label><br>
+    <label for="bg-color">ปุ่มล้าง: <input type="color" id="function-color"></label><br>
+    <label for="bg-color">ล้างโฮเวอร์:<input type="color" id="function-hover"></label><br>
+    <label for="bg-color">ปุ่มเท่ากับ: <input type="color" id="equal-color"></label><br>
+    <label for="bg-color">เท่ากับโฮเวอร์: <input type="color" id="equal-hover"></label><br>
+    <label for="bg-color">สีเครื่องคิดเลข: <input type="color" id="calc-bg"></label><br>
+    <label for="bg-color">ปุ่มเมนู: <input type="color" id="menu-color"></label><br>
+    <label for="bg-color">ปุ่มเมนูโฮเวอร์: <input type="color" id="menu-hover"></label><br>
+    <!-- เพิ่มต่อได้ตามชื่อ CSS Variable -->
+    <button id="applyCustomBtn" onclick="applyCustomTheme()">ใช้</button>
+  </div>
+</div>
+
+
+  <div class="calculator">
+    <div class="display-container">
+     <div class="display" id="display">
+      <button id="toggleSciBtn" onclick="openSciPanel()" class="sci-toggle" onmousedown="showTooltip(this)"
+      data-tooltip-th="โหมดวิทยาศาสตร์" data-tooltip-en="Scientific mode">🔣</button>
+        <pre id="display-text" class="display-text"></pre>
+    </div>
+      <button class="side-toggle" onclick="toggleMenu()">☰</button>
+    </div>
+    
+    <div id="extraMenu" class="extra-menu hidden">
+  <div class="menu-item" id="menu-unit" onclick="window.location.href='unit.html'">ตัวแปลงหน่วย</div>
+  <div class="menu-item" id="menu-researcher" onclick="alert('ยังไม่เปิดใช้งาน')">ประวัติผู้วิจัย</div>
+  <div class="menu-item" id="menu-questionnaire" onclick="alert('ยังไม่เปิดใช้งาน')">แบบสอบถาม</div>
+
+</div>
+
+    <div class="buttons">
+      <button class="function" onclick="clearAll()" onmousedown="showTooltip(this)"
+      data-tooltip-th="ล้าง" data-tooltip-en="Clear">AC</button>
+      <button class="btn1 operator" onclick="insertBracket()" onmousedown="showTooltip(this)"
+      data-tooltip-th="วงเล็บ" data-tooltip-en="Brackets">()</button>
+      <button class="btn1 operator" onclick="calculatePercent()" onmousedown="showTooltip(this)"
+      data-tooltip-th="เปอร์เซ็นต์" data-tooltip-en="Percentage">%</button>
+      <button class="btn1 operator" onclick="appendOperator('÷')" onmousedown="showTooltip(this)"
+      data-tooltip-th="หาร" data-tooltip-en="Division">÷</button>
+
+      <button class="number" onclick="appendNumber('7')">7</button> 
+      <button class="number" onclick="appendNumber('8')">8</button>
+      <button class="number" onclick="appendNumber('9')">9</button>
+      <button class="btn1 operator" onclick="appendOperator('×')" onmousedown="showTooltip(this)"
+      ata-tooltip-th="คูณ" data-tooltip-en="Multiplication">×</button>
+
+      <button class="number" onclick="appendNumber('4')">4</button>
+      <button class="number" onclick="appendNumber('5')">5</button>
+      <button class="number" onclick="appendNumber('6')">6</button>
+      <button class="btn1 operator" onclick="appendOperator('−')" onmousedown="showTooltip(this)"
+      data-tooltip-th="ลบ" data-tooltip-en="Minus">−</button>
+
+      <button class="number" onclick="appendNumber('1')">1</button>
+      <button class="number" onclick="appendNumber('2')">2</button>
+      <button class="number" onclick="appendNumber('3')">3</button>
+      <button class="btn1 operator" onclick="appendOperator('+')" onmousedown="showTooltip(this)"
+      data-tooltip-th="บวก" data-tooltip-en="Plus">+</button>
+      
+      <button class="number" onclick="appendDot()">.</button>
+      <button class="number" onclick="appendNumber('0')">0</button>
+      <button class="btn2" onclick="clearEntry()">⌫</button>
+      <button class="equal" onclick="calculate()" onmousedown="showTooltip(this)"
+      data-tooltip-th="การคำนวณ" data-tooltip-en="Equal">=</button>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+function openSciPanel() {
+  window.location.href = "Scipannel.html";
+}
+
+</script>
+</body>
+</html>
