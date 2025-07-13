@@ -3,11 +3,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FlexiCalc</title>
+  <!-- ไอคอนเว็บไซต์ -->
   <link rel="icon" href="image/logo.png">
+  <!-- ไฟล์ CSS หลัก -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- ปุ่มเปิด/ปิด sidebar ธีม -->
   <button id="sidebarToggle" onclick="toggleSidebar()">❮</button>
+  <!-- แถบด้านข้างเลือกธีม -->
   <div class="sidebar">
     <div id="theme-header" class="theme-header">Theme</div>
     <div class="theme-option" id="theme-original" onclick="setTheme('original')">🎨 Original</div>
@@ -16,12 +20,13 @@
     <div class="theme-option" id="theme-love" onclick="setTheme('love')">🩷 Love</div>
     <div class="theme-option" id="theme-natural" onclick="setTheme('natural')">🍀 Natural</div>
   </div>
-
+  <!-- ปุ่มเปิด/ปิด custom theme panel -->
   <button id="customThemeToggle" onclick="toggleCustomTheme()">❮</button>
-
+<!-- Panel กำหนดสีธีมเอง -->
 <div class="custom-theme-panel hidden" id="customThemePanel">
   <div class="theme-header" id="custom-theme-header">✏️​ Custom Theme</div>
   <div class="custom-picker">
+    <!-- ชุด input สำหรับเลือกสี -->
     <label for="bg-color">พื้นหลัง: <input type="color" id="bg-color"></label><br>
     <label for="bg-color">ปุ่มเลข: <input type="color" id="number-color"></label>
     <label for="bg-color">ชี้/แตะปุ่มเลข: <input type="color" id="number-hover"></label><br>
@@ -38,11 +43,11 @@
     <label for="bg-color">สีเครื่องคิดเลข: <input type="color" id="calc2-bg"></label><br>
     <label for="bg-color">ปุ่มเมนู: <input type="color" id="menu-color"></label><br>
     <label for="bg-color">ชี้/แตะปุ่มเมนู: <input type="color" id="menu-hover"></label><br>
-    <!-- เพิ่มช่องได้อีก -->
+    <!-- ปุ่มใช้ค่าธีม -->
     <button id="applyCustomBtn" onclick="applyCustomTheme()">ใช้</button>
   </div>
 </div>
-
+  <!-- ✅ Hint Box สำหรับแสดงคำอธิบาย -->
   <div id="hintBox" style="
   position: absolute;
   background: rgba(0,0,0,0.85);
@@ -55,23 +60,29 @@
   white-space: nowrap;
   pointer-events: none;
 "></div>
+<!-- กล่องเครื่องคิดเลข -->
   <div class="calculator2">
+    <!-- ส่วนแสดงผล -->
     <div class="display-container">
       <div class="display2" id="display2">
+  <!-- ปุ่มเปิดโหมดวิทยาศาสตร์ -->
   <button class="sci-toggle" onclick="window.location.href='index.html'" onmousedown="showTooltip(this)"
   data-tooltip-th="โหมดปกติ" data-tooltip-en="normal mode">↩️</button>
+  <!-- Label สำหรับโชว์โหมดองศา/เรเดียน -->
   <span id="angleLabel"></span>
+  <!-- ผลลัพธ์หรือสูตรที่กำลังพิมพ์ -->
   <pre id="display-text" class="display-text"></pre>
 </div>
-
+      <!-- ปุ่มเปิดเมนูเสริม -->
       <button class="side-toggle" onclick="toggleMenu()">☰</button>
     </div>
+    <!-- เมนูเสริม (ลิงก์ไปหน้าอื่น) -->
     <div id="extraMenu" class="extra-menu hidden">
   <div class="menu-item" id="menu-unit" onclick="window.location.href='unit.html'">ตัวแปลงหน่วย</div>
   <div class="menu-item" id="menu-researcher" onclick="alert('ยังไม่เปิดใช้งาน')">ประวัติผู้วิจัย</div>
   <div class="menu-item" id="menu-questionnaire" onclick="alert('ยังไม่เปิดใช้งาน')">แบบสอบถาม</div>
 </div>
-
+    <!-- ปุ่มเครื่องคิดเลขหลัก -->
     <div class="buttons3">
       <button class="btn2 sci" onclick="togglePanel()" onmousedown="showTooltip(this)"
       data-tooltip-th="ฟังก์ชั่นทางเลือก" data-tooltip-en="Alternative functions">⮂</button>
@@ -80,7 +91,7 @@
       onmouseup="hideHint()"
       onmouseleave="hideHint()"
       onclick="toggleAngleMode()">Rad</button>
-
+      <!-- แถวบน -->
       <button class="btn2 sci" onclick="insertFunction('cbrt')" onmousedown="showTooltip(this)"
       data-tooltip-th="รากที่สาม" data-tooltip-en="Cube root">∛</button>
       <button class="function" onclick="clearAll()" onmousedown="showTooltip(this)"
@@ -91,7 +102,7 @@
       data-tooltip-th="เปอร์เซ็นต์" data-tooltip-en="Percentage">%</button>
       <button class="btn1 operator" onclick="appendOperator('÷')" onmousedown="showTooltip(this)"
       data-tooltip-th="หาร" data-tooltip-en="Division">÷</button>
-      
+      <!-- แถวตัวเลข sin⁻¹ cos⁻¹ tan⁻¹ 7 8 9 -->
       <button class="btn2 sci" onclick="insertFunction('asin')" onmousedown="showTooltip(this)"
       data-tooltip-th="ไซน์ผกผัน" data-tooltip-en="Inverse sine">sin⁻¹</button>
       <button class="btn2 sci" onclick="insertFunction('acos')" onmousedown="showTooltip(this)"
@@ -103,7 +114,7 @@
       <button class="number" onclick="appendNumber('9')">9</button>
       <button class="btn1 operator" onclick="appendOperator('×')" onmousedown="showTooltip(this)"
       data-tooltip-th="คูณ" data-tooltip-en="Multiplication">×</button>
-
+      <!-- แถว sinh cosh tanh 4 5 6 -->
       <button class="btn2 sci" onclick="insertFunction('sinh')" onmousedown="showTooltip(this)"
       data-tooltip-th="ไฮเพอร์โบลิกไซน์" data-tooltip-en="Hyperbolic sine">sinh</button>
       <button class="btn2 sci" onclick="insertFunction('cosh')" onmousedown="showTooltip(this)"
@@ -115,7 +126,7 @@
       <button class="number" onclick="appendNumber('6')">6</button>
       <button class="btn1 operator" onclick="appendOperator('−')" onmousedown="showTooltip(this)"
       data-tooltip-th="ลบ" data-tooltip-en="Minus">−</button>
-      
+      <!-- แถว sinh⁻¹ cosh⁻¹ tanh⁻¹ 1 2 3 -->
       <button class="btn2 sci" onclick="insertFunction('asinh')" onmousedown="showTooltip(this)"
       data-tooltip-th="ไฮเพอร์โบลิกไซน์แบบผกผัน" data-tooltip-en="Inverse hyperbolic sine">sinh⁻¹</button>
       <button class="btn2 sci" onclick="insertFunction('acosh')" onmousedown="showTooltip(this)"
@@ -127,7 +138,7 @@
       <button class="number" onclick="appendNumber('3')">3</button>
       <button class="btn1 operator" onclick="appendOperator('+')" onmousedown="showTooltip(this)"
       data-tooltip-th="บวก" data-tooltip-en="Plus">+</button>
-      
+      <!-- แถวล่าง -->
       <button class="btn2 sci" onclick="insertFunction('2powx')" onmousedown="showTooltip(this)"
       data-tooltip-th="2 ยกกำลัง x" data-tooltip-en="2 to the power of x">2ˣ</button>
       <button class="btn2 sci" onclick="insertFunction('cube')" onmousedown="showTooltip(this)"
@@ -144,22 +155,22 @@
 
     </div>
   </div>
-
+<!-- ไฟล์ JavaScript หลัก -->
 <script src="script.js"></script>
 <script>
-  // ✅ ถ้าโหลดหน้าเอง (ไม่ใช่ไปจาก index)
+  // ✅ ถ้าผู้ใช้กดรีเฟรช → ล้าง history
   if (performance.navigation.type === 1) {
     // รีเฟรชหรือโหลดใหม่ → ล้าง history
     localStorage.removeItem('calc_history');
   }
-
-  historyLines = [""]; // เริ่มใหม่
-
+  // ✅ เริ่มใหม่
+  historyLines = [""]; 
+  // ✅ โหลดค่าเก่า (ถ้ามี)
   const saved = localStorage.getItem('calc_history');
   if (saved) {
     historyLines = JSON.parse(saved);
   }
-
+  // ✅ อัปเดตหน้าจอ
   updateDisplay();
 </script>
 

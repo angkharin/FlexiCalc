@@ -24,15 +24,15 @@ function updateDisplay() {
     }, 0);
   }
 }
-
+//เรเดียน
 function toAngle(value) {
   return angleMode === 'deg' ? value * (Math.PI / 180) : value;
 }
-
+//องศา
 function toDegrees(value) {
   return angleMode === 'deg' ? value * (180 / Math.PI) : value;
 }
-
+// ลักษณะของ X!
 function factorial(n) {
   if (n < 0 || !Number.isInteger(n)) throw new Error("Invalid input for factorial");
   if (n === 0 || n === 1) return 1;
@@ -40,7 +40,7 @@ function factorial(n) {
   for (let i = 2; i <= n; i++) result *= i;
   return result;
 }
-
+// ปุ่ม e 
 function evaluateLeftToRightPowers(expr) {
   const pattern = /(\d+(?:\.\d+)?)(\^\([^)]+\))+/
 
@@ -62,12 +62,12 @@ function evaluateLeftToRightPowers(expr) {
 
   return expr;
 }
-
+// X!
 function roundToFixed(num, digits = 10) {
   const factor = Math.pow(10, digits);
   return Math.round((num + Number.EPSILON) * factor) / factor;
 }
-
+//ฟังก์ชั่นต่างๆ
 function calculate() {
   try {
     // ✅ 1. รวมข้อความทั้งหมดจาก history แล้วลบ comma
@@ -230,7 +230,7 @@ function calculate() {
   }
 }
 
-
+//ฟังก์ชั่นเลข
 function appendNumber(number) {
   hasInsertedNumber = true;
 
@@ -287,7 +287,7 @@ function appendNumber(number) {
   updateDisplay();
 }
 
-
+//คอมม่า
 function formatWithComma(str) {
   if (str.includes('.')) {
     let [int, dec] = str.split('.');
@@ -298,7 +298,7 @@ function formatWithComma(str) {
   }
 }
 
-
+//เปอร์เซ็นต์
 function calculatePercent() {
   const lastLine = historyLines[historyLines.length - 1];
   const lastChar = lastLine.slice(-1);
@@ -323,7 +323,7 @@ function calculatePercent() {
 }
 
 
-
+//แสดงผล
 function appendOperator(displayOp, realOp = displayOp) {
   let lastLine = historyLines[historyLines.length - 1] || '';
   const lang = navigator.language || 'en';
@@ -424,14 +424,14 @@ if (trailingOps) {
 
 
 
-
+//ไปหน้า Scipannel
 function openSciPanel() {
   localStorage.setItem('calc_history', JSON.stringify(historyLines)); // ✅ เก็บค่าก่อน
   window.location.href = "Scipannel.html";
 }
 
 
-
+//ฟังก์ชั่นจุด
 function appendDot() {
   let lastLine = historyLines[historyLines.length - 1] || '';
   const lastChar = lastLine.slice(-1);
@@ -455,7 +455,7 @@ function appendDot() {
   historyLines[historyLines.length - 1] = lastLine;
   updateDisplay();
 }
-
+//ฟังก์ชั่นลบเลข
 function clearEntry() {
   let lastLine = historyLines[historyLines.length - 1] || '';
 
@@ -487,14 +487,14 @@ function clearEntry() {
 }
 
 
-
+//ล้างค่าหมด
 function clearAll() {
   historyLines = [""];
   hasInsertedNumber = false;
   localStorage.removeItem('calc_history'); // ✅ ล้างค่าด้วย
   updateDisplay();
 }
-
+//ตัดทศนิยม
 function truncateDecimal(num, digits = 10) {
   const parts = num.toString().split(".");
   if (parts.length === 1) return num; // ไม่มีทศนิยม
@@ -502,12 +502,12 @@ function truncateDecimal(num, digits = 10) {
   const truncated = parts[0] + "." + parts[1].substring(0, digits);
   return parseFloat(truncated);
 }
-
+//ฟังก์ชั่นเมนู
 function toggleMenu() {
   const menu = document.getElementById("extraMenu");
   menu.classList.toggle("hidden");
 }
-
+//ฟังก์ชั่นวิทย์
 function insertFunction(func) {
   const lang = navigator.language || 'en';
 
@@ -646,7 +646,7 @@ function insertFunction(func) {
 
 
 let angleMode = 'deg'; // เริ่มต้นโหมดจริงเป็น deg
-
+//รีเฟรช เก็บค่า
 window.onload = function () {
   const navEntries = performance.getEntriesByType("navigation");
   if (navEntries.length > 0 && navEntries[0].type === "reload") {
@@ -678,7 +678,7 @@ window.onload = function () {
   if (label) label.innerText = "";
 };
 
-
+//ปุ่มเปลี่ยน rad/deg
 function toggleAngleMode() {
   const btn = document.getElementById("modeToggle") || document.getElementById("modeToggle2");
   const label = document.getElementById("angleLabel");
@@ -696,7 +696,7 @@ function toggleAngleMode() {
   }
 }
 
-
+//ฟังก์ชั่นวงเล็บ
 let openBrackets = 0;
 let hasInsertedNumber = false;
 
@@ -744,7 +744,7 @@ function togglePanel() {
 }
 
 
-
+//ฟังก์ชั่นสแควรูท
 function square() {
   const value = parseFloat(document.getElementById("display2").innerText);
   if (!isNaN(value)) {
@@ -753,25 +753,32 @@ function square() {
     display.innerText = 'Error';
   }
 }
-
+//ฟังก์ชันนี้จะใช้สำหรับเปิด-ปิด Panel ปุ่มวิทยาศาสตร์ (SciPanel)
 function toggleScientific() {
+  // เลือก element panel ที่มี id = "sciPanel"
   const panel = document.getElementById("sciPanel");
+   // toggle class 'sci-hidden'
+  // ถ้ามี => เอาออก (แสดง), ถ้าไม่มี => ใส่ (ซ่อน)
   panel.classList.toggle("sci-hidden");
 }
+//ฟังก์ชันนี้จะปรับตำแหน่งปุ่ม toggleSciBtn
 function updateSciBtnPosition() {
+  // อ่านค่าจาก display แล้วลบทุกอย่างที่ไม่ใช่เลข
   const current = display.innerText.replace(/[^0-9]/g, ''); 
+  // นับจำนวนตัวเลข
   const digitCount = current.length;
-
+  // หาปุ่ม toggle ปุ่มวิทย์
   const btn = document.getElementById("toggleSciBtn");
-
+  // กำหนดระยะเลื่อนสูงสุด 60px
   const maxShift = 60; 
+  // ถ้ามีตัวเลขเยอะ → คำนวณสัดส่วนเลื่อน
   const shift = Math.min(digitCount / 15 * maxShift, maxShift);
-
+   // ใช้ transform เพื่อเลื่อนปุ่มไปทางซ้าย
   btn.style.transform = `translateX(-${shift}px)`;
 }
 
 let tooltipTimeout;
-
+//เครื่องมือ
 function showTooltip(button) {
   // ลบ tooltip เดิมถ้ามี
   const oldTip = document.querySelector('.tooltip');
@@ -804,7 +811,7 @@ function showTooltip(button) {
 }
 
 let hintTimeout;
-
+//ซ่อน Rad
 function showHint(el, id) {
   const lang = navigator.language || 'en';
   const text = id === 'modeToggle' || id === 'modeToggle2'
@@ -832,7 +839,7 @@ function hideHint() {
   clearTimeout(hintTimeout);
   document.getElementById("hintBox").style.display = "none";
 }
-
+//กำหนดธีม
 function setTheme(themeName) {
   const themes = ['theme-original', 'theme-warm', 'theme-cool', 'theme-love', 'theme-natural'];
   document.body.classList.remove(...themes);
@@ -943,7 +950,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 
-
+//ฟังก์ชั่น แถบซ้าย
 function toggleSidebar() {
   const sidebar = document.querySelector('.sidebar');
   const toggleBtn = document.getElementById('sidebarToggle');
@@ -960,7 +967,7 @@ function toggleSidebar() {
   localStorage.setItem('sidebarHidden', isHidden ? '1' : '0');
 }
 
-
+//ฟังก์ชั่น แถบขวา
 function toggleCustomTheme() {
   const panel = document.getElementById('customThemePanel');
   const toggleBtn = document.getElementById('customThemeToggle');
@@ -973,7 +980,7 @@ function toggleCustomTheme() {
 }
 
 
-
+//ปุ่มใช้
 function applyCustomTheme() {
   const vars = [
     "bg-color", "btn-color", "btn-hover", "calc-bg", "calc2-bg",

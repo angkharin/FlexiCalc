@@ -3,16 +3,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FlexiCalc</title>
+  <!-- ไอคอนเว็บไซต์ -->
   <link rel="icon" href="image/logo.png">
+  <!-- ไฟล์ CSS หลัก -->
   <link rel="stylesheet" href="style.css">
+  <!-- ไฟล์ JavaScript หลัก -->
   <script src="script.js"></script>
   <script>
+// ฟังก์ชันเปลี่ยนไปหน้า SciPanel
 function openSciPanel() {
   window.location.href = "Scipannel.html";
 }
+// ถ้าโหลดซ้ำ (refresh) → ไปหน้า index.html
 if (performance.navigation.type === 1) {
     window.location.href = "index.html";
   }
+// โหลดประวัติการคำนวณถ้ามี
 const saved = localStorage.getItem('calc_history');
 if (saved) {
   historyLines = JSON.parse(saved);
@@ -21,7 +27,9 @@ if (saved) {
 </script>
 </head>
 <body>
+  <!-- ปุ่มเปิด/ปิด sidebar ธีม -->
   <button id="sidebarToggle" onclick="toggleSidebar()">❮</button>
+  <!-- แถบด้านข้างเลือกธีม -->
   <div class="sidebar">
     <div id="theme-header" class="theme-header">Theme</div>
     <div class="theme-option" id="theme-original" onclick="setTheme('original')">🎨 Original</div>
@@ -30,11 +38,13 @@ if (saved) {
     <div class="theme-option" id="theme-love" onclick="setTheme('love')">🩷 Love</div>
     <div class="theme-option" id="theme-natural" onclick="setTheme('natural')">🍀 Natural</div>
   </div>
+  <!-- ปุ่มเปิด/ปิด custom theme panel -->
   <button id="customThemeToggle" onclick="toggleCustomTheme()">❮</button>
-
+<!-- Panel กำหนดสีธีมเอง -->
 <div class="custom-theme-panel hidden" id="customThemePanel">
   <div class="theme-header" id="custom-theme-header">✏️​ Custom Theme</div>
   <div class="custom-picker">
+    <!-- ชุด input สำหรับเลือกสี -->
     <label for="bg-color">พื้นหลัง: <input type="color" id="bg-color"></label><br>
     <label for="bg-color">ปุ่มเลข: <input type="color" id="number-color"></label><br>
     <label for="bg-color">ชี้ปุ่มเลข: <input type="color" id="number-hover"></label><br>
@@ -49,30 +59,35 @@ if (saved) {
     <label for="bg-color">สีเครื่องคิดเลข: <input type="color" id="calc-bg"></label><br>
     <label for="bg-color">ปุ่มเมนู: <input type="color" id="menu-color"></label><br>
     <label for="bg-color">ปุ่มเมนูโฮเวอร์: <input type="color" id="menu-hover"></label><br>
-    <!-- เพิ่มต่อได้ตามชื่อ CSS Variable -->
+    <!-- ปุ่มใช้ค่าธีม -->
     <button id="applyCustomBtn" onclick="applyCustomTheme()">ใช้</button>
   </div>
 </div>
 
-
+  <!-- กล่องเครื่องคิดเลข -->
   <div class="calculator">
+    <!-- ส่วนแสดงผล -->
     <div class="display-container">
      <div class="display" id="display">
+      <!-- ปุ่มเปิดโหมดวิทยาศาสตร์ -->
       <button id="toggleSciBtn" onclick="openSciPanel()" class="sci-toggle" onmousedown="showTooltip(this)"
       data-tooltip-th="โหมดวิทยาศาสตร์" data-tooltip-en="Scientific mode">🔣</button>
+        <!-- ผลลัพธ์หรือสูตรที่กำลังพิมพ์ -->
         <pre id="display-text" class="display-text"></pre>
     </div>
+      <!-- ปุ่มเปิดเมนูเสริม -->
       <button class="side-toggle" onclick="toggleMenu()">☰</button>
     </div>
-    
+    <!-- เมนูเสริม (ลิงก์ไปหน้าอื่น) -->
     <div id="extraMenu" class="extra-menu hidden">
   <div class="menu-item" id="menu-unit" onclick="window.location.href='unit.html'">ตัวแปลงหน่วย</div>
   <div class="menu-item" id="menu-researcher" onclick="alert('ยังไม่เปิดใช้งาน')">ประวัติผู้วิจัย</div>
   <div class="menu-item" id="menu-questionnaire" onclick="alert('ยังไม่เปิดใช้งาน')">แบบสอบถาม</div>
 
 </div>
-
+    <!-- ปุ่มเครื่องคิดเลขหลัก -->
     <div class="buttons">
+      <!-- แถวบน -->
       <button class="function" onclick="clearAll()" onmousedown="showTooltip(this)"
       data-tooltip-th="ล้าง" data-tooltip-en="Clear">AC</button>
       <button class="btn1 operator" onclick="insertBracket()" onmousedown="showTooltip(this)"
@@ -81,25 +96,25 @@ if (saved) {
       data-tooltip-th="เปอร์เซ็นต์" data-tooltip-en="Percentage">%</button>
       <button class="btn1 operator" onclick="appendOperator('÷')" onmousedown="showTooltip(this)"
       data-tooltip-th="หาร" data-tooltip-en="Division">÷</button>
-
+      <!-- แถวตัวเลข 7 8 9 -->
       <button class="number" onclick="appendNumber('7')">7</button> 
       <button class="number" onclick="appendNumber('8')">8</button>
       <button class="number" onclick="appendNumber('9')">9</button>
       <button class="btn1 operator" onclick="appendOperator('×')" onmousedown="showTooltip(this)"
       ata-tooltip-th="คูณ" data-tooltip-en="Multiplication">×</button>
-
+      <!-- แถว 4 5 6 -->
       <button class="number" onclick="appendNumber('4')">4</button>
       <button class="number" onclick="appendNumber('5')">5</button>
       <button class="number" onclick="appendNumber('6')">6</button>
       <button class="btn1 operator" onclick="appendOperator('−')" onmousedown="showTooltip(this)"
       data-tooltip-th="ลบ" data-tooltip-en="Minus">−</button>
-
+      <!-- แถว 1 2 3 -->
       <button class="number" onclick="appendNumber('1')">1</button>
       <button class="number" onclick="appendNumber('2')">2</button>
       <button class="number" onclick="appendNumber('3')">3</button>
       <button class="btn1 operator" onclick="appendOperator('+')" onmousedown="showTooltip(this)"
       data-tooltip-th="บวก" data-tooltip-en="Plus">+</button>
-      
+      <!-- แถวล่าง -->
       <button class="number" onclick="appendDot()">.</button>
       <button class="number" onclick="appendNumber('0')">0</button>
       <button class="btn2" onclick="clearEntry()">⌫</button>

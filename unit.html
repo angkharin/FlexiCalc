@@ -3,9 +3,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FlexiCalc</title>
+  <!-- ไอคอนเว็บไซต์ -->
   <link rel="icon" href="image/logo.png">
+  <!-- ไฟล์ CSS หลัก -->
   <link rel="stylesheet" href="style.css">
   <style>
+    /* ✅ พื้นหลังหน้า Unit Converter */
     body {
       background-image: url('image/bg.png');
       background-size: cover;
@@ -16,7 +19,7 @@
       margin: 0;
       padding: 20px;
     }
-
+    /* ✅ ส่วนหัว (Title) */
     .header {
       text-align: center;
       margin-bottom: 30px;
@@ -32,7 +35,7 @@
       margin: 0;
       color: #666;
     }
-
+    /* ✅ โครง Grid ของปุ่มแปลงหน่วย */
     .unit-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
@@ -41,7 +44,7 @@
       margin: 0 auto;
       width: 100%;
     }
-
+    /* ✅ สไตล์ของแต่ละปุ่มแปลงหน่วย */
     .unit-item {
       background: #ffee58;
       border-radius: 12px;
@@ -51,7 +54,7 @@
       cursor: pointer;
       transition: transform 0.2s;
     }
-
+    /* ✅ เมื่อ hover ปุ่มแปลงหน่วย */
     .unit-item:hover {
       background: #fdd835;
       transform: scale(1.05);
@@ -67,6 +70,7 @@
       font-size: 12px;
       font-weight: bold;
     }
+    /* ✅ ปุ่มเปลี่ยนหน้า (pagination) */
     .next-items {
       display:flex ;
       grid-column: 1 / -1; /* ✅ ขยายเต็มแถวใน grid */
@@ -90,7 +94,7 @@
     .next-items u {
       color: white;
     }
-
+    /* ✅ ปุ่มกลับด้านล่างซ้าย */
     #btnBack {
     position: fixed;
     bottom: 20px;
@@ -116,11 +120,13 @@
 </head>
 <body>
   
-
+  <!-- ✅ ส่วนหัวเรื่อง -->
   <div class="header sticky-header">
   <h1 id="title-main">ตัวแปลงหน่วย<br>และการคิดเลขต่างๆ</h1>
 </div>
+<!-- ✅ Grid ของปุ่มหน่วย -->
   <div class="unit-grid">
+  <!-- ✅ แต่ละ unit-item = 1 หมวด -->
   <div class="unit-item" onclick="window.location.href='age.html'">
     <img src="image/age.png">
     <div class="unit-label" data-en="Age" data-th="อายุ"></div>
@@ -181,24 +187,26 @@
     <img src="image/freelance-tax.png">
     <div class="unit-label" data-en="tax deduction freelance" data-th="ภาษีสำหรับ<br>ฟรีแลนซ์"></div>
   </div>
+  <!-- ✅ pagination -->
   <div class="next-items">
     <h2><u><a href="unit.html">1</a></u></h2>
     <h2><a href="2.html">2</a></h2>
   </div>
 </div>
-
+<!-- ✅ ปุ่ม Back -->
 <button id="btnBack" onclick="history.back()">⬅ กลับ</button>
 
 
 <script>
+  // ✅ เช็คภาษาเครื่อง (ไทยหรืออังกฤษ)
   const isThai = (navigator.language || 'en').toLowerCase().startsWith('th');
-
+   // ✅ เปลี่ยนปุ่มกลับตามภาษา
   document.getElementById('btnBack').textContent = isThai ? '⬅ กลับ' : '⬅ Back';
-
+  // ✅ เปลี่ยน label ทุก unit-item
   document.querySelectorAll('.unit-label').forEach(el => {
   el.innerHTML = isThai ? el.dataset.th : el.dataset.en;
 });
-
+  // ✅ เปลี่ยน Title ตามภาษา
   document.getElementById('title-main').innerHTML = isThai 
   ? 'ตัวแปลงหน่วย<br>และการคำนวณต่างๆ' 
   : 'Unit Converter<br>&nbsp and Calculators';
