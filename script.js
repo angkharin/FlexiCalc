@@ -72,6 +72,7 @@ function calculate() {
   try {
     let expression = historyLines.join('').replace(/,/g, '');
     const lang = navigator.language || 'en';
+    
 
     // ✅ แปลง ! และ !! เป็น factorial
     expression = expression.replace(/(\d+)(!+)/g, (_, num, bangs) => {
@@ -103,23 +104,21 @@ function calculate() {
     // ✅ แปลงฟังก์ชันทั่วไป
     expression = expression
       .replace(/\b√\(/g, 'Math.sqrt(')
-      .replace(/\bln\b/g, 'Math.log')
-      .replace(/\blog10\b/g, 'Math.log10')
+      .replace(/\bln\(/g, 'Math.log(')           
+      .replace(/\bln\s+([\d.]+)/g, 'Math.log($1)')
+      .replace(/\blog10\(/g, 'Math.log10(')
+      .replace(/\s/g, '')
       .replace(/\blog\b/g, 'Math.log10')
       .replace(/\bsqrt\b/g, 'Math.sqrt')
       .replace(/\babs\b/g, 'Math.abs')
       .replace(/\bcbrt\b/g, 'Math.cbrt')
       .replace(/\bexp\b/g, 'Math.exp')
-
-      // ✅ ฟังก์ชัน inverse
       .replace(/\bsin⁻¹\b/g, 'Math.asin')
       .replace(/\bcos⁻¹\b/g, 'Math.acos')
       .replace(/\btan⁻¹\b/g, 'Math.atan')
       .replace(/\bsinh⁻¹\b/g, 'Math.asinh')
       .replace(/\bcosh⁻¹\b/g, 'Math.acosh')
       .replace(/\btanh⁻¹\b/g, 'Math.atanh')
-
-      // ✅ ฟังก์ชันธรรมดา + แปลงเป็นมุมถ้าเกี่ยวกับ trig
       .replace(/\bsin\b/g, 'Math.sin(toAngle')
       .replace(/\bcos\b/g, 'Math.cos(toAngle')
       .replace(/\btan\b/g, 'Math.tan(toAngle')
@@ -132,10 +131,9 @@ function calculate() {
       .replace(/\basinh\b/g, 'Math.asinh')
       .replace(/\bacosh\b/g, 'Math.acosh')
       .replace(/\batanh\b/g, 'Math.atanh')
-
-      // ✅ ยกกำลัง 2^()
       .replace(/2\^\(/g, 'Math.pow(2,');
 
+    
     // ✅ เปอร์เซ็นต์
     expression = expression.replace(/([\d.]+)\s*([+\-])\s*([\d.]+)%/g, (_, base, op, percent) =>
       `(${base} ${op} ((${percent} * ${base}) / 100))`
@@ -158,14 +156,14 @@ function calculate() {
     const close = (expression.match(/\)/g) || []).length;
     if (open > close) expression += ')'.repeat(open - close);
 
-    // ✅ ป้องกันฟังก์ชันว่างเปล่า
-    if (
-      /\bMath\.(sqrt|log|log10|abs|sin|cos|tan|sinh|cosh|tanh|cbrt|asin|acos|atan|asinh|acosh|atanh|exp)\(\s*\)/.test(expression) ||
-      /Math\.pow\(2,\s*\)/.test(expression)
-    ) {
+    // ✅ ป้องกันฟังก์ชันว่างเปล่าแบบแม่น
+    const emptyFuncPattern = /\bMath\.(sqrt|log|log10|abs|sin|cos|tan|sinh|cosh|tanh|cbrt|asin|acos|atan|asinh|acosh|atanh|exp)\(\)/;
+    const emptyPowPattern = /Math\.pow\(2,\)/;
+    if (emptyFuncPattern.test(expression) || emptyPowPattern.test(expression)) {
       alert(lang.startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
       return;
     }
+    
 
     // ✅ ตรวจหารด้วยศูนย์
     if (/\/0(?!\d)/.test(expression)) {
@@ -182,10 +180,7 @@ function calculate() {
     );
 
     // ✅ ตรวจผลลัพธ์ว่า overflow หรือไม่
-    if (checkOverflow(expression, result, lang)) {
-      return; // ถ้ามีการแจ้งเตือนแล้วก็หยุดการทำงาน
-    }
-
+    if (checkOverflow(expression, result, lang)) return;
 
     // ✅ inverse trig แปลงกลับเป็นองศา
     if (angleMode === 'deg' && /Math\.a(sin|cos|tan)\(/.test(expression)) {
@@ -203,11 +198,11 @@ function calculate() {
     // ✅ แสดงผลลัพธ์
     historyLines = [formatted];
     updateDisplay();
-
   } catch (error) {
     alert((navigator.language || 'en').startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
   }
 }
+
 
 function checkOverflow(expression, result, lang) {
   // ถ้าไม่ใช่ตัวเลขปกติ เช่น Infinity หรือ NaN
