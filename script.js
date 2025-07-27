@@ -114,6 +114,9 @@ function calculate() {
     expression = expression
       .replace(/(?<![a-zA-Z])e(?![a-zA-Z])/g, 'Math.E')
       .replace(/π/g, 'Math.PI')
+      .replace(/ln\(/g, 'Math.log(')
+      .replace(/log\(/g, 'Math.log10(')
+      .replace(/abs\(/g, 'Math.abs(')
       .replace(/cbrt\(/g, 'Math.cbrt(')
       .replace(/asin/g, 'Math.asin(')
       .replace(/acos/g, 'Math.acos(')
