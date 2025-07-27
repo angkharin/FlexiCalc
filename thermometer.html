@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ตัวแปลงอุณหภูมิ</title>
-  <link rel="icon" href="image/logo.png" />
+  <link rel="icon" href="image/logo2.png" />
   <style>
     /* สไตล์รวมของ body */
     body {
@@ -145,7 +145,7 @@
       const results = { C, F, K };
 
       // ✅ แสดงผลลัพธ์
-      let output = `<h3>${isThai ? "ผลลัพธ์" : "Results"}</h3><ul>`;
+      let output = `<strong style="display:block; margin-top:20px; font-size:16px;">${isThai ? "ผลลัพธ์" : "Results"}</strong><ul>`;
       for (const key in results) {
         const label = isThai ? unitMap[key][0] : unitMap[key][1];
         const val = results[key];
@@ -174,7 +174,7 @@
       }
       //แสดงตัวอย่างการคำนวณ
       document.getElementById("explanationBox").innerHTML = `
-        <strong>${isThai ? "ตัวอย่างการคำนวณ:" : "Example Calculations:"}</strong>
+        <strong style="display:block; margin-top:20px; font-size:16px;">${isThai ? "ตัวอย่างการคำนวณ:" : "Example Calculations:"}</strong>
         <ul>${examples.join("")}</ul>
       `;
 

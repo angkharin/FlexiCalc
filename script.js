@@ -114,13 +114,10 @@ function calculate() {
     expression = expression
       .replace(/(?<![a-zA-Z])e(?![a-zA-Z])/g, 'Math.E')
       .replace(/π/g, 'Math.PI')
-      .replace(/ln\(/g, 'Math.log(')
-      .replace(/log\(/g, 'Math.log10(')
-      .replace(/abs\(/g, 'Math.abs(')
       .replace(/cbrt\(/g, 'Math.cbrt(')
-      .replace(/asin\(/g, 'Math.asin(')
-      .replace(/acos\(/g, 'Math.acos(')
-      .replace(/atan\(/g, 'Math.atan(')
+      .replace(/asin/g, 'Math.asin(')
+      .replace(/acos/g, 'Math.acos(')
+      .replace(/atan/g, 'Math.atan(')
       .replace(/sinh\(/g, 'Math.sinh(')
       .replace(/cosh\(/g, 'Math.cosh(')
       .replace(/tanh\(/g, 'Math.tanh(')
@@ -228,6 +225,144 @@ function calculate() {
     const lang = navigator.language || 'en';
     alert(lang.startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
   }
+}
+
+
+//ฟังก์ชั่นวิทย์
+function insertFunction(func) {
+  const lang = navigator.language || 'en';
+
+  const primaryFuncs = ['sin', 'cos', 'tan', 'ln', 'log', 'abs'];
+  const advancedFuncs = ['cbrt', 'asin', 'acos', 'atan', 'sinh', 'cosh', 'tanh', 'asinh', 'acosh', 'atanh'];
+  const autoMultiplyFuncs = [
+    '√', 'sin', 'cos', 'tan', 'ln', 'log', '1/x', 'eˣ', 'abs', 'π', 'e', 'cbrt',
+    'asin', 'acos', 'atan', 'sinh', 'cosh', 'tanh', 'asinh', 'acosh', 'atanh', '2powx'
+  ];
+
+  const allText = historyLines.join('');
+  const totalLength = allText.length;
+
+  if (
+    advancedFuncs.includes(func) &&
+    totalLength >= 200
+  ) {
+    alert(lang.startsWith('th')
+      ? 'ไม่สามารถใส่ตัวอักษรมากกว่า 200 ตัว'
+      : "Can't enter more than 200 characters.");
+    return;
+  }
+
+  const regexPrimary = new RegExp(`(${primaryFuncs.join('|')})\\(`, 'g');
+  const regexAdvanced = new RegExp(`(${advancedFuncs.join('|')})\\(`, 'g');
+  const primaryCount = (allText.match(regexPrimary) || []).length;
+  const advancedCount = (allText.match(regexAdvanced) || []).length;
+  const oneDivCount = (allText.match(/1÷/g) || []).length;
+  const sqrtCount = (allText.match(/√\(/g) || []).length;
+  const customCount = (allText.match(/e\^|π|(?<![a-z])e(?![a-z])|2\^|\^|\!/g) || []).length;
+
+  if (
+    (primaryFuncs.includes(func) && primaryCount >= 40) ||
+    (advancedFuncs.includes(func) && advancedCount >= 40) ||
+    (func === '1/x' && oneDivCount >= 40) ||
+    (func === '√' && sqrtCount >= 40) ||
+    (customCount >= 40)
+  ) {
+    alert(lang.startsWith('th')
+      ? 'ไม่สามารถใส่ฟังก์ชันเกิน 40 ตัวได้'
+      : "Can't enter more than 40 functions.");
+    return;
+  }
+
+  // ตรวจบรรทัดใหม่
+  let lastLine = historyLines[historyLines.length - 1];
+  const linePrimaryCount = (lastLine.match(regexPrimary) || []).length;
+  const lineAdvancedCount = (lastLine.match(regexAdvanced) || []).length;
+  const lineOneDivCount = (lastLine.match(/1÷/g) || []).length;
+  const lineSqrtCount = (lastLine.match(/√\(/g) || []).length;
+
+  if (
+    (primaryFuncs.includes(func) && linePrimaryCount > 0 && linePrimaryCount % 8 === 0) ||
+    (advancedFuncs.includes(func) && lineAdvancedCount > 0 && lineAdvancedCount % 6 === 0) ||
+    (func === '1/x' && lineOneDivCount > 0 && lineOneDivCount % 16 === 0) ||
+    (func === '√' && lineSqrtCount > 0 && lineSqrtCount % 16 === 0)
+  ) {
+    historyLines.push('');
+  }
+
+  // อัปเดตบรรทัดล่าสุดอีกครั้งหลัง push
+  lastLine = historyLines[historyLines.length - 1];
+  const lastChar = lastLine.slice(-1).replace(/,/g, '');
+
+  const shouldAddMultiply =
+    autoMultiplyFuncs.includes(func) &&
+    /[0-9)!eπ]$/.test(lastChar);
+
+  switch (func) {
+    case 'asin':
+    case 'acos':
+    case 'atan':
+      lastLine += shouldAddMultiply ? `×${func}(` : `${func}(`;
+      break;
+    case 'π':
+      lastLine += shouldAddMultiply ? '×π' : 'π';
+      break;
+    case 'e':
+      lastLine += shouldAddMultiply ? '×e' : 'e';
+      break;
+    case 'eˣ':
+    case 'exp':
+      lastLine += shouldAddMultiply ? '×e^(' : 'e^(';
+      break;
+    case '1/x':
+      lastLine += shouldAddMultiply ? '×1÷' : '1÷';
+      historyLines[historyLines.length - 1] = lastLine;
+      updateDisplay();
+      return;
+    case '√':
+      lastLine += shouldAddMultiply ? '×√(' : '√(';
+      historyLines[historyLines.length - 1] = lastLine;
+      updateDisplay();
+      return;
+    case 'square':
+      if (!hasInsertedNumber) {
+        alert(lang.startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
+        return;
+      }
+      lastLine += '^(' + '2' + ')';
+      break;
+    case 'cube':
+      if (!hasInsertedNumber) {
+        alert(lang.startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
+        return;
+      }
+      lastLine += '^(' + '3' + ')';
+      break;
+    case '^':
+      if (!hasInsertedNumber || lastLine.endsWith('^(')) {
+        alert(lang.startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
+        return;
+      }
+      lastLine += '^(';
+      break;
+    case 'factorial':
+      if (!hasInsertedNumber) {
+        alert(lang.startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
+        return;
+      }
+      lastLine += '!';
+      break;
+    case '2powx':
+      lastLine += shouldAddMultiply ? '×2^(' : '2^(';
+      break;
+    case 'cbrt':
+      lastLine += shouldAddMultiply ? '×cbrt(' : 'cbrt(';
+      break;
+    default:
+      lastLine += shouldAddMultiply ? `×${func}(` : `${func}(`;
+  }
+
+  historyLines[historyLines.length - 1] = lastLine;
+  updateDisplay();
 }
 
 //ฟังก์ชั่นเลข
@@ -507,142 +642,7 @@ function toggleMenu() {
   const menu = document.getElementById("extraMenu");
   menu.classList.toggle("hidden");
 }
-//ฟังก์ชั่นวิทย์
-function insertFunction(func) {
-  const lang = navigator.language || 'en';
 
-  const primaryFuncs = ['sin', 'cos', 'tan', 'ln', 'log', 'abs'];
-  const advancedFuncs = ['cbrt', 'asin', 'acos', 'atan', 'sinh', 'cosh', 'tanh', 'asinh', 'acosh', 'atanh'];
-  const autoMultiplyFuncs = [
-    '√', 'sin', 'cos', 'tan', 'ln', 'log', '1/x', 'eˣ', 'abs', 'π', 'e', 'cbrt',
-    'asin', 'acos', 'atan', 'sinh', 'cosh', 'tanh', 'asinh', 'acosh', 'atanh', '2powx'
-  ];
-
-  const allText = historyLines.join('');
-  const totalLength = allText.length;
-
-  if (
-    advancedFuncs.includes(func) &&
-    totalLength >= 200
-  ) {
-    alert(lang.startsWith('th')
-      ? 'ไม่สามารถใส่ตัวอักษรมากกว่า 200 ตัว'
-      : "Can't enter more than 200 characters.");
-    return;
-  }
-
-  const regexPrimary = new RegExp(`(${primaryFuncs.join('|')})\\(`, 'g');
-  const regexAdvanced = new RegExp(`(${advancedFuncs.join('|')})\\(`, 'g');
-  const primaryCount = (allText.match(regexPrimary) || []).length;
-  const advancedCount = (allText.match(regexAdvanced) || []).length;
-  const oneDivCount = (allText.match(/1÷/g) || []).length;
-  const sqrtCount = (allText.match(/√\(/g) || []).length;
-  const customCount = (allText.match(/e\^|π|(?<![a-z])e(?![a-z])|2\^|\^|\!/g) || []).length;
-
-  if (
-    (primaryFuncs.includes(func) && primaryCount >= 40) ||
-    (advancedFuncs.includes(func) && advancedCount >= 40) ||
-    (func === '1/x' && oneDivCount >= 40) ||
-    (func === '√' && sqrtCount >= 40) ||
-    (customCount >= 40)
-  ) {
-    alert(lang.startsWith('th')
-      ? 'ไม่สามารถใส่ฟังก์ชันเกิน 40 ตัวได้'
-      : "Can't enter more than 40 functions.");
-    return;
-  }
-
-  // ตรวจบรรทัดใหม่
-  let lastLine = historyLines[historyLines.length - 1];
-  const linePrimaryCount = (lastLine.match(regexPrimary) || []).length;
-  const lineAdvancedCount = (lastLine.match(regexAdvanced) || []).length;
-  const lineOneDivCount = (lastLine.match(/1÷/g) || []).length;
-  const lineSqrtCount = (lastLine.match(/√\(/g) || []).length;
-
-  if (
-    (primaryFuncs.includes(func) && linePrimaryCount > 0 && linePrimaryCount % 8 === 0) ||
-    (advancedFuncs.includes(func) && lineAdvancedCount > 0 && lineAdvancedCount % 6 === 0) ||
-    (func === '1/x' && lineOneDivCount > 0 && lineOneDivCount % 16 === 0) ||
-    (func === '√' && lineSqrtCount > 0 && lineSqrtCount % 16 === 0)
-  ) {
-    historyLines.push('');
-  }
-
-  // อัปเดตบรรทัดล่าสุดอีกครั้งหลัง push
-  lastLine = historyLines[historyLines.length - 1];
-  const lastChar = lastLine.slice(-1).replace(/,/g, '');
-
-  const shouldAddMultiply =
-    autoMultiplyFuncs.includes(func) &&
-    /[0-9)!eπ]$/.test(lastChar);
-
-  switch (func) {
-    case 'asin':
-    case 'acos':
-    case 'atan':
-      lastLine += shouldAddMultiply ? `×${func}(` : `${func}(`;
-      break;
-    case 'π':
-      lastLine += shouldAddMultiply ? '×π' : 'π';
-      break;
-    case 'e':
-      lastLine += shouldAddMultiply ? '×e' : 'e';
-      break;
-    case 'eˣ':
-    case 'exp':
-      lastLine += shouldAddMultiply ? '×e^(' : 'e^(';
-      break;
-    case '1/x':
-      lastLine += shouldAddMultiply ? '×1÷' : '1÷';
-      historyLines[historyLines.length - 1] = lastLine;
-      updateDisplay();
-      return;
-    case '√':
-      lastLine += shouldAddMultiply ? '×√(' : '√(';
-      historyLines[historyLines.length - 1] = lastLine;
-      updateDisplay();
-      return;
-    case 'square':
-      if (!hasInsertedNumber) {
-        alert(lang.startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
-        return;
-      }
-      lastLine += '^(' + '2' + ')';
-      break;
-    case 'cube':
-      if (!hasInsertedNumber) {
-        alert(lang.startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
-        return;
-      }
-      lastLine += '^(' + '3' + ')';
-      break;
-    case '^':
-      if (!hasInsertedNumber || lastLine.endsWith('^(')) {
-        alert(lang.startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
-        return;
-      }
-      lastLine += '^(';
-      break;
-    case 'factorial':
-      if (!hasInsertedNumber) {
-        alert(lang.startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
-        return;
-      }
-      lastLine += '!';
-      break;
-    case '2powx':
-      lastLine += shouldAddMultiply ? '×2^(' : '2^(';
-      break;
-    case 'cbrt':
-      lastLine += shouldAddMultiply ? '×cbrt(' : 'cbrt(';
-      break;
-    default:
-      lastLine += shouldAddMultiply ? `×${func}(` : `${func}(`;
-  }
-
-  historyLines[historyLines.length - 1] = lastLine;
-  updateDisplay();
-}
 
 
 let angleMode = 'deg'; // เริ่มต้นโหมดจริงเป็น deg

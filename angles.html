@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" href="image/logo.png">
+  <link rel="icon" href="image/logo2.png">
   <title>ตัวแปลงมุม</title>
   <style>
     /* สไตล์รวมของ body */
@@ -192,7 +192,7 @@ function convertAngle() {
       if (conv.deg[k] !== undefined) {
         out += `<li>${conv.deg[k].toLocaleString(undefined,{maximumFractionDigits:12})} ${unitNames[k]}</li>`;
       }
-    }
+    } 
     out += '</ul>';
     document.getElementById('resultBox').innerHTML = out;
     document.getElementById('noteBox').innerHTML = txt.note;
@@ -200,8 +200,8 @@ function convertAngle() {
     ;
 
     // สร้างตัวอย่าง
-    let ex = `<strong style="font-size: 18px; display: inline-block;">${txt.example}</strong><ul>`;
-    ex += `<li>${value} ${unitNames.deg} <span style="color:#777;">(${isThai ? 'หน่วยเดิม' : 'same unit'})</li>`;
+    let ex = `<strong style="font-size: 18px; display: inline-block;">${txt.example}</strong><ul>`; 
+    ex += `<li>${value} ${unitNames.deg} <span style="color:#777;">(${isThai ? 'หน่วยเดิม ไม่มีการแปลง' : 'Same unit, no conversion'})</li>`;
     ex += `<li>เรเดียน = ${value} × π/180 = ${conv.deg.rad.toPrecision(12)}</li>`;
     ex += `<li>แกร็ด = ${value} × 10/9 = ${conv.deg.grad.toPrecision(12)}</li>`;
     ex += `<li>มิลิเรเดียน (นาโต) = ${value} ÷ 0.05625 = ${(value / 0.05625).toPrecision(12)}</li>`;
