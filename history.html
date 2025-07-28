@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ประวัติผู้จัดทำ</title>
+  <link rel="icon" href="image/logo3.png">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Kanit', sans-serif;
+      background: #fce4ec;
+      color: #333;
+      padding: 40px 20px;
+      line-height: 1.6;
+    }
+
+    h1 {
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 40px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .profile {
+      background: #ffee58;
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      text-align: center;
+      font-size: 20px;
+      position: relative;
+    }
+
+    .profile img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #ddd;
+    }
+
+    .profile h2 {
+      margin: 20px 0 10px;
+      font-size: 1.4em;
+    }
+
+    .arrow-toggle {
+      border: none;
+      background: transparent;
+      font-size: 24px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      transform: rotate(-90deg);
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    .profile-details {
+      margin-top: 20px;
+      display: none;
+      text-align: left;
+    }
+
+    .profile-details p {
+      margin: 4px 0;
+      font-size: 20px;
+    }
+
+    /* ✅ ปุ่มกลับ */
+    .back-btn {
+      position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    z-index: 1000;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+  }
+    
+
+    .back-btn:hover {
+      background: #555;
+    }
+
+    @media (max-width: 600px) {
+      .profile {
+        font-size: 18px;
+      }
+      .profile-details p {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- ✅ ปุ่มกลับ -->
+    <a href="index.html" class="back-btn">← กลับ</a>
+
+    <h1>ประวัติผู้จัดทำ</h1>
+
+    <!-- โปรไฟล์คนที่ 1 -->
+    <div class="profile">
+      <img src="image/ang.png" alt="ผู้จัดทำ 1">
+      <h2>นายอังครินทร์ แซะโต</h2>
+      <button class="arrow-toggle" onclick="toggleDetails(this)">❮</button>
+
+      <div class="profile-details">
+        <p><b>ชื่อเล่น</b> : อัง</p>
+        <p><b>สัญชาติ</b> : ไทย</p>
+        <p><b>เชื้อชาติ</b> : ไทย</p>
+        <p><b>ศาสนา</b> : อิสลาม</p>
+        <p><b>วันเกิด</b> : 20 ธันวาคม พ.ศ.2548</p>
+        <p><b>กรุ๊ปเลือด</b> : O</p>
+        <p><b>ชั้น</b> : ปวส.2</p>
+        <p><b>แผนก</b> : เทคโนโลยีธุรกิจดิจิทัล</p>
+        <p><b>อายุ</b> : 19</p>
+        <p><b>งานอดิเรก</b> : เล่นเกม อ่านหนังสือพัฒนาตัวเอง ดูหนังและซีรีส์</p>
+      </div>
+    </div>
+
+    <!-- โปรไฟล์คนที่ 2 -->
+    <div class="profile">
+      <img src="image/gal.png" alt="ผู้จัดทำ 2">
+      <h2>นางสาวกัลยา ยิ่งคำมั่น</h2>
+      <button class="arrow-toggle" onclick="toggleDetails(this)">❮</button>
+
+      <div class="profile-details">
+        <p><b>ชื่อเล่น</b> : สายฟ้า</p>
+        <p><b>สัญชาติ</b> : ไทย</p>
+        <p><b>เชื้อชาติ</b> : ไทย</p>
+        <p><b>ศาสนา</b> : พุทธ</p>
+        <p><b>วันเกิด</b> : - </p>
+        <p><b>กรุ๊ปเลือด</b> : </p>
+        <p><b>ชั้น</b> : ปวส.2</p>
+        <p><b>แผนก</b> : เทคโนโลยีธุรกิจดิจิทัล</p>
+        <p><b>อายุ</b> : - </p>
+        <p><b>งานอดิเรก</b> : - </p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function toggleDetails(button) {
+      const details = button.nextElementSibling;
+
+      if (details.style.display === "block") {
+        details.style.display = "none";
+        button.style.transform = "rotate(-90deg)";
+      } else {
+        details.style.display = "block";
+        button.style.transform = "rotate(90deg)";
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -98,9 +98,9 @@ function calculate() {
       .replace(/(\d)\(/g, '$1*(');
 
     // ✅ 3. ฟังก์ชัน e^(...) และ e^number → Math.exp()
-    expression = expression
-      .replace(/e\^\(([^()]+?)\)/g, 'Math.exp($1)') 
-      .replace(/e\^([\d.]+)/g, 'Math.exp($1)'); 
+    //expression = expression
+    //  .replace(/e\^\(([^()]+?)\)/g, 'Math.exp($1)') 
+    //  .replace(/e\^([\d.]+)/g, 'Math.exp($1)'); 
 
     // ✅ 4. แก้ปัญหา Math.exp(...) ยังไม่ปิด → เติม )
     const expOpenCount = (expression.match(/Math\.exp\(/g) || []).length;
