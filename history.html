@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="th">
+<html>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -73,25 +72,23 @@
       font-size: 20px;
     }
 
-    /* ✅ ปุ่มกลับ */
     .back-btn {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background-color: #ff6f61;
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    z-index: 1000;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    text-decoration: none;
-  }
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background-color: #ff6f61;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      z-index: 1000;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      text-decoration: none;
+    }
     
-
     .back-btn:hover {
       background: #555;
     }
@@ -109,57 +106,51 @@
 <body>
 
   <div class="container">
-    <!-- ✅ ปุ่มกลับ -->
-    <a href="index.html" class="back-btn">← กลับ</a>
+    <a href="index.html" class="back-btn" id="backBtn">← กลับ</a>
 
-    <h1>ประวัติผู้จัดทำ</h1>
+    <h1 id="pageTitle">ประวัติผู้จัดทำ</h1>
 
-    <!-- โปรไฟล์คนที่ 1 -->
     <div class="profile">
-      <img src="image/ang.png" alt="ผู้จัดทำ 1">
-      <h2>นายอังครินทร์ แซะโต</h2>
+      <img src="image/ang.png" alt="ผู้จัดทำ 1" />
+      <h2 id="name1">นายอังครินทร์ แซะโต</h2>
       <button class="arrow-toggle" onclick="toggleDetails(this)">❮</button>
-
-      <div class="profile-details">
-        <p><b>ชื่อเล่น</b> : อัง</p>
-        <p><b>สัญชาติ</b> : ไทย</p>
-        <p><b>เชื้อชาติ</b> : ไทย</p>
-        <p><b>ศาสนา</b> : อิสลาม</p>
-        <p><b>วันเกิด</b> : 20 ธันวาคม พ.ศ.2548</p>
-        <p><b>กรุ๊ปเลือด</b> : O</p>
-        <p><b>ชั้น</b> : ปวส.2</p>
-        <p><b>แผนก</b> : เทคโนโลยีธุรกิจดิจิทัล</p>
-        <p><b>อายุ</b> : 19</p>
-        <p><b>งานอดิเรก</b> : เล่นเกม อ่านหนังสือพัฒนาตัวเอง ดูหนังและซีรีส์</p>
+      <div class="profile-details" id="details1">
+        <p><b id="labelNickname1">ชื่อเล่น</b> : <span id="valNickname1">อัง</span></p>
+        <p><b id="labelNationality1">สัญชาติ</b> : <span id="valNationality1">ไทย</span></p>
+        <p><b id="labelEthnicity1">เชื้อชาติ</b> : <span id="valEthnicity1">ไทย</span></p>
+        <p><b id="labelReligion1">ศาสนา</b> : <span id="valReligion1">อิสลาม</span></p>
+        <p><b id="labelBirthday1">วันเกิด</b> : <span id="valBirthday1">20 ธันวาคม พ.ศ.2548</span></p>
+        <p><b id="labelBloodGroup1">กรุ๊ปเลือด</b> : <span id="valBloodGroup1">O</span></p>
+        <p><b id="labelGrade1">ชั้น</b> : <span id="valGrade1">ปวส.2</span></p>
+        <p><b id="labelDepartment1">แผนก</b> : <span id="valDepartment1">เทคโนโลยีธุรกิจดิจิทัล</span></p>
+        <p><b id="labelAge1">อายุ</b> : <span id="valAge1">19</span></p>
+        <p><b id="labelHobby1">งานอดิเรก</b> : <span id="valHobby1">เล่นเกม อ่านหนังสือพัฒนาตัวเอง ดูหนังและซีรีส์</span></p>
       </div>
     </div>
 
-    <!-- โปรไฟล์คนที่ 2 -->
     <div class="profile">
-      <img src="image/gal.png" alt="ผู้จัดทำ 2">
-      <h2>นางสาวกัลยา ยิ่งคำมั่น</h2>
+      <img src="image/gal.png" alt="ผู้จัดทำ 2" />
+      <h2 id="name2">นางสาวกัลยา ยิ่งคำมั่น</h2>
       <button class="arrow-toggle" onclick="toggleDetails(this)">❮</button>
-
-      <div class="profile-details">
-        <p><b>ชื่อเล่น</b> : สายฟ้า</p>
-        <p><b>สัญชาติ</b> : ไทย</p>
-        <p><b>เชื้อชาติ</b> : ไทย</p>
-        <p><b>ศาสนา</b> : พุทธ</p>
-        <p><b>วันเกิด</b> : - </p>
-        <p><b>กรุ๊ปเลือด</b> : </p>
-        <p><b>ชั้น</b> : ปวส.2</p>
-        <p><b>แผนก</b> : เทคโนโลยีธุรกิจดิจิทัล</p>
-        <p><b>อายุ</b> : - </p>
-        <p><b>งานอดิเรก</b> : - </p>
+      <div class="profile-details" id="details2">
+        <p><b id="labelNickname2">ชื่อเล่น</b> : <span id="valNickname2">สายฟ้า</span></p>
+        <p><b id="labelNationality2">สัญชาติ</b> : <span id="valNationality2">ไทย</span></p>
+        <p><b id="labelEthnicity2">เชื้อชาติ</b> : <span id="valEthnicity2">ไทย</span></p>
+        <p><b id="labelReligion2">ศาสนา</b> : <span id="valReligion2">พุทธ</span></p>
+        <p><b id="labelBirthday2">วันเกิด</b> : <span id="valBirthday2">-</span></p>
+        <p><b id="labelBloodGroup2">กรุ๊ปเลือด</b> : <span id="valBloodGroup2"></span></p>
+        <p><b id="labelGrade2">ชั้น</b> : <span id="valGrade2">ปวส.2</span></p>
+        <p><b id="labelDepartment2">แผนก</b> : <span id="valDepartment2">เทคโนโลยีธุรกิจดิจิทัล</span></p>
+        <p><b id="labelAge2">อายุ</b> : <span id="valAge2">-</span></p>
+        <p><b id="labelHobby2">งานอดิเรก</b> : <span id="valHobby2">-</span></p>
       </div>
     </div>
-
   </div>
 
   <script>
+    // ฟังก์ชันเปิด/ปิดรายละเอียดโปรไฟล์
     function toggleDetails(button) {
       const details = button.nextElementSibling;
-
       if (details.style.display === "block") {
         details.style.display = "none";
         button.style.transform = "rotate(-90deg)";
@@ -168,6 +159,67 @@
         button.style.transform = "rotate(90deg)";
       }
     }
+
+    // ฟังก์ชันเปลี่ยนภาษาอัตโนมัติตามภาษาของเบราว์เซอร์
+    function setLanguage() {
+      const lang = navigator.language || navigator.userLanguage;
+      const isEnglish = lang.startsWith('en');
+
+      // เปลี่ยนข้อความในหน้าให้เป็นอังกฤษถ้าเป็น en
+      if (isEnglish) {
+        document.getElementById('pageTitle').textContent = 'About the Authors';
+        document.getElementById('backBtn').textContent = '← Back';
+
+        // คนที่ 1
+        document.getElementById('name1').textContent = 'Mr. Angkharin Saeto';
+        document.getElementById('labelNickname1').textContent = 'Nickname';
+        document.getElementById('valNickname1').textContent = 'Ang';
+        document.getElementById('labelNationality1').textContent = 'Nationality';
+        document.getElementById('valNationality1').textContent = 'Thai';
+        document.getElementById('labelEthnicity1').textContent = 'Ethnicity';
+        document.getElementById('valEthnicity1').textContent = 'Thai';
+        document.getElementById('labelReligion1').textContent = 'Religion';
+        document.getElementById('valReligion1').textContent = 'Islam';
+        document.getElementById('labelBirthday1').textContent = 'Birthday';
+        document.getElementById('valBirthday1').textContent = 'December 20, 2005';
+        document.getElementById('labelBloodGroup1').textContent = 'Blood Group';
+        document.getElementById('valBloodGroup1').textContent = 'O';
+        document.getElementById('labelGrade1').textContent = 'Grade';
+        document.getElementById('valGrade1').textContent = 'Vocational Certificate Year 2';
+        document.getElementById('labelDepartment1').textContent = 'Department';
+        document.getElementById('valDepartment1').textContent = 'Digital Business Technology';
+        document.getElementById('labelAge1').textContent = 'Age';
+        document.getElementById('valAge1').textContent = '19';
+        document.getElementById('labelHobby1').textContent = 'Hobbies';
+        document.getElementById('valHobby1').textContent = 'Gaming, Self-development reading, Watching movies and series';
+
+        // คนที่ 2
+        document.getElementById('name2').textContent = 'Miss Kanlaya Yingkhamun';
+        document.getElementById('labelNickname2').textContent = 'Nickname';
+        document.getElementById('valNickname2').textContent = 'Saifa';
+        document.getElementById('labelNationality2').textContent = 'Nationality';
+        document.getElementById('valNationality2').textContent = 'Thai';
+        document.getElementById('labelEthnicity2').textContent = 'Ethnicity';
+        document.getElementById('valEthnicity2').textContent = 'Thai';
+        document.getElementById('labelReligion2').textContent = 'Religion';
+        document.getElementById('valReligion2').textContent = 'Buddhism';
+        document.getElementById('labelBirthday2').textContent = 'Birthday';
+        document.getElementById('valBirthday2').textContent = '-';
+        document.getElementById('labelBloodGroup2').textContent = 'Blood Group';
+        document.getElementById('valBloodGroup2').textContent = '';
+        document.getElementById('labelGrade2').textContent = 'Grade';
+        document.getElementById('valGrade2').textContent = 'Vocational Certificate Year 2';
+        document.getElementById('labelDepartment2').textContent = 'Department';
+        document.getElementById('valDepartment2').textContent = 'Digital Business Technology';
+        document.getElementById('labelAge2').textContent = 'Age';
+        document.getElementById('valAge2').textContent = '-';
+        document.getElementById('labelHobby2').textContent = 'Hobbies';
+        document.getElementById('valHobby2').textContent = '-';
+      }
+    }
+
+    // เรียกใช้เมื่อโหลดหน้าเสร็จ
+    window.onload = setLanguage;
   </script>
 
 </body>
