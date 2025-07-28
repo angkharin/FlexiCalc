@@ -211,8 +211,6 @@ function calculate() {
 }
 
 
-
-
 function checkOverflow(expression, result, lang) {
   // ถ้าไม่ใช่ตัวเลขปกติ เช่น Infinity หรือ NaN
   if (!isFinite(result)) {
@@ -552,10 +550,10 @@ if (trailingOps) {
     }
   }
 
-  if (!hasInsertedNumber) {
-    alert(msg);
-    return;
-  }
+  if (!hasInsertedNumber && !/[\dπe)]$/.test(lastLine)) {
+  alert(msg);
+  return;
+}
 
   const is2Operator = /2[+\-×÷]$/.test(lastLine + displayOp);
   const operatorInLine = (lastLine.match(/[+\-×÷]/g) || []).length;
