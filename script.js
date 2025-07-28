@@ -198,9 +198,12 @@ function calculate() {
     let rounded = roundToFixed(result, 10);
 
     // ✅ 15. รูปแบบผลลัพธ์
-    const formatted = (Math.abs(result) >= 1e15 || Math.abs(result) < 1e-6)
+    const formatted = (result === 0)
+    ? '0'
+    : (Math.abs(result) >= 1e15 || Math.abs(result) < 1e-6)
       ? result.toExponential(8).replace('e+', 'E+').replace('e', 'E')
       : rounded.toLocaleString(undefined, { maximumFractionDigits: 10, useGrouping: true });
+
 
     // ✅ 16. แสดงผลลัพธ์
     historyLines = [formatted];
@@ -209,6 +212,8 @@ function calculate() {
     alert((navigator.language || 'en').startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
   }
 }
+
+
 
 
 function checkOverflow(expression, result, lang) {
