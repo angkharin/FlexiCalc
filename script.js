@@ -67,14 +67,15 @@ function roundToFixed(num, digits = 10) {
   const factor = Math.pow(10, digits);
   return Math.round((num + Number.EPSILON) * factor) / factor;
 }
+
+
 //ฟังก์ชั่นต่างๆ
 function calculate() {
   try {
     let expression = historyLines.join('').replace(/,/g, '');
     const lang = navigator.language || 'en';
-    
 
-    // ✅ แปลง ! และ !! เป็น factorial
+    // ✅ 1. แปลง ! และ !! เป็น factorial
     expression = expression.replace(/(\d+)(!+)/g, (_, num, bangs) => {
       if (bangs.length > 2) return `INVALID_FACTORIAL(${num})`;
       let result = num;
@@ -86,7 +87,7 @@ function calculate() {
       return;
     }
 
-    // ✅ สัญลักษณ์พื้นฐานและค่าคงที่
+    // ✅ 2. แปลงค่าคงที่และสัญลักษณ์พื้นฐาน
     expression = expression
       .replace(/(?<![a-zA-Z])e(?![a-zA-Z])/g, 'Math.E')
       .replace(/π/g, 'Math.PI')
@@ -96,18 +97,26 @@ function calculate() {
       .replace(/1÷([\d.]+)/g, '1/($1)')
       .replace(/(\d)\(/g, '$1*(');
 
-    // ✅ ฟังก์ชันยกกำลัง e^
+    // ✅ 3. ฟังก์ชัน e^(...) และ e^number → Math.exp()
     expression = expression
-      .replace(/e\^\(/g, 'Math.exp(')
-      .replace(/e\^([\d.]+)/g, 'Math.exp($1)');
+      .replace(/e\^\(([^()]+?)\)/g, 'Math.exp($1)') 
+      .replace(/e\^([\d.]+)/g, 'Math.exp($1)'); 
 
-    // ✅ แปลงฟังก์ชันทั่วไป
+    // ✅ 4. แก้ปัญหา Math.exp(...) ยังไม่ปิด → เติม )
+    const expOpenCount = (expression.match(/Math\.exp\(/g) || []).length;
+    const expCloseCount = (expression.match(/Math\.exp\([^\)]*\)/g) || []).length;
+    const expDiff = expOpenCount - expCloseCount;
+    if (expDiff > 0) expression += ')'.repeat(expDiff);
+
+    // ✅ 4.5. เคสท้าย expression ยังเปิด Math.exp( → เติม ) ปิด
+    expression = expression.replace(/Math\.exp\(([^\(\)]*)$/, 'Math.exp($1)');
+
+    // ✅ 5. ฟังก์ชันคณิตทั่วไป
     expression = expression
       .replace(/\b√\(/g, 'Math.sqrt(')
-      .replace(/\bln\(/g, 'Math.log(')           
+      .replace(/\bln\(/g, 'Math.log(')
       .replace(/\bln\s+([\d.]+)/g, 'Math.log($1)')
       .replace(/\blog10\(/g, 'Math.log10(')
-      .replace(/\s/g, '')
       .replace(/\blog\b/g, 'Math.log10')
       .replace(/\bsqrt\b/g, 'Math.sqrt')
       .replace(/\babs\b/g, 'Math.abs')
@@ -133,8 +142,7 @@ function calculate() {
       .replace(/\batanh\b/g, 'Math.atanh')
       .replace(/2\^\(/g, 'Math.pow(2,');
 
-    
-    // ✅ เปอร์เซ็นต์
+    // ✅ 6. เปอร์เซ็นต์
     expression = expression.replace(/([\d.]+)\s*([+\-])\s*([\d.]+)%/g, (_, base, op, percent) =>
       `(${base} ${op} ((${percent} * ${base}) / 100))`
     );
@@ -150,58 +158,59 @@ function calculate() {
       return `(${clean}/100)`;
     });
 
-    // ✅ ล้าง space และเติมวงเล็บให้ครบ
-    expression = expression.replace(/\s+/g, '');
-    const open = (expression.match(/\(/g) || []).length;
-    const close = (expression.match(/\)/g) || []).length;
-    if (open > close) expression += ')'.repeat(open - close);
+    // ✅ 7. เติมวงเล็บให้ครบ
+    const totalOpen = (expression.match(/\(/g) || []).length;
+    const totalClose = (expression.match(/\)/g) || []).length;
+    const totalDiff = totalOpen - totalClose;
+    if (totalDiff > 0) expression += ')'.repeat(totalDiff);
 
-    // ✅ ป้องกันฟังก์ชันว่างเปล่าแบบแม่น
+    // ✅ 8. เช็กฟังก์ชันว่างเปล่า
     const emptyFuncPattern = /\bMath\.(sqrt|log|log10|abs|sin|cos|tan|sinh|cosh|tanh|cbrt|asin|acos|atan|asinh|acosh|atanh|exp)\(\)/;
     const emptyPowPattern = /Math\.pow\(2,\)/;
     if (emptyFuncPattern.test(expression) || emptyPowPattern.test(expression)) {
       alert(lang.startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
       return;
     }
-    
 
-    // ✅ ตรวจหารด้วยศูนย์
+    // ✅ 9. เช็กหารด้วยศูนย์
     if (/\/0(?!\d)/.test(expression)) {
       alert(lang.startsWith('th') ? 'ไม่สามารถหารด้วยศูนย์ได้' : "Can't divide by zero.");
       return;
     }
 
-    // ✅ ยกกำลังซ้ายไปขวา
+    // ✅ 10. จัดการยกกำลังแบบซ้ายไปขวา
     expression = evaluateLeftToRightPowers(expression);
 
-    // ✅ ประมวลผลผลลัพธ์
+    // ✅ 11. ประมวลผล
     let result = Function('toAngle', 'toDegrees', 'factorial', `return ${expression}`)(
       toAngle, toDegrees, factorial
     );
 
-    // ✅ ตรวจผลลัพธ์ว่า overflow หรือไม่
+    // ✅ 12. เช็ก overflow
     if (checkOverflow(expression, result, lang)) return;
 
-    // ✅ inverse trig แปลงกลับเป็นองศา
+    // ✅ 13. inverse trig → แปลงกลับเป็นองศา
     if (angleMode === 'deg' && /Math\.a(sin|cos|tan)\(/.test(expression)) {
       result = toDegrees(result);
     }
 
-    // ✅ ปัดทศนิยม
+    // ✅ 14. ปัดทศนิยม
     let rounded = roundToFixed(result, 10);
 
-    // ✅ รูปแบบผลลัพธ์
+    // ✅ 15. รูปแบบผลลัพธ์
     const formatted = (Math.abs(result) >= 1e15 || Math.abs(result) < 1e-6)
       ? result.toExponential(8).replace('e+', 'E+').replace('e', 'E')
       : rounded.toLocaleString(undefined, { maximumFractionDigits: 10, useGrouping: true });
 
-    // ✅ แสดงผลลัพธ์
+    // ✅ 16. แสดงผลลัพธ์
     historyLines = [formatted];
     updateDisplay();
   } catch (error) {
     alert((navigator.language || 'en').startsWith('th') ? 'รูปแบบใช้ไม่ถูกต้อง' : 'Invalid format used.');
   }
 }
+
+
 
 
 function checkOverflow(expression, result, lang) {
