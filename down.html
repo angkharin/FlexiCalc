@@ -165,71 +165,80 @@
 
     // ✅ ฟังก์ชันคำนวณ
     function calculateLoan() {
-  const rawPrice = document.getElementById('carPrice').value.replace(/,/g,'').trim();
-  const rawDown = document.getElementById('downPayment').value.trim();
-  const price = parseFloat(rawPrice);
-  let down = 0;
+      const rawPrice = document.getElementById('carPrice').value.replace(/,/g,'').trim();
+      const rawDown = document.getElementById('downPayment').value.trim();
+      const price = parseFloat(rawPrice);
+      let down = 0;
+      // ตรวจสอบค่าที่กรอก
+      if (rawDown.includes('%')) {
+        const percent = parseFloat(rawDown.replace('%','').trim());
+        if (isNaN(percent) || percent < 0 || percent > 100) {
+          alert(isThai ? 'เปอร์เซ็นต์เงินดาวน์ไม่ถูกต้อง' : 'Invalid down payment percentage');
+          return;
+        }
+        down = price * (percent / 100);
+      } else {
+        const downNumber = parseFloat(rawDown.replace(/,/g,''));
+        if (isNaN(downNumber) || downNumber < 0) {
+          alert(isThai ? 'กรุณากรอกเงินดาวน์ให้ถูกต้อง' : 'Invalid down payment value');
+          return;
+        }
+        down = downNumber;
+      }
 
-  // ✅ ใหม่: เดาอัตโนมัติถ้าน้อยกว่า 100 ให้เป็น %
-  const downNumber = parseFloat(rawDown.replace(/,/g,'').replace('%','').trim());
-  if (isNaN(downNumber) || downNumber < 0) {
-    alert(isThai ? 'กรุณากรอกเงินดาวน์ให้ถูกต้อง' : 'Invalid down payment value');
-    return;
-  }
+      const rate = parseFloat(document.getElementById('interestRate').value);
+      const years = parseFloat(document.getElementById('loanYears').value);
+      // ตรวจสอบค่าที่กรอก
+      if (isNaN(price) || isNaN(rate) || isNaN(years) || price <= 0 || rate < 0 || years <= 0) {
+        alert(isThai ? 'กรุณากรอกข้อมูลให้ถูกต้อง' : 'Please enter valid inputs.');
+        return;
+      }
+      // จำกัดไม่ให้เกิน 15 หลัก
+      if (rawPrice.replace('.','').length > 15) {
+        alert(isThai ? 'ตัวเลขเกิน 15 หลักไม่ได้' : 'Numbers over 15 digits are not allowed.');
+        return;
+      }
 
-  if (rawDown.includes('%') || downNumber <= 100) {
-    // เป็นเปอร์เซ็นต์
-    down = price * (downNumber / 100);
-  } else {
-    // เป็นจำนวนเงิน
-    down = downNumber;
-  }
+      const finance = price - down;
+      const interestPerYear = finance * (rate / 100);
+      const totalInterest = interestPerYear * years;
+      const totalPayment = finance + totalInterest;
+      const monthly = totalPayment / (years * 12);
 
-  const rate = parseFloat(document.getElementById('interestRate').value);
-  const years = parseFloat(document.getElementById('loanYears').value);
-  if (isNaN(price) || isNaN(rate) || isNaN(years) || price <= 0 || rate < 0 || years <= 0) {
-    alert(isThai ? 'กรุณากรอกข้อมูลให้ถูกต้อง' : 'Please enter valid inputs.');
-    return;
-  }
+      // ✅ ตั้งหัวข้อ
+      document.getElementById('resultTitle').innerHTML = `<h3>${txt.result}</h3>`;
+      document.getElementById('exampleTitle').innerHTML = `<h3>${txt.example}</h3>`;
 
-  const finance = price - down;
-  const interestPerYear = finance * (rate / 100);
-  const totalInterest = interestPerYear * years;
-  const totalPayment = finance + totalInterest;
-  const monthly = totalPayment / (years * 12);
+      // ✅ แสดงกล่อง
+      document.querySelector('.result').style.display = 'block';
+      document.querySelector('.example').style.display = 'block';
+      document.getElementById('noteBox').style.display = 'block';
 
-  document.getElementById('resultTitle').innerHTML = `<h3>${txt.result}</h3>`;
-  document.getElementById('exampleTitle').innerHTML = `<h3>${txt.example}</h3>`;
+      // ✅ ใส่ผลลัพธ์
+      document.getElementById('resultBox').innerHTML = `
+        ${isThai ? 'ยอดจัดไฟแนนซ์:' : 'Finance Amount:'} ${finance.toLocaleString(undefined,{maximumFractionDigits:2})} <br>
+        ${isThai ? 'ดอกเบี้ยทั้งหมด:' : 'Total Interest:'} ${totalInterest.toLocaleString(undefined,{maximumFractionDigits:2})} <br>
+        ${isThai ? 'ยอดรวมที่ต้องจ่าย:' : 'Total Payment:'} ${totalPayment.toLocaleString(undefined,{maximumFractionDigits:2})} <br>
+        ${isThai ? 'ค่างวดต่อเดือน:' : 'Monthly Payment:'} ${monthly.toLocaleString(undefined,{maximumFractionDigits:2})}
+      `;
 
-  document.querySelector('.result').style.display = 'block';
-  document.querySelector('.example').style.display = 'block';
-  document.getElementById('noteBox').style.display = 'block';
+      document.getElementById('exampleBox').innerHTML = `
+        ${isThai 
+          ? `ราคารถ - เงินดาวน์ = ${price.toLocaleString()} - ${down.toLocaleString()} = ${finance.toLocaleString()}<br>
+             ดอกเบี้ยต่อปี = ${finance.toLocaleString()} × ${rate}% = ${interestPerYear.toLocaleString()}<br>
+             ดอกเบี้ยทั้งหมด = ${interestPerYear.toLocaleString()} × ${years} = ${totalInterest.toLocaleString()}<br>
+             ยอดรวมที่ต้องจ่าย = ${finance.toLocaleString()} + ${totalInterest.toLocaleString()} = ${totalPayment.toLocaleString()}<br>
+             ค่างวดต่อเดือน = ${totalPayment.toLocaleString()} ÷ ${years*12} = ${monthly.toLocaleString(undefined,{maximumFractionDigits:2})}`
+          : `Car price - Down payment = ${price.toLocaleString()} - ${down.toLocaleString()} = ${finance.toLocaleString()}<br>
+             Annual interest = ${finance.toLocaleString()} × ${rate}% = ${interestPerYear.toLocaleString()}<br>
+             Total interest = ${interestPerYear.toLocaleString()} × ${years} = ${totalInterest.toLocaleString()}<br>
+             Total payment = ${finance.toLocaleString()} + ${totalInterest.toLocaleString()} = ${totalPayment.toLocaleString()}<br>
+             Monthly = ${totalPayment.toLocaleString()} ÷ ${years*12} = ${monthly.toLocaleString(undefined,{maximumFractionDigits:2})}`
+      }`;
 
-  document.getElementById('resultBox').innerHTML = `
-    ${isThai ? 'ยอดจัดไฟแนนซ์:' : 'Finance Amount:'} ${finance.toLocaleString(undefined,{maximumFractionDigits:2})} <br>
-    ${isThai ? 'ดอกเบี้ยทั้งหมด:' : 'Total Interest:'} ${totalInterest.toLocaleString(undefined,{maximumFractionDigits:2})} <br>
-    ${isThai ? 'ยอดรวมที่ต้องจ่าย:' : 'Total Payment:'} ${totalPayment.toLocaleString(undefined,{maximumFractionDigits:2})} <br>
-    ${isThai ? 'ค่างวดต่อเดือน:' : 'Monthly Payment:'} ${monthly.toLocaleString(undefined,{maximumFractionDigits:2})}
-  `;
-
-  document.getElementById('exampleBox').innerHTML = `
-    ${isThai 
-      ? `ราคารถ - เงินดาวน์ = ${price.toLocaleString()} - ${down.toLocaleString()} = ${finance.toLocaleString()}<br>
-         ดอกเบี้ยต่อปี = ${finance.toLocaleString()} × ${rate}% = ${interestPerYear.toLocaleString()}<br>
-         ดอกเบี้ยทั้งหมด = ${interestPerYear.toLocaleString()} × ${years} = ${totalInterest.toLocaleString()}<br>
-         ยอดรวมที่ต้องจ่าย = ${finance.toLocaleString()} + ${totalInterest.toLocaleString()} = ${totalPayment.toLocaleString()}<br>
-         ค่างวดต่อเดือน = ${totalPayment.toLocaleString()} ÷ ${years*12} = ${monthly.toLocaleString(undefined,{maximumFractionDigits:2})}`
-      : `Car price - Down payment = ${price.toLocaleString()} - ${down.toLocaleString()} = ${finance.toLocaleString()}<br>
-         Annual interest = ${finance.toLocaleString()} × ${rate}% = ${interestPerYear.toLocaleString()}<br>
-         Total interest = ${interestPerYear.toLocaleString()} × ${years} = ${totalInterest.toLocaleString()}<br>
-         Total payment = ${finance.toLocaleString()} + ${totalInterest.toLocaleString()} = ${totalPayment.toLocaleString()}<br>
-         Monthly = ${totalPayment.toLocaleString()} ÷ ${years*12} = ${monthly.toLocaleString(undefined,{maximumFractionDigits:2})}`
-  }`;
-
-  document.getElementById('noteBox').innerHTML = txt.note;
-  document.getElementById('noteBox').style.padding = '10px';
-}
-
+      document.getElementById('noteBox').innerHTML = txt.note;
+      document.getElementById('noteBox').style.padding = '10px';
+    }
 
     // ✅ ใส่ comma อัตโนมัติ
     document.getElementById("carPrice").addEventListener("input", function () {
