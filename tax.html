@@ -176,44 +176,22 @@
     <!-- ✅ ปุ่มหมวดหมู่ -->
     <button id="btnCategory">เลือกหมวดหมู่</button>
   </div>
-  
+
+
+
 
   <!-- ✅ Grid ของปุ่มหน่วย -->
   <div class="unit-grid">
     <!-- ✅ ปุ่มแต่ละหมวด -->
+    <div class="unit-item" onclick="window.location.href='sales.html'"><img src="image/online sales.png"><div class="unit-label" data-en="Taxes on online sales" data-th="ภาษีสำหรับขายสินค้าออนไลน์"></div></div>
+    <div class="unit-item" onclick="window.location.href='freelance-tax.html'"><img src="image/freelance-tax.png"><div class="unit-label" data-en="tax deduction freelance" data-th="ภาษีสำหรับ<br>ฟรีแลนซ์"></div></div>
     <div class="unit-item" onclick="window.location.href='personal.html'"><img src="image/Personal Income Tax.png"><div class="unit-label" data-en="Personal Income Tax" data-th="ภาษีสำหรับบุคคลธรรมดา"></div></div>
     <div class="unit-item" onclick="window.location.href='corporate.html'"><img src="image/Corporate Income Tax.png"><div class="unit-label" data-en="Corporate Income Tax" data-th="ภาษีสำหรับนิติบุคคล"></div></div>
-    <div class="unit-item" onclick="window.location.href='funds.html'"><img src="image/funds.png"><div class="unit-label" data-en="Funds" data-th="กองทุน"></div></div>
-    <div class="unit-item" onclick="window.location.href='angles.html'"><img src="image/Measuring angles.png"><div class="unit-label" data-en="Measuring angles" data-th="วัดมุม"></div></div>
-    <div class="unit-item" onclick="window.location.href='pressure.html'"><img src="image/Pressure.png"><div class="unit-label" data-en="Pressure" data-th="แรงดัน"></div></div>
-    <div class="unit-item" onclick="window.location.href='energy.html'"><img src="image/Energy and power.png"><div class="unit-label" data-en="Energy and Power" data-th="พลังงานและพลัง"></div></div>
-    <div class="unit-item" onclick="window.location.href='plan.html'"><img src="image/Viewing Plan Estimator.png"><div class="unit-label" data-en="Viewing Plan Estimator" data-th="การวางแผนรับชม"></div></div>
-    <div class="unit-item" onclick="window.location.href='down.html'"><img src="image/Down Payment.png"><div class="unit-label" data-en="Down Payment" data-th="เงินดาวน์"></div></div>
-    <div class="unit-item" onclick="window.location.href='instalment.html'"><img src="image/instalment.png"><div class="unit-label" data-en="Instalment" data-th="เงินผ่อน"></div></div>
-    <div class="unit-item" onclick="window.location.href='borrowing.html'"><img src="image/Borrowing.png"><div class="unit-label" data-en="Borrowing" data-th="เงินกู้"></div></div>
-    <div class="unit-item" onclick="window.location.href='cash.html'"><img src="image/Cash Flow Statement.png"><div class="unit-label" data-en="Cash Flow Statement" data-th="งบกระแสเงินสด"></div></div>
-    <div class="unit-item" onclick="window.location.href='depreciation.html'"><img src="image/Depreciation.png"><div class="unit-label" data-en="Depreciation" data-th="ค่าเสื่อมราคา"></div></div>
-    <div class="unit-item" onclick="window.location.href='income.html'"><img src="image/Income Statement.png"><div class="unit-label" data-en="Income Statement" data-th="งบกำไรขาดทุน"></div></div>
-        <div class="unit-item" onclick="window.location.href='balance.html'">
-      <img src="image/Balance sheet.png">
-      <div class="unit-label" data-en="Balance sheet" data-th="งบดุล"></div>
-    </div>
-    <div class="unit-item" onclick="window.location.href='currency.html'">
-      <img src="image/Currency.png">
-      <div class="unit-label" data-en="Currency" data-th="สกุลเงิน"></div>
-    </div>
-
-    <!-- ✅ pagination -->
-    <div class="next-items">
-      <h2><a href="unit.html">1</a></h2>
-      <h2><u><a href="2.html">2</a></u></h2>
-    </div>
-  </div>
 
   <!-- ✅ ปุ่ม Back -->
-  <button id="btnBack">⬅ กลับ</button>
+  <button id="btnBack" onclick="history.back()">⬅ กลับ</button>
 
-    <!-- ✅ ปุ่มหมวดหมู่หลัก -->
+  <!-- ✅ ปุ่มหมวดหมู่หลัก -->
 <div class="category-buttons">
   <button class="btnGroup" onclick="window.location.href='Tax.html'">📄 หมวดคำนวณภาษี</button><br>
   <button class="btnGroup" onclick="window.location.href='Account.html'">📊 หมวดการบัญชี</button><br>

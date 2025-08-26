@@ -176,44 +176,29 @@
     <!-- ✅ ปุ่มหมวดหมู่ -->
     <button id="btnCategory">เลือกหมวดหมู่</button>
   </div>
-  
+
+
+
 
   <!-- ✅ Grid ของปุ่มหน่วย -->
   <div class="unit-grid">
     <!-- ✅ ปุ่มแต่ละหมวด -->
-    <div class="unit-item" onclick="window.location.href='personal.html'"><img src="image/Personal Income Tax.png"><div class="unit-label" data-en="Personal Income Tax" data-th="ภาษีสำหรับบุคคลธรรมดา"></div></div>
-    <div class="unit-item" onclick="window.location.href='corporate.html'"><img src="image/Corporate Income Tax.png"><div class="unit-label" data-en="Corporate Income Tax" data-th="ภาษีสำหรับนิติบุคคล"></div></div>
-    <div class="unit-item" onclick="window.location.href='funds.html'"><img src="image/funds.png"><div class="unit-label" data-en="Funds" data-th="กองทุน"></div></div>
+    <div class="unit-item" onclick="window.location.href='area.html'"><img src="image/area.png"><div class="unit-label" data-en="Area" data-th="พื้นที่"></div></div>    
+    <div class="unit-item" onclick="window.location.href='length.html'"><img src="image/length.png"><div class="unit-label" data-en="Length" data-th="ความยาว"></div></div>
+    <div class="unit-item" onclick="window.location.href='mass.html'"><img src="image/mass.png"><div class="unit-label" data-en="Mass" data-th="น้ำหนัก"></div></div>
+    <div class="unit-item" onclick="window.location.href='volume.html'"><img src="image/volume.png"><div class="unit-label" data-en="Volume" data-th="ปริมาตร"></div></div>
+    <div class="unit-item" onclick="window.location.href='thermometer.html'"><img src="image/thermometer.png"><div class="unit-label" data-en="Temperature" data-th="อุณหภูมิ"></div></div>
+    <div class="unit-item" onclick="window.location.href='speed.html'"><img src="image/speed.png"><div class="unit-label" data-en="Speed" data-th="ความเร็ว"></div></div>
+    <div class="unit-item" onclick="window.location.href='numeral.html'"><img src="image/numeral.png"><div class="unit-label" data-en="Numeral system" data-th="ระบบตัวเลข"></div></div>
+    <div class="unit-item" onclick="window.location.href='time.html'"><img src="image/time.png"><div class="unit-label" data-en="Time" data-th="เวลา"></div></div>
+    <div class="unit-item" onclick="window.location.href='data.html'"><img src="image/data.png"><div class="unit-label" data-en="Data" data-th="ข้อมูล"></div></div>
     <div class="unit-item" onclick="window.location.href='angles.html'"><img src="image/Measuring angles.png"><div class="unit-label" data-en="Measuring angles" data-th="วัดมุม"></div></div>
     <div class="unit-item" onclick="window.location.href='pressure.html'"><img src="image/Pressure.png"><div class="unit-label" data-en="Pressure" data-th="แรงดัน"></div></div>
     <div class="unit-item" onclick="window.location.href='energy.html'"><img src="image/Energy and power.png"><div class="unit-label" data-en="Energy and Power" data-th="พลังงานและพลัง"></div></div>
-    <div class="unit-item" onclick="window.location.href='plan.html'"><img src="image/Viewing Plan Estimator.png"><div class="unit-label" data-en="Viewing Plan Estimator" data-th="การวางแผนรับชม"></div></div>
-    <div class="unit-item" onclick="window.location.href='down.html'"><img src="image/Down Payment.png"><div class="unit-label" data-en="Down Payment" data-th="เงินดาวน์"></div></div>
-    <div class="unit-item" onclick="window.location.href='instalment.html'"><img src="image/instalment.png"><div class="unit-label" data-en="Instalment" data-th="เงินผ่อน"></div></div>
-    <div class="unit-item" onclick="window.location.href='borrowing.html'"><img src="image/Borrowing.png"><div class="unit-label" data-en="Borrowing" data-th="เงินกู้"></div></div>
-    <div class="unit-item" onclick="window.location.href='cash.html'"><img src="image/Cash Flow Statement.png"><div class="unit-label" data-en="Cash Flow Statement" data-th="งบกระแสเงินสด"></div></div>
-    <div class="unit-item" onclick="window.location.href='depreciation.html'"><img src="image/Depreciation.png"><div class="unit-label" data-en="Depreciation" data-th="ค่าเสื่อมราคา"></div></div>
-    <div class="unit-item" onclick="window.location.href='income.html'"><img src="image/Income Statement.png"><div class="unit-label" data-en="Income Statement" data-th="งบกำไรขาดทุน"></div></div>
-        <div class="unit-item" onclick="window.location.href='balance.html'">
-      <img src="image/Balance sheet.png">
-      <div class="unit-label" data-en="Balance sheet" data-th="งบดุล"></div>
-    </div>
-    <div class="unit-item" onclick="window.location.href='currency.html'">
-      <img src="image/Currency.png">
-      <div class="unit-label" data-en="Currency" data-th="สกุลเงิน"></div>
-    </div>
-
-    <!-- ✅ pagination -->
-    <div class="next-items">
-      <h2><a href="unit.html">1</a></h2>
-      <h2><u><a href="2.html">2</a></u></h2>
-    </div>
-  </div>
-
   <!-- ✅ ปุ่ม Back -->
-  <button id="btnBack">⬅ กลับ</button>
+  <button id="btnBack" onclick="history.back()">⬅ กลับ</button>
 
-    <!-- ✅ ปุ่มหมวดหมู่หลัก -->
+  <!-- ✅ ปุ่มหมวดหมู่หลัก -->
 <div class="category-buttons">
   <button class="btnGroup" onclick="window.location.href='Tax.html'">📄 หมวดคำนวณภาษี</button><br>
   <button class="btnGroup" onclick="window.location.href='Account.html'">📊 หมวดการบัญชี</button><br>
