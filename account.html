@@ -32,7 +32,7 @@
     /* ✅ ปุ่มหมวดหมู่ด้านบนซ้าย */
     #btnCategory {
       position: absolute;
-      top: 100px;
+      top: 120px;
       left: 20px;
       background-color: #ff6f61;
       color: white;
@@ -136,7 +136,7 @@
       justify-content: center;
       gap: 10px;
       left: 20px;
-      bottom: 200px;
+      top: 180px;
       color: white;
       border: none;
       padding: 10px 18px;
@@ -144,7 +144,6 @@
       font-size: 16px;
       cursor: pointer;
       transition: background-color 0.3s ease, transform 0.2s ease;
-
     }
 
 .btnGroup {
@@ -174,7 +173,7 @@
   <div class="header sticky-header">
     <h1 id="title-main">ตัวแปลงหน่วย<br>และการคิดเลขต่างๆ</h1>
     <!-- ✅ ปุ่มหมวดหมู่ -->
-    <button id="btnCategory">เลือกหมวดหมู่</button>
+    <button id="btnCategory"> 📂 เลือกหมวดหมู่</button>
   </div>
 
 
@@ -206,7 +205,8 @@
   <script>
     const isThai = (navigator.language || 'en').toLowerCase().startsWith('th');
     document.getElementById('btnBack').textContent = isThai ? '⬅ กลับ' : '⬅ Back';
-      document.getElementById('btnCategory').textContent = isThai ? 'เลือกหมวดหมู่' : 'Select Categories';
+      document.getElementById('btnCategory').textContent = isThai ? ' 📂 เลือกหมวดหมู่' : ' 📂 Select Categories';
+
 
   // ✅ เปลี่ยน label ทุก unit-item ตามภาษา
   document.querySelectorAll('.unit-label').forEach(el => {
