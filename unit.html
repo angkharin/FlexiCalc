@@ -173,7 +173,7 @@
   <div class="header sticky-header">
     <h1 id="title-main">ตัวแปลงหน่วย<br>และการคิดเลขต่างๆ</h1>
     <!-- ✅ ปุ่มหมวดหมู่ -->
-    <button id="btnCategory">เลือกหมวดหมู่</button>
+    <button id="btnCategory"> 📂 เลือกหมวดหมู่</button>
   </div>
 
 
@@ -218,7 +218,7 @@
   <script>
     const isThai = (navigator.language || 'en').toLowerCase().startsWith('th');
     document.getElementById('btnBack').textContent = isThai ? '⬅ กลับ' : '⬅ Back';
-      document.getElementById('btnCategory').textContent = isThai ? 'เลือกหมวดหมู่' : 'Select Categories';
+      document.getElementById('btnCategory').textContent = isThai ? ' 📂 เลือกหมวดหมู่' : ' 📂 Select Categories';
 
   // ✅ เปลี่ยน label ทุก unit-item ตามภาษา
   document.querySelectorAll('.unit-label').forEach(el => {
