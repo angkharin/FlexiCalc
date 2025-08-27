@@ -144,8 +144,6 @@
       font-size: 16px;
       cursor: pointer;
       transition: background-color 0.3s ease, transform 0.2s ease;
-      z-index: 1000;
-
     }
 
 .btnGroup {
@@ -161,7 +159,6 @@
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0,0,0,0.3);
   transition: background-color 0.3s ease, transform 0.2s ease;
-  z-index: 1000;
 }
 .btnGroup:hover {
   background-color: #e6554f;
@@ -213,10 +210,10 @@
 
   <!-- ✅ ปุ่มหมวดหมู่หลัก -->
 <div class="category-buttons">
-  <button class="btnGroup" onclick="window.location.href='tax.html'">📄 หมวดคำนวณภาษี</button><br>
-  <button class="btnGroup" onclick="window.location.href='account.html'">📊 หมวดการบัญชี</button><br>
-  <button class="btnGroup" onclick="window.location.href='science.html'">🔬 หมวดวิทยาศาสตร์</button><br>
-  <button class="btnGroup" onclick="window.location.href='planning.html'">🗓️ หมวดการวางแผน</button><br>
+  <button id="btnGroup" onclick="window.location.href='tax.html'">📄 หมวดคำนวณภาษี</button><br>
+  <button id="btnGroup" onclick="window.location.href='account.html'">📊 หมวดการบัญชี</button><br>
+  <button id="btnGroup" onclick="window.location.href='science.html'">🔬 หมวดวิทยาศาสตร์</button><br>
+  <button id="btnGroup" onclick="window.location.href='planning.html'">🗓️ หมวดการวางแผน</button><br>
 </div>
   <script>
     const isThai = (navigator.language || 'en').toLowerCase().startsWith('th');
