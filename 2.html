@@ -221,38 +221,69 @@
 </div>
   <script>
     const isThai = (navigator.language || 'en').toLowerCase().startsWith('th');
-    document.getElementById('btnBack').textContent = isThai ? '⬅ กลับ' : '⬅ Back';
-      document.getElementById('btnCategory').textContent = isThai ? ' 📂 เลือกหมวดหมู่' : ' 📂 Select Categories';
 
+// ✅ ปุ่มกลับ
+document.getElementById('btnBack').textContent = isThai ? '⬅ กลับ' : '⬅ Back';
 
-  // ✅ เปลี่ยน label ทุก unit-item ตามภาษา
-  document.querySelectorAll('.unit-label').forEach(el => {
-    el.innerHTML = isThai ? el.dataset.th : el.dataset.en;
-  });
+// ✅ ปุ่มหมวดหมู่
+document.getElementById('btnCategory').textContent = isThai ? '📂 เลือกหมวดหมู่' : '📂 Select Categories';
 
-  // ✅ เปลี่ยน Title ตามภาษา
-  document.getElementById('title-main').innerHTML = isThai 
-    ? 'ตัวแปลงหน่วย<br>และการคำนวณต่างๆ' 
-    : 'Unit Converter<br>&nbsp and Calculators';
+// ✅ เปลี่ยน label ทุก unit-item ตามภาษา
+document.querySelectorAll('.unit-label').forEach(el => {
+  el.textContent = isThai ? el.dataset.th : el.dataset.en;
+});
 
-  // ✅ คลิกปุ่มหมวดหมู่แล้วแสดงข้อความเบื้องต้น
-  document.getElementById('btnCategory').onclick = function() {
-    alert(isThai 
-      ? 'เลือกหมวดหมู่ เช่น ภาษี การบัญชี วิทยาศาสตร์ หรือการวางแผน' 
-      : 'Choose a category: Tax, Accounting, Science, or Planning');
-  };
-  // ✅ เปลี่ยนข้อความปุ่มหมวดหมู่หลักตามภาษา
-if (isThai) {
-  document.querySelectorAll('.btnGroup')[0].textContent = '📄 หมวดคำนวณภาษี';
-  document.querySelectorAll('.btnGroup')[1].textContent = '📊 หมวดการบัญชี';
-  document.querySelectorAll('.btnGroup')[2].textContent = '🔬 หมวดวิทยาศาสตร์';
-  document.querySelectorAll('.btnGroup')[3].textContent = '🗓️ หมวดการวางแผน';
-} else {
-  document.querySelectorAll('.btnGroup')[0].textContent = '📄 Tax Calculations';
-  document.querySelectorAll('.btnGroup')[1].textContent = '📊 Accounting';
-  document.querySelectorAll('.btnGroup')[2].textContent = '🔬 Science';
-  document.querySelectorAll('.btnGroup')[3].textContent = '🗓️ Planning';
+// ✅ เปลี่ยน Title ตามภาษา
+document.getElementById('title-main').innerHTML = isThai 
+  ? 'ตัวแปลงหน่วย<br>และการคำนวณต่างๆ' 
+  : 'Unit Converter<br>&nbsp and Calculators';
+
+// ✅ คลิกปุ่มหมวดหมู่แล้วแสดงข้อความเบื้องต้น
+document.getElementById('btnCategory').onclick = function() {
+  alert(isThai 
+    ? 'เลือกหมวดหมู่ เช่น ภาษี การบัญชี วิทยาศาสตร์ หรือการวางแผน' 
+    : 'Choose a category: Tax, Accounting, Science, or Planning');
+};
+
+// ✅ เปลี่ยนข้อความปุ่มหมวดหมู่หลักตามภาษา
+const btnGroups = document.querySelectorAll('.btnGroup');
+if (btnGroups.length >= 4) {
+  if (isThai) {
+    btnGroups[0].textContent = '📄 หมวดคำนวณภาษี';
+    btnGroups[1].textContent = '📊 หมวดการบัญชี';
+    btnGroups[2].textContent = '🔬 หมวดวิทยาศาสตร์';
+    btnGroups[3].textContent = '🗓️ หมวดการวางแผน';
+  } else {
+    btnGroups[0].textContent = '📄 Tax Calculations';
+    btnGroups[1].textContent = '📊 Accounting';
+    btnGroups[2].textContent = '🔬 Science';
+    btnGroups[3].textContent = '🗓️ Planning';
+  }
 }
+
+// ✅ ปุ่มกลับ: ตรวจ referrer แล้วตัดสินใจว่าจะใช้ history.back() หรือไป index.html
+document.getElementById('btnBack').onclick = function() {
+  const allowedPages = ['index.html', 'scipannel.html', 'scipannel2.html', ''];
+  let referrer = document.referrer;
+  if (!referrer) {
+    window.location.href = 'index.html';
+    return;
+  }
+  let refUrl;
+  try {
+    refUrl = new URL(referrer);
+  } catch {
+    window.location.href = 'index.html';
+    return;
+  }
+  let refPage = refUrl.pathname.split('/').pop();
+  if (allowedPages.includes(refPage)) {
+    history.back();
+  } else {
+    window.location.href = 'index.html';
+  }
+};
+
 
 </script>
 </body>
